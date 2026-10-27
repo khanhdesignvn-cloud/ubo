@@ -161,7 +161,6 @@ body.touring .card{opacity:0!important;pointer-events:none!important}
   <div class="right">
     <nav class="modes" aria-label="Chế độ xem">
       <button data-mode="layers" class="on" type="button">Cắt lớp</button>
-      <button data-mode="explode" type="button">Tách lớp</button>
       <button data-mode="terrain" type="button">Địa hình</button>
     </nav>
     <button class="play" id="playBtn" type="button"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 1 L13 7 L2 13Z" fill="currentColor"/></svg>Trình chiếu</button>
@@ -697,8 +696,6 @@ const STEPS=[
    go(){ setMode('layers'); build.t=0; build.target=1; document.getElementById('bBuild').classList.add('on'); flyRaw(HOME.pos.clone().multiplyScalar(.82).add(new THREE.Vector3(10,0,0)),HOME.tgt.clone().add(new THREE.Vector3(8,0,0)),2400); setRotate(true); }, keys:null},
   {eb:'Kết nối', h:'Cửa ngõ phía đông', p:'Tiếp cận từ ĐT563 – QL9E hướng thành phố Đồng Hới, khoảng 25 km. Phía tây là đường Hồ Chí Minh nhánh Tây (QL15).', dur:7500,
    go(){ setMode('layers'); setRotate(false); const t=at(17.432,106.468); flyRaw(t.clone().add(new THREE.Vector3(28,34,30)),t,2600); }, keys:['gate','town','low','lake']},
-  {eb:'Cắt lớp', h:'Địa hình mỗi 100 m', p:'Từ mặt hồ khoảng 50 m lên đỉnh gần 1.000 m: mười tầng địa hình tách ra để thấy rõ độ dốc và vị trí từng khu.', dur:7500,
-   go(){ setMode('explode'); const d=HOME.pos.distanceTo(HOME.tgt), dir=HOME.pos.clone().sub(HOME.tgt).normalize(); flyRaw(HOME.tgt.clone().add(dir.multiplyScalar(d*1.05)).add(new THREE.Vector3(0,10,0)),HOME.tgt.clone().add(new THREE.Vector3(0,10,0)),2600); setRotate(true); }, keys:['peak','low']},
   {eb:'Quy mô', h:'3 triệu lượt khách mỗi năm', p:'Mục tiêu bằng gần 30% kế hoạch 10,5 triệu lượt khách của Quảng Trị năm 2026. Đăng ký để nhận tin tiến độ dự án.', dur:9000, cta:true,
    go(){ setMode('layers'); flyRaw(HOME.pos,HOME.tgt,2400); setRotate(true); bigNum.dataset.suf=' triệu'; showBig(3,'lượt khách mỗi năm (mục tiêu)'); }, keys:['peak','lake','low']}
 ];

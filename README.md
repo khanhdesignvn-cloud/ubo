@@ -6,8 +6,8 @@ Website thông tin độc lập về núi U Bò và dự án Quần thể du l�
 
 | Đường dẫn | Nội dung |
 |---|---|
-| `index.html` | Trang chủ ubo.vn (một file, không cần máy chủ) |
-| `3d/index.html` | Sa bàn 3D tương tác: địa hình thật cắt lớp 100 m, tách lớp, cáp treo, 7 phân khu, trình chiếu tự động |
+| `index.html` | Trang chủ ubo.vn: sa bàn nhúng, bản đồ vị trí chiến lược, báo chí (một file, không cần máy chủ) |
+| `3d/index.html` | Sa bàn 3D tương tác: địa hình thật cắt lớp 100 m, cáp treo, 7 phân khu, trình chiếu tự động |
 | `assets/logo/` | Logo ubo.vn (SVG màu, SVG trắng, PDF gốc) |
 | `tools/` | Bản mẫu và dữ liệu để dựng lại sa bàn 3D |
 

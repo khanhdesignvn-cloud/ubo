@@ -94,6 +94,97 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 .frame iframe{display:block;width:100%;height:100%;border:0}
 @media(max-width:700px){.frame{aspect-ratio:3/4}}
 
+/* VỊ TRÍ CHIẾN LƯỢC */
+.geo{background:var(--night);color:#fff}
+.geo .lead{color:rgba(255,255,255,.78);max-width:720px}
+.geo-grid{display:grid;grid-template-columns:1fr 1.12fr;gap:18px;margin-top:40px;align-items:start}
+@media(max-width:900px){.geo-grid{grid-template-columns:1fr}}
+.map-card{margin:0;background:#0A2560;border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.map-card figcaption b{display:block;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:20px;line-height:1.1}
+.map-card figcaption span{display:block;font-size:13px;color:rgba(255,255,255,.7);margin-top:4px}
+.map{width:100%;height:auto;display:block;border-radius:16px;overflow:hidden}
+.map-wrap{position:relative}
+.chips-geo{display:flex;flex-wrap:wrap;gap:6px}
+.chips-geo button{border:0;font:inherit;font-size:12.5px;font-weight:700;padding:7px 12px 6px;border-radius:999px;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chips-geo button i{width:9px;height:9px;border-radius:50%;flex:none}
+.chips-geo button.on{background:#fff;color:var(--pine)}
+.chips-geo button:focus-visible{outline:2px solid var(--sun);outline-offset:2px}
+.tip{position:absolute;z-index:3;width:max-content;max-width:min(250px,80vw);background:#fff;color:var(--ink);border-radius:14px;padding:10px 12px;font-size:13px;line-height:1.45;box-shadow:0 10px 30px rgba(0,0,0,.35);pointer-events:none;transform:translate(-50%,calc(-100% - 16px))}
+.tip b{display:block;font-family:var(--display);font-weight:900;text-transform:uppercase;color:var(--pine);font-size:15px;line-height:1.15;margin-bottom:3px}
+.tip em{display:block;font-style:normal;color:var(--sun);font-weight:700;margin-top:4px}
+.geo-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px}
+@media(max-width:900px){.geo-facts{grid-template-columns:1fr 1fr}}
+.gf{background:rgba(255,255,255,.06);border-radius:20px;padding:18px}
+.gf b{display:block;font-family:var(--display);font-weight:900;font-size:clamp(34px,5vw,50px);line-height:1;color:#fff;font-variant-numeric:tabular-nums}
+.gf > span{display:block;margin-top:8px;font-size:13.5px;color:rgba(255,255,255,.72);line-height:1.45}
+.dist{margin-top:18px;background:#fff;color:var(--ink);border-radius:var(--r);padding:22px}
+.dist-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+.dist-h b{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:22px;color:var(--pine)}
+.dist-h span{font-size:14px;color:var(--muted)}
+.dist-list{list-style:none;margin:16px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:10px 32px}
+@media(max-width:760px){.dist-list{grid-template-columns:1fr}}
+.dist-list li{display:grid;grid-template-columns:minmax(0,150px) 1fr 58px;align-items:center;gap:10px;font-size:14px;font-weight:600}
+.dist-list .bar{height:8px;border-radius:4px;background:var(--mist);overflow:hidden}
+.dist-list .bar i{display:block;height:100%;width:0;border-radius:4px;background:var(--pine);transition:width 1.3s cubic-bezier(.2,.8,.2,1)}
+.dist-list li[data-g="air"] .bar i,.dist-list li[data-g="project"] .bar i{background:var(--sun)}
+.dist-list .km{text-align:right;font-variant-numeric:tabular-nums;color:var(--pine);font-weight:800}
+.geo-note{background:rgba(255,255,255,.06);color:rgba(255,255,255,.72);margin-top:18px}
+.geo-note a{color:#fff}
+/* SVG */
+.map .sea{fill:#061A45}
+.map .land{fill:#11307A;stroke:#2B4F9C;stroke-width:.8}
+.map .land.VNM{fill:#1F52BC;stroke:#4C7BE0}
+.map .qt{fill:var(--sun)}
+.map .ewec{fill:none;stroke:var(--sun);stroke-width:6;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1}
+.map .ewec-flow{fill:none;stroke:#fff;stroke-width:2.2;stroke-linecap:round;stroke-dasharray:.01 .014;opacity:0}
+.map .lbl{font-family:var(--display);font-weight:700;fill:#fff;paint-order:stroke;stroke:#061A45;stroke-width:5px;stroke-linejoin:round}
+.map .lbl.s{font-weight:500;fill:rgba(255,255,255,.75)}
+.map .lbl.red{fill:#FFB4A9}
+.map .sealbl{font-family:var(--display);font-weight:500;fill:rgba(255,255,255,.35);letter-spacing:.2em}
+.map .dot{fill:#fff}
+.map .ring{fill:none;stroke:var(--sun);stroke-width:3;transform-box:fill-box;transform-origin:center;opacity:0}
+.map .lao{fill:#11307A;stroke:#2B4F9C;stroke-width:1}
+.map .other{fill:#163C8C;stroke:#2E5BB2;stroke-width:1}
+.map .qtB{fill:#1F52BC;stroke:var(--sun);stroke-width:3;stroke-linejoin:round}
+.map .r{fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;transition:opacity .3s}
+.map .ql1{stroke:#fff;stroke-width:3}
+.map .ql9{stroke:var(--sun);stroke-width:6}
+.map .rail{stroke:#9DBAF2;stroke-width:2}
+.map .hcm{stroke:#fff;stroke-width:3}
+.map .ql9f{fill:none;stroke:#fff;stroke-width:2;stroke-dasharray:.012 .02;opacity:0}
+.map .pt{cursor:pointer;opacity:0;transform-box:fill-box;transform-origin:center;transition:opacity .3s}
+.map .pt .mk{stroke:#fff;stroke-width:2.5}
+.map .pt:hover .mk,.map .pt:focus .mk{stroke:var(--sun);stroke-width:4}
+.map .pt:focus{outline:none}
+.map .dim{opacity:.12!important}
+.map .legend-t{font-family:var(--display);font-weight:700;fill:rgba(255,255,255,.8)}
+.geo.go .ewec{animation:gDraw 2.6s cubic-bezier(.4,.1,.2,1) .4s forwards}
+.geo.go .ewec-flow,.geo.go .ql9f{animation:gFlow 7s linear infinite,gFade .5s 3s forwards}
+.geo.go .r{animation:gDraw 2.2s ease .6s forwards}
+.geo.go .ring{animation:gPulse 2.2s ease-out 1.2s infinite}
+.geo.go .pt{animation:gPop .5s cubic-bezier(.2,1.6,.4,1) forwards;animation-delay:calc(1.6s + var(--i)*.09s)}
+@keyframes gDraw{to{stroke-dashoffset:0}}
+@keyframes gFlow{to{stroke-dashoffset:-.48}}
+@keyframes gFade{to{opacity:.9}}
+@keyframes gPulse{0%{opacity:.9;transform:scale(.4)}100%{opacity:0;transform:scale(2.6)}}
+@keyframes gPop{0%{opacity:0;transform:scale(.2)}100%{opacity:1;transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.map .ewec,.map .r{stroke-dashoffset:0}.map .pt{opacity:1}.geo.go .ewec,.geo.go .r,.geo.go .pt,.geo.go .ring,.geo.go .ewec-flow,.geo.go .ql9f{animation:none}.dist-list .bar i{transition:none}}
+@media(max-width:600px){.map .lbl.opt{display:none}#svgB .lbl{font-size:25px}#svgB .lbl.red{font-size:28px}#svgB .lbl.s{font-size:20px}#svgA .lbl{font-size:30px}#svgA .lbl.red{font-size:36px}}
+
+/* BÁO CHÍ */
+.press{background:var(--paper)}
+.outlets{display:flex;flex-wrap:wrap;gap:10px 34px;align-items:center;margin-top:34px;padding:22px 0;border-top:2px solid var(--line);border-bottom:2px solid var(--line)}
+.outlets .ol{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(20px,3vw,30px);color:#9AAACB;text-decoration:none;letter-spacing:.01em;transition:color .2s}
+.outlets .ol:hover,.outlets .ol:focus-visible{color:var(--pine)}
+.articles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+@media(max-width:900px){.articles{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.articles{grid-template-columns:1fr}}
+.art{display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:22px;background:var(--mist);text-decoration:none;color:var(--ink);min-height:170px;transition:transform .2s,background .2s}
+.art:hover{transform:translateY(-3px);background:#DCE6FA}
+.art small{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--sun)}
+.art b{font-size:18px;line-height:1.35;font-weight:700;text-wrap:balance}
+.art span{margin-top:auto;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:13px;color:var(--pine)}
+
 /* MOOD */
 .mood{background:var(--mist)}
 .mood .wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
@@ -215,6 +306,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
     </a>
     <ul class="menu">
       <li><a href="#sa-ban-3d">Sa bàn 3D</a></li>
+      <li><a href="#vi-tri">Vị trí</a></li>
       <li><a href="#trai-nghiem">Trải nghiệm</a></li>
       <li><a href="#hanh-trinh">Hành trình</a></li>
       <li><a href="#du-an">Dự án</a></li>
@@ -316,6 +408,39 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   </div>
 </section>
 
+<section class="geo" id="vi-tri">
+  <div class="wrap">
+    <div class="geo-head rv">
+      <div class="eyebrow">Vị trí chiến lược</div>
+      <h2 class="h2">Giữa hành lang<br>Đông – Tây.</h2>
+      <p class="lead">Quảng Trị mới (sáp nhập Quảng Bình và Quảng Trị từ 1/7/2025) nắm trọn đầu phía đông của hành lang kinh tế Đông – Tây, nối Myanmar, Thái Lan, Lào với biển Việt Nam. U Bò nằm giữa di sản Phong Nha – Kẻ Bàng, sân bay Đồng Hới và các trục giao thông chính của tỉnh.</p>
+    </div>
+    <div class="geo-grid">
+      <figure class="map-card rv" id="mapA">
+        <figcaption><b>Đông Nam Á lục địa</b><span>Hành lang kinh tế Đông – Tây · 1.450 km · 4 quốc gia</span></figcaption>
+        <svg class="map" id="svgA" role="img" aria-label="Bản đồ hành lang kinh tế Đông – Tây từ Myanmar đến Đà Nẵng, tỉnh Quảng Trị được tô đỏ"></svg>
+      </figure>
+      <figure class="map-card rv" id="mapB">
+        <figcaption><b>Tỉnh Quảng Trị</b><span>Chạm vào từng điểm để xem khoảng cách tới U Bò</span></figcaption>
+        <div class="chips-geo" id="geoChips" role="group" aria-label="Lớp bản đồ"></div>
+        <div class="map-wrap"><svg class="map" id="svgB" role="img" aria-label="Bản đồ tỉnh Quảng Trị với sân bay, cảng biển, cửa khẩu và tuyến giao thông"></svg><div class="tip" id="geoTip" hidden></div></div>
+      </figure>
+    </div>
+    <div class="geo-facts">
+      <div class="gf rv"><b><span class="cnt" data-to="1450" data-sep="1">1.450</span> km</b><span>Hành lang Đông – Tây, từ Mawlamyine (Myanmar) đến Đà Nẵng</span></div>
+      <div class="gf rv"><b><span class="cnt" data-to="3">3</span></b><span>Cửa khẩu quốc tế: Cha Lo, Lao Bảo, La Lay</span></div>
+      <div class="gf rv"><b><span class="cnt" data-to="2">2</span></b><span>Sân bay: Đồng Hới đang khai thác, Quảng Trị đang xây</span></div>
+      <div class="gf rv"><b><span class="cnt" data-to="2">2</span></b><span>Cảng biển nước sâu, Mỹ Thủy đón tàu 100.000 DWT</span></div>
+    </div>
+    <div class="dist rv">
+      <div class="dist-h"><b>Từ đỉnh U Bò</b><span>Khoảng cách đường chim bay</span></div>
+      <ol class="dist-list" id="distList"></ol>
+    </div>
+    <p class="note geo-note rv">Bản đồ minh hoạ dựng từ Natural Earth; vị trí sân bay, cảng, cửa khẩu là gần đúng. Khoảng cách tính theo đường chim bay. Số liệu: <a href="https://baodauthau.vn/dau-tu-dong-bo-ha-tang-giao-thong-khai-thac-hanh-lang-kinh-te-dong-tay-post126984.html" target="_blank" rel="noopener">Báo Đấu thầu</a> (hành lang 1.450 km), <a href="https://www.vcci.com.vn/tin-tuc/dinh-vi-lai-ban-do-logistics-quang-tri-su-troi-day-cua-sieu-cuc-trung-chuyen-tren-hanh-lang-dong-tay" target="_blank" rel="noopener">VCCI</a> (cảng, cửa khẩu, sân bay), <a href="https://vneconomy.vn/quang-tri-tap-trung-go-kho-cho-du-an-hon-5-800-ty-dong.htm" target="_blank" rel="noopener">VnEconomy</a> (sân bay Quảng Trị).</p>
+  </div>
+</section>
+
+
 <section class="vals">
   <div class="wrap">
     <div class="rv">
@@ -408,6 +533,30 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   </div>
 </section>
 
+<section class="press" id="bao-chi">
+  <div class="wrap">
+    <div class="press-head rv">
+      <div class="eyebrow">Báo chí</div>
+      <h2 class="h2">Báo chí viết<br>về U Bò.</h2>
+    </div>
+    <div class="outlets rv" aria-label="Các báo đã đưa tin">
+      <a href="https://tienphong.vn/u-bo-may-phu-thac-chuoi-soi-troi-post1887166.tpo" target="_blank" rel="noopener" class="ol">Tiền Phong</a>
+      <a href="https://www.vietnamplus.vn/du-an-u-bo-thac-chuoi-ngon-co-dong-luc-moi-cua-du-lich-quang-tri-post1138843.vnp" target="_blank" rel="noopener" class="ol">VietnamPlus</a>
+      <a href="https://baodautu.vn/quang-tri-phe-duyet-quy-hoach-chi-tiet-du-an-nui-u-bo-ho-thac-chuoi-d725073.html" target="_blank" rel="noopener" class="ol">Báo Đầu tư</a>
+      <a href="https://nhandan.vn/gac-rung-tren-dinh-u-bo-post961167.html" target="_blank" rel="noopener" class="ol">Nhân Dân</a>
+      <a href="https://vneconomy.vn/quang-tri-tang-truong-grdp-842-sau-9-thang.htm" target="_blank" rel="noopener" class="ol">VnEconomy</a>
+    </div>
+    <div class="articles">
+      <a class="art rv" href="https://tienphong.vn/u-bo-may-phu-thac-chuoi-soi-troi-post1887166.tpo" target="_blank" rel="noopener"><small>Tiền Phong</small><b>U Bò mây phủ, Thác Chuối soi trời</b><span>Đọc bài ↗</span></a>
+      <a class="art rv" href="https://www.vietnamplus.vn/du-an-u-bo-thac-chuoi-ngon-co-dong-luc-moi-cua-du-lich-quang-tri-post1138843.vnp" target="_blank" rel="noopener"><small>VietnamPlus</small><b>Dự án U Bò – Thác Chuối: “Ngọn cờ”, “động lực” mới của du lịch Quảng Trị?</b><span>Đọc bài ↗</span></a>
+      <a class="art rv" href="https://baodautu.vn/quang-tri-phe-duyet-quy-hoach-chi-tiet-du-an-nui-u-bo-ho-thac-chuoi-d725073.html" target="_blank" rel="noopener"><small>Báo Đầu tư</small><b>Quảng Trị phê duyệt quy hoạch chi tiết dự án núi U Bò – hồ Thác Chuối</b><span>Đọc bài ↗</span></a>
+      <a class="art rv" href="https://tienphong.vn/dua-du-an-du-lich-trong-diem-o-quang-tri-vao-luong-xanh-post1879367.tpo" target="_blank" rel="noopener"><small>Tiền Phong</small><b>Đưa dự án du lịch trọng điểm ở Quảng Trị vào “luồng xanh”</b><span>Đọc bài ↗</span></a>
+      <a class="art rv" href="https://nhandan.vn/gac-rung-tren-dinh-u-bo-post961167.html" target="_blank" rel="noopener"><small>Nhân Dân</small><b>Gác rừng trên đỉnh U Bò</b><span>Đọc bài ↗</span></a>
+      <a class="art rv" href="https://nhandan.vn/kham-pha-cung-duong-dep-nhu-tranh-giua-dai-ngan-truong-son-post865093.html" target="_blank" rel="noopener"><small>Nhân Dân</small><b>Khám phá cung đường đẹp như tranh giữa đại ngàn Trường Sơn</b><span>Đọc bài ↗</span></a>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <div class="fcols">
@@ -417,7 +566,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
       </div>
       <div>
         <h4>Khám phá</h4>
-        <ul><li><a href="#sa-ban-3d">Sa bàn 3D</a></li>
+        <ul><li><a href="#sa-ban-3d">Sa bàn 3D</a></li><li><a href="#vi-tri">Vị trí chiến lược</a></li><li><a href="#bao-chi">Báo chí</a></li>
       <li><a href="#trai-nghiem">Trải nghiệm</a></li><li><a href="#hanh-trinh">Hành trình</a></li><li><a href="#du-an">Dự án</a></li><li><a href="#hoi-dap">Hỏi đáp</a></li></ul>
       </div>
       <div>
@@ -524,6 +673,99 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
     var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{threshold:.1});
     els.forEach(function(el){io.observe(el)});
   }else els.forEach(function(el){el.classList.add('in')});
+})();
+</script>
+<script>
+(function(){
+  var M = {"region":{"W":1000,"H":779.1,"land":[{"id":"VNM","d":"M346.4,647.2L344.8,660.7L343.4,662.2L340.4,652.0L335.6,645.8L343.9,643.0L346.4,647.2ZM526.5,110.2L518.9,110.7L511.0,117.0L500.5,121.0L497.9,132.0L489.1,137.1L485.0,134.7L476.2,137.1L466.8,134.6L470.1,147.4L460.7,157.4L461.7,163.9L459.2,168.9L442.9,183.1L434.4,185.7L426.6,202.6L425.5,216.7L417.7,232.5L430.0,254.8L458.3,281.5L456.5,285.0L457.4,292.4L452.3,291.1L459.1,295.1L469.2,309.4L487.0,324.3L489.8,331.9L506.9,344.2L506.5,345.8L518.7,355.7L520.1,359.6L529.1,359.2L537.5,370.7L540.2,370.8L541.0,375.6L554.5,395.1L565.8,405.0L578.0,436.8L578.1,444.7L588.1,478.2L587.4,482.6L585.5,478.3L586.7,505.9L593.7,521.5L594.7,538.6L589.6,531.3L584.2,536.4L588.2,548.7L583.6,547.5L586.1,569.7L585.5,571.9L583.3,567.5L581.4,575.3L583.3,580.7L580.2,586.7L575.9,587.1L573.5,599.4L565.8,600.4L540.4,618.7L532.2,620.5L527.8,629.0L520.6,630.0L493.6,644.5L490.5,641.0L485.5,639.7L481.8,631.9L479.0,644.4L472.8,642.8L468.9,637.9L463.2,641.3L469.5,642.3L470.3,649.4L456.7,649.3L468.9,654.4L471.5,658.0L462.8,670.4L441.5,653.0L458.7,672.2L461.7,680.9L457.6,684.8L452.7,685.0L427.4,663.6L442.5,683.2L444.7,687.6L443.0,692.7L412.1,707.3L403.8,721.3L394.2,729.6L378.3,731.1L384.1,723.9L380.5,721.3L381.7,682.6L384.4,672.5L393.2,668.4L393.3,666.3L390.2,660.4L383.0,658.1L379.7,653.9L373.3,655.5L362.3,643.9L368.7,638.8L382.0,637.9L391.0,629.9L391.0,619.8L403.5,623.0L407.7,617.9L423.8,616.0L428.4,622.1L432.3,621.1L442.8,625.4L441.3,619.3L442.6,613.8L428.5,601.4L428.3,585.0L431.8,584.2L435.5,579.1L453.7,582.5L454.3,569.9L467.6,568.5L470.6,565.0L478.3,563.7L491.3,552.8L496.8,552.1L499.7,554.9L504.9,549.9L507.2,541.5L503.5,517.9L509.5,498.3L496.8,465.2L498.4,453.6L506.3,440.0L503.7,424.2L511.7,410.9L507.6,404.4L494.4,393.4L489.2,384.6L499.6,377.4L499.8,373.0L478.3,358.1L474.6,350.3L469.4,353.3L465.6,351.4L460.5,343.8L458.4,329.2L420.9,291.5L416.1,279.7L410.1,271.5L404.3,269.8L394.2,259.4L392.9,255.1L395.7,247.6L375.8,240.3L337.6,216.2L345.5,207.6L344.1,198.4L354.6,197.9L369.8,201.1L377.0,194.5L385.6,181.9L381.8,173.0L374.9,172.9L371.2,164.7L359.6,161.5L367.3,156.1L369.6,151.6L347.3,137.3L325.7,149.2L301.1,139.9L289.4,121.9L294.0,101.9L289.1,99.3L287.8,95.8L284.2,102.1L280.6,102.1L277.0,91.2L272.6,88.6L255.9,68.3L271.8,50.5L288.4,58.3L295.5,65.0L302.6,60.5L302.7,58.0L311.4,49.5L319.1,58.3L325.0,49.0L339.9,60.6L345.1,50.4L349.2,48.1L352.4,47.6L356.4,52.3L359.8,52.7L367.0,47.9L374.4,47.0L379.4,42.7L382.6,31.9L401.6,21.9L409.3,27.2L414.3,35.0L427.9,42.2L442.1,39.9L448.1,45.3L460.3,42.9L471.3,49.1L460.7,62.5L460.8,70.1L465.5,75.0L465.9,87.6L469.0,86.5L480.1,90.2L484.3,96.5L494.1,100.5L497.7,105.4L516.6,103.2L526.5,110.2ZM465.4,726.1L461.5,726.1L465.7,723.0L465.4,726.1ZM485.4,647.5L485.1,645.0L490.5,642.2L489.2,644.5L485.4,647.5ZM474.7,144.4L470.8,141.2L472.0,138.1L474.8,141.5L474.7,144.4ZM502.7,130.2L500.2,130.1L503.5,121.7L509.4,124.2L502.7,130.2ZM505.6,138.2L500.0,139.3L507.0,133.0L505.6,138.2ZM481.0,147.0L477.3,143.1L479.3,141.0L484.5,143.4L481.0,147.0Z"},{"id":"THA","d":"M277.3,588.0L274.7,586.0L276.3,582.3L278.1,583.0L277.3,588.0ZM269.9,569.2L264.0,568.4L262.8,560.2L267.5,564.0L269.9,569.2ZM83.3,768.1L78.5,770.6L77.0,763.4L79.7,751.8L85.0,755.7L83.3,768.1ZM162.7,170.4L172.1,164.2L181.5,174.2L182.5,178.5L175.8,194.5L176.9,199.8L181.2,204.2L186.4,206.8L191.8,206.1L202.2,201.5L213.5,204.5L212.8,215.1L217.0,231.9L211.4,249.2L205.9,257.7L210.1,265.1L210.4,272.1L199.5,298.9L201.7,301.0L208.6,304.0L211.5,303.0L235.5,284.2L239.6,277.3L247.6,275.0L254.7,268.8L275.6,280.6L280.6,287.7L287.4,281.5L298.7,277.6L303.2,268.3L308.5,265.5L309.6,259.3L318.9,258.8L333.0,263.7L340.3,263.6L362.4,293.4L376.8,304.8L380.4,312.6L377.0,332.6L377.3,344.0L380.5,352.7L391.1,367.4L407.7,375.7L407.4,383.3L417.7,389.5L418.5,395.0L411.6,410.9L414.2,426.4L410.9,445.8L392.3,460.3L389.0,459.1L387.5,453.7L378.7,450.7L341.8,454.1L324.1,451.0L305.5,455.3L292.1,464.7L283.7,478.9L275.2,487.6L275.3,491.2L264.8,493.4L265.3,505.5L271.4,518.7L273.1,535.2L285.0,547.0L282.7,555.2L284.1,563.1L293.2,581.6L286.6,572.8L285.3,566.9L277.5,557.7L275.0,562.2L265.9,555.3L262.0,548.5L260.6,551.5L251.6,541.9L242.4,536.7L237.2,534.3L224.3,537.7L207.9,535.1L201.6,537.6L199.0,536.0L197.4,533.1L202.0,498.6L185.3,492.1L182.2,494.6L168.3,496.1L158.2,502.4L157.0,507.7L161.6,517.2L155.7,534.3L156.9,559.3L140.2,593.3L133.7,620.9L118.8,648.3L120.1,655.2L118.6,676.4L124.5,691.8L122.9,699.0L129.3,701.5L144.6,696.6L149.8,697.9L156.9,731.5L163.4,739.2L165.0,735.4L168.0,739.4L176.9,779.1L170.9,779.1L172.1,773.5L169.3,770.7L164.7,772.9L164.8,779.1L123.9,779.1L119.6,773.4L114.7,773.4L113.5,765.2L101.3,757.0L97.4,747.5L91.6,743.3L88.0,744.5L84.3,751.3L79.0,749.0L75.3,733.7L82.0,697.8L100.4,642.9L99.9,631.9L119.9,610.5L133.2,586.1L139.5,579.5L132.5,558.3L129.9,541.1L121.3,531.9L116.8,517.9L116.1,514.4L119.3,508.2L117.4,484.9L108.0,468.9L91.2,454.0L76.2,432.1L74.2,424.4L73.7,413.4L85.7,406.0L90.6,405.5L92.2,372.7L102.7,366.4L105.9,358.2L103.5,355.0L96.7,360.4L95.4,359.2L87.0,339.9L85.1,328.2L51.2,288.7L52.8,282.0L47.8,265.0L42.8,264.7L39.4,261.6L35.8,254.0L42.4,255.0L53.1,250.6L51.2,234.1L55.7,224.6L56.3,208.7L64.4,199.4L65.5,194.8L82.0,197.7L107.3,193.7L114.5,178.0L126.8,178.9L133.6,175.5L132.4,165.3L144.4,167.1L152.3,162.3L155.3,162.8L163.1,167.5L162.7,170.4ZM160.4,679.0L157.3,675.8L156.6,673.6L159.4,673.7L160.4,679.0ZM160.7,683.6L159.9,689.5L155.7,691.5L155.3,683.8L160.7,683.6ZM91.7,763.8L89.3,754.6L92.8,757.1L91.7,763.8ZM76.4,709.8L77.5,705.5L78.8,705.0L79.1,709.3L76.4,709.8ZM112.9,779.1L113.2,777.3L114.5,779.1L112.9,779.1Z"},{"id":"PHL","d":"M954.6,742.2L960.6,725.5L985.4,700.2L991.8,698.8L1000.0,690.5L1000.0,704.6L990.3,717.6L970.9,729.0L968.4,733.9L954.6,742.2Z"},{"id":"LAO","d":"M254.2,66.7L277.0,91.2L280.6,102.1L284.2,102.1L287.8,95.8L289.1,99.3L294.0,101.9L289.4,121.9L301.1,139.9L325.7,149.2L347.3,137.3L369.6,151.6L367.3,156.1L359.6,161.5L371.2,164.7L374.9,172.9L381.8,173.0L385.6,181.9L377.0,194.5L369.8,201.1L354.6,197.9L344.1,198.4L345.5,207.6L337.6,216.2L375.8,240.3L395.7,247.6L392.9,255.1L394.2,259.4L404.3,269.8L410.1,271.5L416.1,279.7L420.9,291.5L458.4,329.2L460.5,343.8L465.6,351.4L469.4,353.3L474.6,350.3L478.3,358.1L499.8,373.0L499.6,377.4L489.2,384.6L494.4,393.4L507.6,404.4L511.7,410.9L503.7,424.2L505.5,437.4L500.7,444.2L495.0,442.8L486.5,451.2L482.9,450.8L478.6,455.5L473.1,456.2L458.4,443.5L451.6,449.4L445.6,448.4L442.8,453.4L434.2,454.8L441.0,468.9L438.3,475.1L430.8,474.9L423.1,467.2L413.5,463.8L405.1,466.0L400.3,461.6L397.4,454.6L408.5,448.6L411.9,442.9L414.2,426.4L411.6,410.9L417.4,399.7L418.6,391.6L407.4,383.3L407.7,375.7L391.1,367.4L380.5,352.7L377.3,344.0L377.0,332.6L380.4,312.6L376.8,304.8L362.4,293.4L340.3,263.6L333.0,263.7L318.9,258.8L309.6,259.3L308.5,265.5L303.2,268.3L298.7,277.6L287.4,281.5L280.6,287.7L275.6,280.6L254.7,268.8L247.6,275.0L239.6,277.3L235.5,284.2L211.5,303.0L208.6,304.0L199.5,298.9L210.4,272.1L210.1,265.1L205.9,257.7L211.4,249.2L217.0,231.9L212.8,215.1L213.5,204.5L202.2,201.5L186.4,206.8L176.9,199.8L175.8,194.5L182.4,176.4L172.1,164.2L162.7,170.4L165.9,154.4L172.5,144.5L186.2,141.4L181.6,138.4L182.2,135.0L190.0,122.6L207.4,112.1L210.1,107.4L212.8,109.5L211.8,115.1L215.2,125.2L228.8,123.4L236.3,127.4L240.8,124.4L237.2,119.5L237.8,94.9L231.6,87.1L228.0,74.4L237.9,62.7L242.7,67.9L247.5,65.4L254.2,66.7Z"},{"id":"CHN","d":"M665.3,188.4L667.3,199.3L658.4,204.0L650.0,216.8L641.3,243.0L622.6,254.6L623.5,257.4L621.3,258.9L611.8,259.8L606.6,266.5L598.1,268.4L575.5,261.2L560.3,253.2L557.2,235.3L558.6,216.2L586.9,194.2L582.3,193.9L586.3,188.4L597.9,187.3L604.2,183.5L624.2,183.1L628.3,180.2L636.3,180.9L638.5,183.9L638.6,179.9L647.6,183.9L648.1,178.0L650.5,176.1L661.5,183.1L665.3,188.4ZM518.6,103.6L497.7,105.4L494.1,100.5L484.3,96.5L480.1,90.2L469.0,86.5L465.9,87.6L465.5,75.0L460.8,70.1L460.7,62.5L471.3,49.1L460.3,42.9L448.1,45.3L442.1,39.9L427.9,42.2L414.3,35.0L409.3,27.2L401.6,21.9L382.6,31.9L379.4,42.7L374.4,47.0L367.0,47.9L359.8,52.7L356.4,52.3L352.4,47.6L349.2,48.1L345.1,50.4L339.9,60.6L325.0,49.0L319.1,58.3L312.8,50.3L310.2,49.8L302.6,60.5L295.5,65.0L288.4,58.3L271.8,50.5L255.9,68.3L251.1,65.4L242.7,67.9L238.9,63.0L236.5,63.2L228.0,74.4L231.6,87.1L237.8,94.9L237.2,119.5L240.8,124.4L236.3,127.4L228.8,123.4L216.7,125.8L214.1,123.9L211.8,115.1L212.8,109.5L210.1,107.4L209.3,98.8L196.1,103.1L185.4,112.0L173.6,110.6L167.3,112.4L162.8,110.1L161.8,102.9L154.7,98.2L153.6,85.2L120.0,80.5L120.6,73.0L126.7,62.6L128.9,46.9L134.6,40.4L134.1,38.3L126.9,33.9L104.8,29.3L105.7,20.2L101.8,13.4L103.3,8.4L98.1,0.0L965.7,1.4L961.5,10.2L959.8,4.4L957.9,4.1L948.3,10.6L940.3,7.4L938.0,16.7L927.3,21.5L930.5,25.1L923.1,29.8L922.2,38.2L919.9,41.1L909.8,39.4L905.4,43.9L891.3,48.0L881.5,45.5L877.8,46.9L874.9,52.0L869.6,52.0L860.9,47.3L845.1,56.9L840.3,56.4L838.5,51.0L835.7,50.2L830.8,56.7L831.2,61.1L821.3,58.0L817.9,60.5L802.4,61.0L787.9,45.1L786.4,37.5L788.0,32.3L783.3,33.6L779.9,35.8L779.7,41.3L774.6,42.7L784.9,58.0L786.5,69.7L784.7,75.7L782.1,74.9L771.6,82.3L766.2,83.0L763.4,76.6L759.6,80.8L757.1,91.0L754.8,92.3L750.4,89.2L740.1,97.3L732.5,92.3L732.8,88.6L729.6,87.6L731.0,96.1L727.1,99.0L710.4,93.8L707.1,100.2L702.6,100.1L694.6,107.8L681.4,111.3L667.4,110.0L666.5,114.0L656.1,116.1L646.6,124.4L641.6,123.6L639.4,118.4L637.7,126.4L629.3,132.8L627.5,137.3L628.7,141.5L637.3,142.5L638.4,144.7L634.9,150.4L644.1,157.8L641.2,165.7L636.3,168.6L626.1,170.1L617.5,168.6L614.9,165.2L615.1,162.9L619.6,163.4L618.9,161.2L613.9,158.0L610.7,152.8L611.4,148.5L604.7,138.6L605.6,128.3L610.2,118.4L616.7,116.5L617.2,111.5L612.5,111.4L609.2,107.7L605.9,109.4L600.3,101.4L598.2,101.3L599.3,108.8L581.0,114.2L577.8,113.5L580.3,108.5L578.8,106.3L563.5,104.3L556.3,97.6L555.3,91.3L550.0,91.1L552.1,102.4L548.3,105.4L542.8,101.3L539.2,107.8L526.5,110.2L518.6,103.6Z"},{"id":"KHM","d":"M298.4,601.8L296.1,598.8L298.0,596.8L298.4,601.8ZM309.3,631.0L306.6,627.1L306.6,626.0L311.0,629.1L309.3,631.0ZM506.3,440.0L498.4,453.6L496.8,465.2L509.5,498.3L503.5,517.9L506.6,533.5L506.4,546.7L499.7,554.9L496.8,552.1L491.3,552.8L478.3,563.7L470.6,565.0L467.6,568.5L454.3,569.9L453.7,582.5L435.5,579.1L431.8,584.2L428.3,585.0L428.5,601.4L442.6,613.8L441.3,619.3L442.8,625.4L432.3,621.1L428.4,622.1L423.8,616.0L407.7,617.9L403.5,623.0L391.0,619.8L391.0,629.9L382.0,637.9L368.7,638.8L362.3,643.9L354.7,637.6L339.7,635.4L336.6,632.1L335.2,635.7L326.9,639.2L323.5,637.1L320.9,634.6L321.3,631.5L327.8,627.2L329.7,620.8L326.6,612.7L320.9,608.5L312.7,619.3L303.4,619.7L300.5,605.4L302.1,593.4L296.8,587.2L296.5,581.4L293.9,578.4L292.5,580.4L284.1,563.1L282.7,555.2L285.0,547.0L273.1,535.2L271.4,518.7L265.3,505.5L264.8,493.4L275.3,491.2L275.2,487.6L297.7,459.1L321.6,451.2L341.8,454.1L378.7,450.7L387.5,453.7L390.4,460.4L397.4,454.6L400.3,461.6L405.1,466.0L413.5,463.8L423.1,467.2L430.8,474.9L438.3,475.1L441.0,468.9L434.2,454.8L442.8,453.4L445.6,448.4L451.6,449.4L458.4,443.5L471.5,455.2L478.6,455.5L482.9,450.8L486.5,451.2L495.0,442.8L500.7,444.2L505.5,437.4L506.3,440.0Z"},{"id":"MMR","d":"M163.1,167.5L152.3,162.3L144.4,167.1L132.4,165.3L133.6,175.5L126.8,178.9L114.5,178.0L107.3,193.7L82.0,197.7L65.5,194.8L64.4,199.4L56.3,208.7L55.7,224.6L51.2,234.1L53.1,250.6L42.4,255.0L35.8,254.0L39.4,261.6L42.8,264.7L47.8,265.0L52.8,282.0L51.2,288.7L85.1,328.2L87.0,339.9L95.4,359.2L96.7,360.4L103.5,355.0L105.9,358.2L102.7,366.4L92.2,372.7L90.6,405.5L85.7,406.0L73.7,413.4L74.2,424.4L76.2,432.1L91.2,454.0L108.0,468.9L117.4,484.9L119.3,508.2L116.1,514.4L116.8,517.9L121.3,531.9L129.9,541.1L132.5,558.3L139.6,578.0L119.9,610.5L99.9,631.9L100.4,642.9L97.3,654.5L90.9,662.0L87.8,654.9L89.0,646.7L86.3,631.1L96.1,616.2L96.4,609.2L99.3,604.0L99.1,587.1L105.4,580.9L102.1,578.1L96.9,581.0L94.3,580.0L97.1,556.6L92.6,555.7L96.2,550.7L93.7,546.3L95.5,535.6L91.5,511.6L76.2,484.1L74.1,472.2L71.7,488.2L69.9,485.1L68.2,471.9L69.5,463.5L64.7,455.2L60.6,439.9L61.5,437.8L65.7,439.9L61.9,434.5L58.8,435.8L56.1,430.0L51.4,381.1L45.6,374.2L47.9,353.1L52.1,347.8L35.9,350.0L28.3,332.2L27.8,322.4L11.6,307.7L14.3,312.4L11.6,317.3L14.3,325.5L9.8,337.7L0.0,348.4L0.0,0.0L98.1,0.0L103.3,8.4L101.8,13.4L105.7,20.2L104.8,29.3L126.9,33.9L134.1,38.3L134.6,40.4L128.9,46.9L126.7,62.6L120.6,73.0L120.0,80.5L153.6,85.2L154.7,98.2L161.8,102.9L162.8,110.1L167.3,112.4L173.6,110.6L185.4,112.0L196.1,103.1L209.3,98.8L210.5,106.7L207.4,112.1L192.4,119.6L182.2,135.0L181.6,138.4L186.2,141.4L172.5,144.5L165.9,154.4L163.1,167.5ZM78.4,626.2L76.5,627.8L72.0,620.5L68.5,621.0L72.6,616.5L78.4,626.2ZM71.0,669.6L71.3,664.9L78.3,661.2L77.9,663.3L71.0,669.6ZM74.8,593.6L74.1,588.3L78.7,577.9L78.0,587.0L74.8,593.6ZM86.8,572.3L85.9,564.5L86.4,563.4L93.0,569.6L86.8,572.3ZM89.3,589.7L84.9,588.3L82.2,577.5L89.1,576.8L89.3,589.7ZM83.2,536.3L86.5,540.0L86.1,544.7L82.4,550.5L79.3,551.3L79.3,534.9L83.2,536.3ZM70.6,560.5L66.5,556.3L68.1,553.4L70.5,554.1L70.6,560.5ZM45.1,362.9L40.8,360.4L40.2,352.9L43.6,350.8L46.3,354.4L45.1,362.9ZM89.9,617.4L86.9,616.5L89.2,611.4L89.9,617.4ZM68.7,584.9L65.8,582.1L65.3,574.2L68.6,580.3L68.7,584.9ZM67.6,548.3L64.9,554.1L62.0,550.8L64.4,548.5L67.6,548.3ZM79.1,522.5L76.8,518.7L77.1,509.7L79.4,514.6L79.1,522.5Z"}],"qt":"M466.2,353.7L464.9,350.6L464.8,346.9L461.7,345.6L460.2,343.4L459.5,327.5L458.2,328.7L454.2,327.2L453.1,324.7L453.5,323.7L449.4,318.5L449.6,316.1L448.4,313.3L447.2,313.1L445.5,315.2L443.8,314.6L436.1,308.0L426.8,297.1L422.4,294.6L418.7,287.6L416.9,285.9L416.4,284.3L416.8,280.4L420.5,279.8L423.0,277.8L428.7,275.9L431.8,275.5L436.5,277.1L437.9,279.2L438.1,281.1L441.6,282.3L448.1,283.3L449.1,283.1L451.4,280.5L459.2,281.0L459.5,281.6L456.3,284.6L455.4,284.6L456.1,285.4L455.7,286.3L456.9,291.0L458.2,292.8L457.8,293.2L452.5,290.2L448.4,289.9L455.1,291.9L452.9,292.4L452.8,293.4L454.1,294.2L453.5,293.2L454.5,292.7L458.5,294.2L464.6,304.4L470.6,310.9L486.7,322.8L487.4,324.1L487.1,326.1L490.9,330.9L488.0,333.4L490.3,333.0L490.3,332.2L491.5,331.4L500.5,339.0L495.8,345.3L486.8,348.0L487.0,350.3L489.2,352.8L484.7,357.9L484.6,361.1L480.0,360.7L479.0,358.5L476.7,356.9L475.8,355.0L474.8,355.2L475.2,350.9L474.4,349.6L473.3,349.6L469.6,354.8L466.2,353.7Z","ewec":"M47.7,351.5C54.9,349.8 70.9,343.6 91.2,341.0C111.5,338.3 136.5,333.4 169.4,335.7C202.4,337.9 254.5,352.2 288.9,354.4C323.3,356.6 361.2,349.9 375.9,348.9C390.7,347.9 363.0,348.8 377.3,348.2C391.7,347.6 443.9,347.3 462.0,345.3C480.2,343.2 478.4,334.6 486.1,335.9C493.9,337.1 500.1,346.7 508.6,352.8C517.1,358.9 532.4,369.2 537.1,372.5","ewecPts":[{"n":"Mawlamyine","x":47.7,"y":351.5},{"n":"Phitsanulok","x":169.4,"y":335.7},{"n":"Khon Kaen","x":288.9,"y":354.4},{"n":"Savannakhet","x":377.3,"y":348.2},{"n":"Đà Nẵng","x":537.1,"y":372.5}],"cities":[{"n":"Hà Nội","x":428.2,"y":133.2},{"n":"TP. Hồ Chí Minh","x":467.6,"y":626.1},{"n":"Bangkok","x":180.6,"y":483.3},{"n":"Viêng Chăn","x":278.2,"y":280.4},{"n":"Phnôm Pênh","x":385.2,"y":588.6}],"islands":[{"n":"QĐ. Hoàng Sa","x":713.0,"y":351.1},{"n":"QĐ. Trường Sa","x":814.8,"y":668.5}],"ubo":[453.8,306.1],"ewecLen":1166},"prov":{"W":900,"H":873.3,"lao":"M24.9,6.5L22.9,14.0L31.1,17.9L37.8,33.0L51.8,43.3L57.0,61.9L69.5,70.3L76.1,83.9L71.2,116.4L75.8,130.9L91.6,145.5L115.0,185.1L124.0,208.3L163.6,230.5L174.3,240.6L245.2,327.7L313.1,386.4L328.0,391.8L338.7,382.6L343.6,372.8L353.7,374.7L355.1,388.0L364.3,399.4L360.7,410.1L362.6,421.0L374.9,441.6L394.6,460.1L398.8,467.5L395.6,476.4L405.6,498.4L416.1,505.0L440.5,512.0L451.9,501.2L455.5,508.3L456.2,632.1L458.5,642.5L462.2,651.7L471.5,662.0L499.2,673.6L499.6,706.2L511.6,734.4L520.7,741.5L532.9,739.6L534.2,746.1L541.0,744.2L545.1,741.0L547.8,731.0L563.5,719.4L573.9,697.4L583.6,697.8L590.7,708.9L591.9,726.1L587.4,747.2L595.8,745.8L604.5,762.7L624.3,776.5L628.6,793.2L633.0,796.3L668.2,798.3L682.8,804.4L694.2,815.7L698.5,838.7L704.5,848.9L715.8,857.5L733.4,861.9L747.3,873.3L0.0,873.3L0.0,0.0L23.1,0.0L24.9,6.5Z","others":["M373.2,6.3L382.1,19.4L375.1,16.8L369.8,18.0L362.6,25.5L367.9,28.2L376.5,25.5L374.1,30.6L379.1,43.0L380.4,32.7L384.6,25.5L389.0,23.3L398.9,25.5L410.1,13.5L415.2,15.6L410.1,28.2L412.3,37.3L416.9,46.2L449.4,86.9L395.2,80.1L380.5,82.5L373.2,87.9L360.4,105.7L351.2,107.7L294.0,98.9L262.9,87.5L261.6,70.8L248.9,52.0L231.8,42.5L207.5,38.2L180.0,41.1L129.5,58.7L107.3,76.5L75.0,81.7L69.5,70.3L57.0,61.9L51.8,43.3L37.8,33.0L31.1,17.9L22.9,14.0L25.0,9.1L23.1,0.0L364.8,0.0L373.2,6.3Z","M700.9,844.1L694.2,815.7L690.7,810.2L674.2,800.2L672.0,777.5L679.7,764.4L697.8,748.1L714.7,726.0L714.6,723.0L704.3,715.2L695.1,703.8L690.7,687.8L693.3,683.1L717.6,673.2L756.3,667.8L772.8,659.5L784.8,647.8L814.8,603.6L850.0,629.7L893.7,669.7L900.0,671.5L900.0,674.7L890.2,671.9L840.1,645.1L827.7,647.3L859.0,665.1L873.4,669.3L877.1,675.2L886.2,675.7L889.5,673.3L900.0,682.6L895.3,691.4L900.0,691.6L900.0,873.3L747.3,873.3L733.4,861.9L709.5,853.6L700.9,844.1Z"],"qt":"M511.6,734.4L505.3,723.1L499.6,706.2L499.0,701.3L500.9,678.4L499.2,673.6L479.2,666.8L471.5,662.0L462.2,651.7L458.5,642.5L456.2,632.1L455.5,508.3L451.9,501.2L440.5,512.0L416.1,505.0L405.6,498.4L395.6,476.4L398.8,467.5L394.6,460.1L374.9,441.6L362.6,421.0L360.3,414.6L360.7,410.1L364.0,403.3L364.3,399.4L355.1,388.0L353.7,374.7L348.8,372.5L343.6,372.8L338.7,382.6L328.0,391.8L322.1,391.2L313.1,386.4L245.2,327.7L200.9,275.4L174.3,240.6L163.6,230.5L150.3,221.7L129.0,212.3L124.0,208.3L120.2,201.4L115.0,185.1L102.2,165.6L91.6,145.5L75.8,130.9L71.2,116.4L76.1,83.9L75.0,81.7L107.3,76.5L118.9,68.4L129.5,58.7L164.0,47.7L180.0,41.1L192.9,38.7L207.5,38.2L231.8,42.5L241.3,46.7L248.9,52.0L254.9,58.2L261.6,70.8L261.1,84.2L262.9,87.5L268.7,91.3L294.0,98.9L338.2,107.0L351.2,107.7L360.4,105.7L373.2,87.9L380.5,82.5L395.2,80.1L428.2,83.2L446.0,87.3L449.4,86.9L451.9,90.1L451.9,92.7L435.4,104.7L427.9,115.5L423.4,119.1L415.7,119.0L415.7,122.2L420.1,123.2L421.8,126.0L421.1,129.9L418.5,134.2L425.7,154.4L429.6,176.3L431.6,181.1L439.9,189.2L441.0,192.4L437.5,195.8L433.0,195.4L420.8,190.1L415.5,180.0L411.5,177.8L405.3,176.8L390.5,169.0L362.7,166.1L356.7,163.4L353.9,166.1L359.8,170.3L369.3,174.0L379.2,176.7L393.0,178.4L412.9,183.6L412.9,186.8L402.0,183.4L394.0,188.7L392.6,197.4L404.5,204.3L401.0,197.3L398.9,195.6L408.1,191.4L421.3,193.2L434.6,198.5L443.6,204.3L447.9,209.8L457.8,228.0L468.8,240.6L488.8,274.5L496.9,295.2L506.5,302.3L513.9,312.7L549.8,353.0L692.1,458.8L698.4,471.0L696.0,488.7L700.6,492.4L722.7,524.7L728.5,528.2L729.8,531.2L728.5,533.3L722.7,536.6L721.4,540.2L704.4,550.3L704.4,553.2L714.8,553.3L724.2,550.3L723.9,542.7L734.9,536.0L742.3,544.7L748.3,548.0L801.3,593.6L814.8,603.6L784.8,647.8L772.8,659.5L764.1,665.1L756.3,667.8L717.6,673.2L699.4,678.9L693.3,683.1L690.7,687.8L691.6,695.8L695.1,703.8L704.3,715.2L714.6,723.0L714.7,726.0L712.6,730.4L697.8,748.1L679.7,764.4L674.5,771.8L672.0,777.5L674.2,800.2L668.2,798.3L652.2,796.5L633.0,796.3L628.6,793.2L624.3,776.5L604.5,762.7L600.7,757.4L595.8,745.8L589.0,748.4L587.4,747.2L587.4,744.8L590.2,740.4L591.9,726.1L590.7,708.9L583.6,697.8L573.9,697.4L565.1,712.3L563.5,719.4L547.8,731.0L546.0,734.5L545.1,741.0L541.0,744.2L534.2,746.1L532.9,744.2L532.9,739.6L520.7,741.5L511.6,734.4Z","ql1":"M334.8,0.0L357.4,36.1M448.5,225.0L446.8,217.9L426.6,187.9L418.2,170.3M448.5,225.0L455.3,233.8L457.0,251.5L463.7,262.1M463.7,262.1L482.3,279.7L487.3,295.6L490.7,300.9M597.0,412.2L544.7,373.3L538.0,364.5L529.5,357.4L524.5,350.4L516.0,343.3L512.7,338.0L502.5,327.4L494.1,306.2L490.7,300.9M597.0,412.2L583.5,408.6L578.5,412.2L571.7,410.4L561.6,412.2L548.1,419.2M597.0,412.2L613.9,426.3L625.7,440.4L634.1,447.5L640.9,461.6M640.9,461.6L651.0,468.7L657.8,479.3M657.8,479.3L667.9,491.6L674.6,512.8L683.1,530.5L683.1,539.3M683.1,539.3L683.1,560.5L686.4,567.5M686.4,567.5L701.6,581.7L711.8,588.7L720.2,602.9L723.6,606.4M723.6,606.4L726.9,608.1M726.9,608.1L733.7,615.2L753.9,625.8L762.4,641.7L774.2,652.3L779.2,654.1L792.7,668.2L814.7,678.8L821.4,685.8L834.9,692.9L846.7,701.7L878.8,717.6L894.0,728.2M894.0,728.2L900.0,731.8","ql9":"M590.3,634.6L590.3,627.6L581.8,613.4L580.1,599.3L581.8,592.3L588.6,587.0L600.4,587.0L640.9,578.1L651.0,579.9L659.4,578.1L686.4,567.5M588.6,638.2L590.3,634.6M588.6,638.2L563.3,647.0L559.9,652.3L553.1,650.5L549.8,654.1L543.0,654.1L529.5,661.1L522.8,661.1L512.7,666.4L502.5,666.4L494.1,661.1L487.3,661.1L473.8,654.1L465.4,659.4L440.1,661.1L428.3,659.4L418.2,652.3L394.5,647.0","rail":"M389.0,195.3L374.9,184.1L325.6,157.2L309.5,149.4L298.1,145.4L284.7,142.8L271.9,136.6L237.4,112.5L231.8,107.5L230.5,100.5L226.9,93.8L215.9,81.7L204.8,73.5L197.4,62.2L172.2,44.5L161.3,34.4L147.5,26.9L140.9,18.2L130.4,9.8L121.2,0.0M753.0,635.7L735.5,619.0L720.6,608.0L705.2,589.1L688.4,576.8L680.5,568.4L678.8,558.2L680.2,531.7L679.4,529.1L638.3,477.8L620.3,458.3L601.2,439.8L578.6,421.1L549.2,413.8L542.3,410.4L505.7,376.4L495.7,359.3L495.2,339.0L493.2,332.6L486.0,319.5L483.4,293.7L480.5,284.7L464.0,268.6L456.5,255.8L449.5,247.2L403.7,218.6L401.8,210.5L391.1,197.5M900.0,735.1L860.3,709.6L826.1,698.2L817.8,691.0L810.0,678.5L793.9,673.9L788.0,670.9L774.9,658.4L762.3,643.8L753.0,635.7","hcm":"M392.8,293.7L394.4,295.0L394.1,299.3L395.0,301.8L395.7,303.9L396.5,306.1L395.6,309.2L396.1,312.9L396.9,315.3L397.8,317.8L399.3,319.2L400.3,320.4L401.8,318.1L403.0,318.9L404.6,320.4L404.3,322.8L404.9,326.5L405.8,328.4L406.1,330.5L406.8,333.0L406.8,336.4L407.4,340.1","pts":[{"id":"ubo","g":"project","n":"Núi U Bò – hồ Thác Chuối","x":402.1,"y":310.6,"d":"Quần thể du lịch 167 ha, cáp treo 6 km lên đỉnh U Bò.","lat":17.4345,"lon":106.403,"km":0},{"id":"donghoi","g":"city","n":"Đồng Hới","x":491.7,"y":296.2,"d":"Trung tâm hành chính tỉnh Quảng Trị mới.","lat":17.468,"lon":106.622,"km":24},{"id":"dongha","g":"city","n":"Đông Hà","x":687.3,"y":575.4,"d":"Đô thị đầu mối của QL9 – hành lang kinh tế Đông – Tây.","lat":16.816,"lon":107.1,"km":101},{"id":"vdh","g":"air","n":"Sân bay Đồng Hới","x":479.0,"y":276.1,"d":"Đang khai thác, đang được nâng cấp phục vụ du lịch.","lat":17.515,"lon":106.591,"km":22},{"id":"qtair","g":"air","n":"Sân bay Quảng Trị","x":699.5,"y":526.6,"d":"Đang xây dựng tại Gio Linh: 5 triệu khách và 25.500 tấn hàng mỗi năm.","lat":16.93,"lon":107.13,"km":95},{"id":"honla","g":"port","n":"Cảng Hòn La","x":450.8,"y":100.2,"d":"Cảng biển phía bắc, đầu trục Cha Lo – Hòn La.","lat":17.926,"lon":106.522,"km":56},{"id":"mythuy","g":"port","n":"Cảng Mỹ Thủy","x":779.3,"y":589.5,"d":"Cảng nước sâu, quy mô đón tàu 100.000 DWT.","lat":16.783,"lon":107.325,"km":122},{"id":"cuaviet","g":"port","n":"Cảng Cửa Việt","x":722.0,"y":539.4,"d":"Cảng biển tại cửa sông Thạch Hãn.","lat":16.9,"lon":107.185,"km":102},{"id":"laobao","g":"border","n":"Cửa khẩu Lao Bảo","x":472.5,"y":659.3,"d":"Cửa khẩu quốc tế trên QL9, cửa ngõ hành lang Đông – Tây sang Lào.","lat":16.62,"lon":106.575,"km":92},{"id":"lalay","g":"border","n":"Cửa khẩu La Lay","x":540.0,"y":796.3,"d":"Cửa khẩu quốc tế phía nam, nối trục về cảng Mỹ Thủy.","lat":16.3,"lon":106.74,"km":131},{"id":"chalo","g":"border","n":"Cửa khẩu Cha Lo","x":142.0,"y":204.2,"d":"Cửa khẩu quốc tế phía bắc, đón hàng từ tỉnh Khăm Muộn (Lào).","lat":17.683,"lon":105.767,"km":73},{"id":"pnkb","g":"tour","n":"Phong Nha – Kẻ Bàng","x":353.0,"y":247.4,"d":"Di sản thiên nhiên thế giới, kề sát vùng núi U Bò.","lat":17.582,"lon":106.283,"km":21},{"id":"khesanh","g":"tour","n":"Khe Sanh","x":535.9,"y":659.7,"d":"Cao nguyên cà phê và di tích lịch sử trên QL9.","lat":16.619,"lon":106.73,"km":97},{"id":"concoc","g":"tour","n":"Đảo Cồn Cỏ","x":785.5,"y":428.1,"d":"Đảo tiền tiêu của Quảng Trị.","lat":17.16,"lon":107.34,"km":104}]},"dist":[{"n":"Phong Nha – Kẻ Bàng","km":21,"g":"tour"},{"n":"Sân bay Đồng Hới","km":22,"g":"air"},{"n":"Đồng Hới","km":24,"g":"city"},{"n":"Cảng Hòn La","km":56,"g":"port"},{"n":"Cửa khẩu Cha Lo","km":73,"g":"border"},{"n":"Cửa khẩu Lao Bảo","km":92,"g":"border"},{"n":"Sân bay Quảng Trị","km":95,"g":"air"},{"n":"Khe Sanh","km":97,"g":"tour"},{"n":"Đông Hà","km":101,"g":"city"},{"n":"Cảng Cửa Việt","km":102,"g":"port"},{"n":"Cảng Mỹ Thủy","km":122,"g":"port"},{"n":"Cửa khẩu La Lay","km":131,"g":"border"},{"n":"Huế","km":166,"g":"city"},{"n":"Đà Nẵng","km":245,"g":"city"},{"n":"Viêng Chăn","km":406,"g":"city"}]};
+  var NS='http://www.w3.org/2000/svg';
+  function el(tag,attrs,parent,text){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;if(parent)parent.appendChild(e);return e;}
+
+  /* ---------- Bản đồ khu vực ---------- */
+  var A=M.region, sa=document.getElementById('svgA');
+  sa.setAttribute('viewBox','0 0 '+A.W+' '+A.H);
+  el('rect',{x:0,y:0,width:A.W,height:A.H,'class':'sea'},sa);
+  A.land.forEach(function(l){el('path',{d:l.d,'class':'land '+l.id},sa);});
+  el('path',{d:A.qt,'class':'qt'},sa);
+  var names={MMR:[60,400,'MYANMAR'],THA:[300,470,'THÁI LAN'],LAO:[470,250,'LÀO'],KHM:[500,580,'CAMPUCHIA'],CHN:[620,60,'TRUNG QUỐC']};
+  for(var k in names) el('text',{x:names[k][0],y:names[k][1],'class':'sealbl','font-size':26},sa,names[k][2]);
+  el('text',{x:700,y:520,'class':'sealbl','font-size':32},sa,'BIỂN ĐÔNG');
+  el('path',{d:A.ewec,'class':'ewec',pathLength:1},sa);
+  el('path',{d:A.ewec,'class':'ewec-flow',pathLength:1},sa);
+  A.ewecPts.forEach(function(p,i){el('circle',{cx:p.x,cy:p.y,r:5,'class':'dot'},sa);
+    var up=(p.n==='Khon Kaen'||p.n==='Mawlamyine');
+    el('text',{x:p.x+(p.n==='Đà Nẵng'?10:0),y:p.y+(up?-16:34),'class':'lbl s','font-size':24,'text-anchor':p.n==='Đà Nẵng'?'start':'middle'},sa,p.n);});
+  A.cities.forEach(function(c){el('circle',{cx:c.x,cy:c.y,r:3.5,'class':'dot',opacity:.7},sa);el('text',{x:c.x+8,y:c.y+7,'class':'lbl s opt','font-size':21},sa,c.n);});
+  A.islands.forEach(function(c){el('circle',{cx:c.x,cy:c.y,r:4,fill:'#4C7BE0'},sa);el('circle',{cx:c.x+9,cy:c.y+6,r:3,fill:'#4C7BE0'},sa);el('circle',{cx:c.x-7,cy:c.y+9,r:2.5,fill:'#4C7BE0'},sa);
+    el('text',{x:c.x,y:c.y+36,'class':'lbl s','font-size':21,'text-anchor':'middle'},sa,c.n);el('text',{x:c.x,y:c.y+60,'class':'lbl s','font-size':18,'text-anchor':'middle'},sa,'(Việt Nam)');});
+  var u=A.ubo;
+  el('circle',{cx:u[0],cy:u[1],r:10,'class':'ring'},sa);
+  el('text',{x:u[0]+24,y:u[1]-26,'class':'lbl red','font-size':28},sa,'QUẢNG TRỊ');
+  el('text',{x:u[0]+24,y:u[1]+2,'class':'lbl s','font-size':20},sa,'Núi U Bò ★');
+  el('text',{x:84,y:A.H-40,'class':'legend-t','font-size':22},sa,'Hành lang kinh tế Đông – Tây');
+  el('line',{x1:24,y1:A.H-48,x2:70,y2:A.H-48,stroke:'#FF412B','stroke-width':6,'stroke-linecap':'round'},sa);
+
+  /* ---------- Bản đồ tỉnh ---------- */
+  var B=M.prov, sb=document.getElementById('svgB');
+  sb.setAttribute('viewBox','0 0 '+B.W+' '+B.H);
+  el('rect',{x:0,y:0,width:B.W,height:B.H,'class':'sea'},sb);
+  el('path',{d:B.lao,'class':'lao'},sb);
+  B.others.forEach(function(d){el('path',{d:d,'class':'other'},sb);});
+  el('path',{d:B.qt,'class':'qtB'},sb);
+  el('text',{x:120,y:720,'class':'sealbl','font-size':24},sb,'LÀO');
+  el('text',{x:690,y:330,'class':'sealbl','font-size':22},sb,'BIỂN ĐÔNG');
+  var routes=[['rail','rail','road'],['ql1','ql1','road'],['hcm','hcm','road'],['ql9','ql9','ewec']];
+  routes.forEach(function(r){el('path',{d:B[r[0]],'class':'r '+r[1],pathLength:1,'data-g':r[2]},sb);});
+  el('path',{d:B.ql9,'class':'ql9f',pathLength:1,'data-g':'ewec'},sb);
+  // nhãn tuyến
+  var rl=[[606,452,'QL1 · Cao tốc Bắc – Nam','road',-42],[505,622,'QL9 · Hành lang Đông – Tây','ewec',-22],[414,372,'Đường HCM nhánh Tây','road',80]];
+  rl.forEach(function(t){var g=el('text',{x:t[0],y:t[1],'class':'lbl s','font-size':15,'data-g':t[3],transform:'rotate('+t[4]+' '+t[0]+' '+t[1]+')'},sb,t[2]);});
+  var COL={project:'#FF412B',city:'#ffffff',air:'#FF412B',port:'#6FA4FF',border:'#ffffff',tour:'#7FD6A6'};
+  var OFF={ubo:[-16,-20,'end'],donghoi:[16,6,'start'],dongha:[-16,6,'end'],vdh:[14,-14,'start'],qtair:[16,-8,'start'],honla:[16,6,'start'],mythuy:[16,10,'start'],
+    cuaviet:[16,2,'start'],laobao:[-14,22,'end'],lalay:[16,8,'start'],chalo:[16,6,'start'],pnkb:[-16,-6,'end'],khesanh:[14,24,'start'],concoc:[14,6,'start']};
+  var tip=document.getElementById('geoTip'), wrap=sb.parentNode;
+  B.pts.forEach(function(p,i){
+    var g=el('g',{'class':'pt','data-g':p.g==='city'?'road':p.g,tabindex:0,role:'button','aria-label':p.n,style:'--i:'+i},sb);
+    if(p.g==='project'){var s=16,pts=[];for(var a=0;a<10;a++){var rr=a%2?s*.45:s,an=-Math.PI/2+a*Math.PI/5;pts.push((p.x+Math.cos(an)*rr).toFixed(1)+','+(p.y+Math.sin(an)*rr).toFixed(1));}
+      el('circle',{cx:p.x,cy:p.y,r:12,'class':'ring'},sb); el('polygon',{points:pts.join(' '),fill:COL.project,'class':'mk'},g);}
+    else if(p.g==='border') el('rect',{x:p.x-8,y:p.y-8,width:16,height:16,transform:'rotate(45 '+p.x+' '+p.y+')',fill:'#fff','class':'mk',stroke:'#061A45'},g);
+    else if(p.g==='city') el('rect',{x:p.x-7,y:p.y-7,width:14,height:14,rx:3,fill:'#fff','class':'mk',stroke:'#061A45'},g);
+    else el('circle',{cx:p.x,cy:p.y,r:p.g==='air'?10:8,fill:COL[p.g],'class':'mk'},g);
+    if(p.g==='air') el('text',{x:p.x,y:p.y+5,'text-anchor':'middle','font-size':13,fill:'#fff','pointer-events':'none'},g,'✈');
+    var o=OFF[p.id]||[14,6,'start'];
+    el('text',{x:p.x+o[0],y:p.y+o[1],'class':'lbl'+(p.g==='project'?' red':'')+(['concoc','cuaviet','lalay','mythuy','khesanh'].indexOf(p.id)>=0?' opt':''),'font-size':p.g==='project'?21:17,'text-anchor':o[2]},g,p.n);
+    function show(){var r=sb.getBoundingClientRect(),k=r.width/B.W;tip.innerHTML='<b>'+p.n+'</b>'+p.d+(p.km?'<em>Cách U Bò ~'+p.km+' km (đường chim bay)</em>':'');
+      tip.style.left=Math.max(110,Math.min(r.width-110,p.x*k))+'px';tip.style.top=(p.y*k)+'px';tip.hidden=false;}
+    g.addEventListener('pointerenter',show); g.addEventListener('focus',show); g.addEventListener('click',show);
+    g.addEventListener('pointerleave',function(){tip.hidden=true;}); g.addEventListener('blur',function(){tip.hidden=true;});
+  });
+  // chân trang bản đồ: thước tỉ lệ 20 km
+  var kmPx=B.W/((107.62-105.42)*111.32*Math.cos(17.14*Math.PI/180));
+  el('line',{x1:24,y1:B.H-28,x2:24+20*kmPx,y2:B.H-28,stroke:'#fff','stroke-width':3},sb);
+  el('text',{x:24,y:B.H-38,'class':'legend-t','font-size':14},sb,'20 km');
+
+  /* ---------- lớp ---------- */
+  var LAYERS=[['all','Tất cả',null],['ewec','Hành lang Đông – Tây','#FF412B'],['road','Giao thông','#fff'],['air','Sân bay','#FF412B'],['port','Cảng biển','#6FA4FF'],['border','Cửa khẩu','#fff'],['tour','Du lịch','#7FD6A6']];
+  var chips=document.getElementById('geoChips');
+  LAYERS.forEach(function(L,i){var b=document.createElement('button');b.type='button';b.innerHTML=(L[2]?'<i style="background:'+L[2]+'"></i>':'')+L[1];if(!i)b.className='on';
+    b.addEventListener('click',function(){[].forEach.call(chips.children,function(c){c.classList.toggle('on',c===b);});
+      [].forEach.call(sb.querySelectorAll('[data-g]'),function(n){var g=n.getAttribute('data-g');n.classList.toggle('dim',L[0]!=='all'&&g!==L[0]&&g!=='project');});
+      tip.hidden=true;});
+    chips.appendChild(b);});
+
+  /* ---------- khoảng cách ---------- */
+  var dl=document.getElementById('distList'), max=M.dist[M.dist.length-1].km;
+  M.dist.forEach(function(d){var li=document.createElement('li');li.setAttribute('data-g',d.g);
+    li.innerHTML='<span>'+d.n+'</span><span class="bar"><i data-w="'+(d.km/max*100).toFixed(1)+'"></i></span><span class="km">'+d.km+' km</span>';dl.appendChild(li);});
+
+  /* ---------- kích hoạt khi cuộn tới ---------- */
+  var sec=document.getElementById('vi-tri'), done=false;
+  function go(){ if(done) return; done=true; sec.classList.add('go');
+    setTimeout(function(){[].forEach.call(dl.querySelectorAll('.bar i'),function(i,k){setTimeout(function(){i.style.width=i.getAttribute('data-w')+'%';},k*60);});},600);
+    [].forEach.call(sec.querySelectorAll('.cnt'),function(c){var to=+c.getAttribute('data-to'),sep=c.getAttribute('data-sep'),s=performance.now();
+      (function f(){var t=Math.min(1,(performance.now()-s)/1600),v=Math.round(to*(1-Math.pow(1-t,4)));c.textContent=sep?v.toLocaleString('vi-VN'):v;if(t<1)requestAnimationFrame(f);})();});
+  }
+  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){go();io.disconnect();}});},{threshold:.15});io.observe(sec);} else go();
 })();
 </script>
 </body>
