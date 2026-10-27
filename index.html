@@ -326,18 +326,17 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
 @keyframes dockPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.6)}50%{box-shadow:0 0 0 7px rgba(255,255,255,0)}}
 .dock-panel{position:absolute;right:calc(100% + 12px);top:50%;transform:translate(16px,-50%) scale(.96);opacity:0;pointer-events:none;width:min(320px,calc(100vw - 80px));background:#fff;color:var(--ink);border-radius:24px;padding:22px;box-shadow:0 30px 70px rgba(6,26,69,.35);transition:opacity .25s,transform .25s}
 .dock.open .dock-panel{opacity:1;pointer-events:auto;transform:translate(0,-50%) scale(1)}
-.dock-panel .who{display:flex;gap:14px;align-items:center;padding-right:28px}
-.dock-panel .av{width:54px;height:54px;border-radius:50%;background:var(--pine);color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:20px;flex:none}
-.dock-panel .who b{display:block;font-family:var(--display);font-weight:900;font-size:19px;line-height:1.1;text-transform:uppercase}
-.dock-panel .who span{display:block;font-size:13px;color:var(--muted);margin-top:4px}
-.dock-panel p{font-size:14px;line-height:1.5;color:var(--muted);margin:14px 0 16px}
-.dock-panel .acts{display:grid;gap:8px}
-.dock-panel .acts a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;text-decoration:none;color:var(--ink);background:var(--mist);font-weight:700;font-size:14.5px;transition:background .2s,transform .2s}
-.dock-panel .acts a:hover{transform:translateX(-3px)}
-.dock-panel .acts a small{display:block;font-weight:500;font-size:12.5px;color:var(--muted)}
-.dock-panel .acts .ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:none;color:#fff;font-family:var(--display);font-weight:900;font-size:13px}
-.dock-panel .acts .mail{background:#fff;border:1.5px solid var(--line)}.dock-panel .acts .mail .ic{background:var(--sun)}
-.dock-panel .acts .zalo .ic{background:#0068FF}.dock-panel .acts .tel .ic{background:var(--night)}
+.dk-h{padding-right:30px}
+.dk-h b{display:block;font-family:var(--display);font-weight:900;font-size:21px;line-height:1.1;text-transform:uppercase;color:var(--pine)}
+.dk-h span{display:block;font-size:13.5px;line-height:1.5;color:var(--muted);margin-top:6px}
+.dk-f{display:grid;gap:10px;margin-top:14px}
+.dk-f label span{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.dk-f input,.dk-f textarea{width:100%;box-sizing:border-box;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;font:inherit;font-size:14.5px;color:var(--ink);background:#fff;resize:vertical}
+.dk-f input:focus,.dk-f textarea:focus{outline:none;border-color:var(--pine);box-shadow:0 0 0 3px rgba(1,71,193,.15)}
+.dk-f .btn{width:100%;justify-content:center;margin-top:2px}
+.dk-f .btn[disabled]{opacity:.6;cursor:wait}
+.dk-msg{margin:0;font-size:13.5px;line-height:1.45;min-height:0;color:var(--muted)}
+.dk-msg.ok{color:#0A7A3E;font-weight:700}.dk-msg.err{color:var(--sun);font-weight:700}
 .dock-close{position:absolute;right:12px;top:12px;border:0;background:var(--mist);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;line-height:1;color:var(--ink)}
 @media(max-width:600px){.dock-tab{font-size:12px;padding:14px 10px 14px 9px}}
 
@@ -714,15 +713,17 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   </div>
 </footer>
 <div class="dock" id="dock">
-  <div class="dock-panel" id="dockPanel" role="dialog" aria-label="Liên hệ" aria-hidden="true">
+  <div class="dock-panel" id="dockPanel" role="dialog" aria-label="Gửi lời nhắn" aria-hidden="true">
     <button class="dock-close" type="button" id="dockClose" aria-label="Đóng">×</button>
-    <div class="who"><div class="av">K</div><div><b>Nguyễn Quốc Khánh</b><span>Người kể chuyện thương hiệu · ubo.vn</span></div></div>
-    <p>Hợp tác nội dung, truyền thông dự án hay chỉ muốn hỏi thêm về U Bò, nhắn mình một tiếng.</p>
-    <div class="acts">
-      <a class="mail" id="dockMail" href="#"><span class="ic">@</span><span>Gửi email<small>khanhdesignvn@gmail.com</small></span></a>
-      <a class="zalo" id="dockZalo" href="#" target="_blank" rel="noopener"><span class="ic">Z</span><span>Nhắn Zalo<small>0988 886 901</small></span></a>
-      <a class="tel" id="dockTel" href="#"><span class="ic">☎</span><span>Gọi điện<small>0988 886 901</small></span></a>
-    </div>
+    <div class="dk-h"><b>Nhắn cho ubo.vn</b><span>Hỏi thêm về U Bò, hợp tác nội dung hay truyền thông dự án. Mình sẽ liên hệ lại sớm.</span></div>
+    <form id="dockForm" class="dk-f" novalidate>
+      <label><span>Tên của bạn</span><input name="name" type="text" required autocomplete="name" placeholder="Nguyễn Văn A"></label>
+      <label><span>Số điện thoại</span><input name="phone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="09xx xxx xxx"></label>
+      <label><span>Nội dung</span><textarea name="message" rows="3" required placeholder="Bạn muốn hỏi gì về U Bò?"></textarea></label>
+      <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none">
+      <button class="btn sun" type="submit" id="dockSend">Gửi lời nhắn →</button>
+      <p class="dk-msg" id="dockMsg" role="status" aria-live="polite"></p>
+    </form>
   </div>
   <button class="dock-tab" type="button" id="dockTab" aria-expanded="false" aria-controls="dockPanel"><i aria-hidden="true"></i>Liên hệ</button>
 </div>
@@ -757,9 +758,22 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
     mg.appendChild(b);
   });
 
-  document.getElementById('dockMail').href='mailto:'+CONTACT_EMAIL+'?subject='+encodeURIComponent('Liên hệ từ ubo.vn');
-  document.getElementById('dockZalo').href='https://zalo.me/'+ZALO;
-  document.getElementById('dockTel').href='tel:'+ZALO;
+  var dockForm=document.getElementById('dockForm'),dockMsg=document.getElementById('dockMsg'),dockSend=document.getElementById('dockSend');
+  dockForm.addEventListener('submit',function(e){
+    e.preventDefault();
+    var f=dockForm,name=f.name.value.trim(),phone=f.phone.value.trim(),msg=f.message.value.trim();
+    if(!name||!phone||!msg){dockMsg.className='dk-msg err';dockMsg.textContent='Bạn điền đủ tên, số điện thoại và nội dung giúp mình nhé.';return;}
+    if(f._honey.value)return;
+    dockSend.disabled=true;dockMsg.className='dk-msg';dockMsg.textContent='Đang gửi…';
+    fetch('https://formsubmit.co/ajax/'+CONTACT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({name:name,phone:phone,message:msg,_subject:'[ubo.vn] Lời nhắn từ '+name+' · '+phone,_template:'table',_captcha:'false'})})
+    .then(function(r){return r.json()}).then(function(d){
+      if(d&&(d.success==='true'||d.success===true)){dockMsg.className='dk-msg ok';dockMsg.textContent='Đã gửi. Mình sẽ liên hệ lại sớm, cảm ơn bạn!';f.reset();}
+      else throw new Error(d&&d.message||'');
+    }).catch(function(){
+      dockMsg.className='dk-msg err';dockMsg.innerHTML='Chưa gửi được. Bạn nhắn Zalo <a href="https://zalo.me/'+ZALO+'" target="_blank" rel="noopener">tại đây</a> giúp mình nhé.';
+    }).finally(function(){dockSend.disabled=false;});
+  });
   var dock=document.getElementById('dock'),dockTab=document.getElementById('dockTab');
   function dockSet(o){dock.classList.toggle('open',o);dockTab.setAttribute('aria-expanded',o);document.getElementById('dockPanel').setAttribute('aria-hidden',!o);}
   dockTab.addEventListener('click',function(){dockSet(!dock.classList.contains('open'))});
