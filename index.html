@@ -239,15 +239,6 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 .vc h3{font-size:24px;margin-bottom:10px}
 .vc p{font-size:15px;opacity:.88}
 
-/* CLOUD BOARD */
-.fun .wrap{display:grid;grid-template-columns:1fr 1.2fr;gap:40px;align-items:center}
-@media(max-width:900px){.fun .wrap{grid-template-columns:1fr}}
-.board{position:relative;aspect-ratio:4/3;border-radius:var(--r);background:linear-gradient(180deg,#D6E3FB 0%,var(--mist) 55%,#C6D6F5 100%);overflow:hidden;touch-action:none;cursor:crosshair}
-.board svg.mt{position:absolute;inset:auto 0 0 0;width:100%;height:58%;pointer-events:none}
-.cloud{position:absolute;width:74px;height:44px;transform:translate(-50%,-50%) scale(.2);animation:pop .45s cubic-bezier(.2,1.6,.4,1) forwards;pointer-events:none}
-@keyframes pop{to{transform:translate(-50%,-50%) scale(1)}}
-.board .hint{position:absolute;left:16px;top:14px;font-family:var(--display);font-weight:800;text-transform:uppercase;color:var(--pine);font-size:15px}
-.clear{margin-top:14px}
 
 /* FAQ */
 .faq{background:var(--mist)}
@@ -458,25 +449,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   </div>
 </section>
 
-<section class="fun">
-  <div class="wrap">
-    <div class="rv">
-      <div class="eyebrow">Chơi cho vui</div>
-      <h2 class="h2">Thả mây<br>lên đỉnh núi.</h2>
-      <p class="lead">Chạm hoặc kéo trên khung tranh. Mỗi lần chạm để lại một đám mây.</p>
-      <button class="btn pine clear" id="clear" type="button">Xoá mây</button>
-    </div>
-    <div class="board rv" id="board">
-      <span class="hint">Chạm để thả mây</span>
-      <svg class="mt" viewBox="0 0 400 240" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0 150 Q60 110 110 130 Q170 40 230 100 Q290 60 340 120 Q370 105 400 115 L400 240 L0 240Z" fill="#4C86F0"/>
-        <path d="M0 190 Q80 150 150 175 Q220 130 290 170 Q350 150 400 165 L400 240 L0 240Z" fill="#0147C1"/>
-        <path d="M0 225 Q100 205 200 222 Q300 205 400 220 L400 240 L0 240Z" fill="#061A45"/>
-      </svg>
-    </div>
-  </div>
-</section>
-
 <section class="faq" id="hoi-dap">
   <div class="wrap">
     <div class="rv">
@@ -639,22 +611,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
     });
     mg.appendChild(b);
   });
-
-  var board=document.getElementById('board'),down=false,last=0;
-  var cloudSvg='<svg class="cloud" viewBox="0 0 74 44"><path d="M14 40 Q2 40 2 30 Q2 20 14 20 Q16 6 32 6 Q44 6 48 18 Q52 13 58 13 Q72 13 72 28 Q72 40 60 40Z" fill="#fff"/></svg>';
-  function drop(e){
-    var r=board.getBoundingClientRect(),p=e.touches?e.touches[0]:e;
-    var now=Date.now();if(now-last<70)return;last=now;
-    var wrap=document.createElement('div');wrap.innerHTML=cloudSvg;var c=wrap.firstChild;
-    c.style.left=(p.clientX-r.left)+'px';c.style.top=(p.clientY-r.top)+'px';
-    var s=.6+Math.random()*.8;c.style.width=(74*s)+'px';c.style.height=(44*s)+'px';
-    board.appendChild(c);
-    var all=board.querySelectorAll('.cloud');if(all.length>80)all[0].remove();
-  }
-  board.addEventListener('pointerdown',function(e){down=true;drop(e)});
-  board.addEventListener('pointermove',function(e){if(down)drop(e)});
-  window.addEventListener('pointerup',function(){down=false});
-  document.getElementById('clear').addEventListener('click',function(){board.querySelectorAll('.cloud').forEach(function(c){c.remove()})});
 
   document.getElementById('mailLink').href='mailto:'+CONTACT_EMAIL;
   document.getElementById('zaloLink').href='https://zalo.me/'+ZALO;
