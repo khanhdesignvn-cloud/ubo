@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sa bàn U Bò</title>
+<meta name="description" content="Sa bàn 3D tương tác quần thể núi U Bò – hồ Thác Chuối (Quảng Trị): địa hình thật cắt lớp 100 m, tuyến cáp treo dự kiến 6 km, 7 phân khu và trình chiếu tự động.">
+<meta name="theme-color" content="#061A45">
+<meta property="og:title" content="Sa bàn 3D U Bò – Thác Chuối · ubo.vn">
+<meta property="og:description" content="Khám phá quần thể 167 ha, 16.234 tỷ đồng: địa hình thật, cáp treo 6 km, 7 phân khu.">
+<style>
+__FONTS__
+/* Layout: sân khấu 3D toàn màn hình; thanh trên, bảng trái (đáy trên điện thoại), thẻ thông tin phải.
+   Màu: 2 tone nhận diện ubo.vn – xanh Bellii #0147C1 và đỏ cam #FF412B, nền đêm xanh thẫm. */
+:root{
+  --blue:#0147C1;--red:#FF412B;--navy:#061A45;--deep:#030E2A;--sky:#E8EEFB;--paper:#F7F9FE;--ink:#0A1F4D;--muted:#4A5E86;
+  --panel:rgba(6,26,69,.84);--line:rgba(255,255,255,.12);--glass:blur(14px) saturate(140%);
+  --display:'SVN-Branding','Avenir Next','Segoe UI',system-ui,sans-serif;--body:'SVN-Branding','Segoe UI',system-ui,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--navy);color:#fff;font-family:var(--body);font-weight:500;-webkit-font-smoothing:antialiased}
+#stage{position:fixed;inset:0;background:radial-gradient(120% 85% at 50% 0%,#123E9C 0%,#082760 42%,#030E2A 100%)}
+canvas{display:block;outline:none}
+.d{font-family:var(--display);font-weight:900;text-transform:uppercase;letter-spacing:-.005em;line-height:.95}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible,a:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+
+/* thanh trên */
+.top{position:fixed;left:0;right:0;top:0;z-index:10;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:calc(14px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 14px max(16px,env(safe-area-inset-left,0px));pointer-events:none}
+.brand{display:flex;align-items:center;gap:10px;pointer-events:auto;text-decoration:none;color:#fff}
+.brand svg{width:34px;height:auto;flex:none}
+.brand b{display:block;font-size:24px;letter-spacing:.01em}
+.brand small{display:block;font-size:12px;color:rgba(255,255,255,.72);margin-top:3px;letter-spacing:.03em;font-weight:500}
+.right{display:flex;gap:8px;align-items:center;pointer-events:auto}
+.modes{display:flex;gap:4px;padding:4px;border-radius:999px;background:var(--panel);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass)}
+.modes button{padding:10px 16px 8px;border-radius:999px;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:14px;letter-spacing:.03em;white-space:nowrap;color:rgba(255,255,255,.8)}
+.modes button.on{background:#fff;color:var(--blue)}
+.play{display:flex;align-items:center;gap:8px;padding:12px 18px 10px;border-radius:999px;background:var(--red);color:#fff;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:14px;letter-spacing:.03em;box-shadow:0 8px 26px rgba(255,65,43,.45);animation:glow 2.4s ease-in-out infinite}
+.play svg{width:14px;height:14px}
+@keyframes glow{50%{box-shadow:0 8px 34px rgba(255,65,43,.75)}}
+@media(max-width:760px){.top{flex-direction:column;align-items:stretch}.right{flex-direction:column;align-items:stretch}.modes{justify-content:space-between}.modes button{flex:1;padding:10px 6px 8px;font-size:12.5px}.brand b{font-size:20px}.play{justify-content:center}}
+
+/* nhãn */
+#labels{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden}
+.lb{position:absolute;left:0;top:0;pointer-events:auto;cursor:pointer;display:flex;flex-direction:column;align-items:center;transition:opacity .3s}
+.lb .tag{display:flex;align-items:center;gap:6px;padding:6px 10px 5px;border-radius:999px;background:rgba(255,255,255,.95);color:var(--ink);font-size:12.5px;font-weight:700;white-space:nowrap;box-shadow:0 4px 14px rgba(3,14,42,.35)}
+.lb .tag i{width:10px;height:10px;border-radius:50%;flex:none}
+.lb .stem{width:2px;height:16px;background:rgba(255,255,255,.85)}
+.lb.big .tag{background:var(--red);color:#fff;font-family:var(--display);font-weight:900;font-size:15px;text-transform:uppercase;padding:8px 13px 6px}
+.lb.road .tag{background:rgba(6,26,69,.88);color:#fff;font-weight:500;font-size:11px}
+.lb.road .stem{display:none}
+.lb.hide{opacity:0;pointer-events:none}
+.lb.dot .tag span{display:none}.lb.dot .tag{padding:6px}
+.lb.tourhide{opacity:0!important;pointer-events:none}
+
+/* bảng */
+.panel{position:fixed;z-index:10;left:max(16px,env(safe-area-inset-left,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:350px;max-height:calc(100% - 130px);overflow:auto;border-radius:24px;background:var(--panel);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);padding:18px;scrollbar-width:thin;transition:opacity .4s,transform .4s}
+.panel h2{font-size:27px;margin:0 0 6px;text-wrap:balance}
+.panel .sub{font-size:13px;color:rgba(255,255,255,.75);margin:0 0 14px;line-height:1.5;font-weight:300}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.stat{background:rgba(255,255,255,.07);border-radius:16px;padding:10px 12px}
+.stat b{display:block;font-family:var(--display);font-weight:900;font-size:25px;color:#fff;line-height:1;font-variant-numeric:tabular-nums}
+.stat b em{font-style:normal;color:var(--red)}
+.stat .l{font-size:11.5px;color:rgba(255,255,255,.72);line-height:1.3;display:block;margin-top:5px;font-weight:300}
+.zl{display:grid;gap:6px}
+.zl button{display:flex;align-items:center;gap:10px;text-align:left;padding:9px 12px;border-radius:14px;background:rgba(255,255,255,.06);font-size:13.5px;font-weight:500;transition:background .2s}
+.zl button:hover,.zl button.on{background:rgba(255,255,255,.16)}
+.zl i{width:14px;height:14px;border-radius:5px;flex:none}
+.ctl{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:14px 0 4px;font-size:13px;color:rgba(255,255,255,.85)}
+.ctl input[type=range]{flex:1;accent-color:var(--red)}
+.sw{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.sw button{padding:7px 12px 6px;border-radius:999px;background:rgba(255,255,255,.08);font-size:12.5px;font-weight:500}
+.sw button.on{background:#fff;color:var(--blue)}
+.note{font-size:11px;color:rgba(255,255,255,.6);line-height:1.5;margin-top:14px;font-weight:300}
+.note a{color:rgba(255,255,255,.85)}
+.toggle{display:none}
+@media(max-width:760px){
+  .panel{left:max(8px,env(safe-area-inset-left,0px));right:max(8px,env(safe-area-inset-right,0px));bottom:calc(8px + env(safe-area-inset-bottom,0px));width:auto;max-height:50%;border-radius:22px;padding:14px;transform:translateY(calc(100% - 64px));transition:transform .35s cubic-bezier(.3,.7,.2,1),opacity .4s}
+  .panel.open{transform:none}
+  .toggle{display:flex;align-items:center;justify-content:space-between;width:100%;margin:-4px 0 10px;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:15px}
+  .toggle span{width:30px;height:30px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;transition:transform .3s}
+  .panel.open .toggle span{transform:rotate(180deg)}
+  .panel h2{display:none}
+}
+
+/* thẻ */
+.card{position:fixed;z-index:11;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:340px;border-radius:24px;background:#fff;color:var(--ink);padding:20px;box-shadow:0 20px 50px rgba(3,14,42,.45);transform:translateY(20px);opacity:0;pointer-events:none;transition:all .35s cubic-bezier(.3,.7,.2,1)}
+.card.show{transform:none;opacity:1;pointer-events:auto}
+.card .k{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.card .k i{width:12px;height:12px;border-radius:4px}
+.card h3{font-size:26px;margin:8px 0 10px;color:var(--blue);text-wrap:balance}
+.card p{font-size:14px;line-height:1.55;color:#33456E;margin:0;font-weight:500}
+.card .row{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.card a,.card .x{display:inline-flex;align-items:center;gap:6px;padding:11px 16px 9px;border-radius:999px;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:13.5px;text-decoration:none}
+.card a{background:var(--blue);color:#fff}
+.card .x{background:var(--sky);color:var(--ink)}
+@media(max-width:760px){.card{left:max(8px,env(safe-area-inset-left,0px));right:max(8px,env(safe-area-inset-right,0px));width:auto;bottom:auto;top:calc(176px + env(safe-area-inset-top,0px))}}
+
+/* trình chiếu */
+.tour{position:fixed;z-index:12;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);width:min(640px,calc(100% - 32px));opacity:0;pointer-events:none;transition:all .5s cubic-bezier(.3,.7,.2,1)}
+body.touring .tour{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+body.touring .panel{opacity:0;pointer-events:none}
+body.touring .card{opacity:0!important;pointer-events:none!important}
+.tour .box{background:rgba(255,255,255,.97);color:var(--ink);border-radius:26px;padding:20px 22px 16px;box-shadow:0 24px 60px rgba(3,14,42,.5)}
+.tour .eb{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+.tour h3{font-size:clamp(28px,5.4vw,44px);margin:6px 0 8px;color:var(--blue);text-wrap:balance}
+.tour p{margin:0;font-size:15px;line-height:1.5;color:#33456E}
+.tour .bar{display:flex;gap:5px;margin-top:14px}
+.tour .bar i{flex:1;height:4px;border-radius:2px;background:var(--sky);overflow:hidden;position:relative}
+.tour .bar i b{position:absolute;inset:0;background:var(--red);transform-origin:left;transform:scaleX(0)}
+.tour .ctr{display:flex;justify-content:space-between;align-items:center;margin-top:12px;gap:10px}
+.tour .ctr button{padding:9px 14px 7px;border-radius:999px;background:var(--sky);color:var(--ink);font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:12.5px}
+.tour .ctr a{padding:9px 14px 7px;border-radius:999px;background:var(--red);color:#fff;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:12.5px;text-decoration:none}
+.tour .ctr a[hidden]{display:none}
+.big-num{position:fixed;z-index:6;left:50%;top:22%;transform:translate(-50%,-50%);text-align:center;pointer-events:none;opacity:0;transition:opacity .6s}
+.big-num.on{opacity:1}
+.big-num b{display:block;white-space:nowrap;font-family:var(--display);font-weight:900;font-size:clamp(46px,11vw,150px);line-height:.9;color:#fff;text-shadow:0 8px 40px rgba(3,14,42,.6);font-variant-numeric:tabular-nums}
+.big-num span{display:block;margin-top:8px;font-size:clamp(13px,2vw,18px);letter-spacing:.16em;text-transform:uppercase;color:#fff;font-weight:700;text-shadow:0 2px 14px rgba(3,14,42,.8)}
+@media(max-width:760px){.big-num{top:40%;width:100%}.big-num b{font-size:clamp(40px,12vw,64px)}}
+
+/* khác */
+.compass{position:fixed;z-index:9;right:max(16px,env(safe-area-inset-right,0px));top:calc(84px + env(safe-area-inset-top,0px));width:48px;height:48px;border-radius:50%;background:var(--panel);backdrop-filter:var(--glass);display:grid;place-items:center}
+.compass svg{width:30px;height:30px}
+@media(max-width:760px){.compass{top:auto;bottom:calc(80px + env(safe-area-inset-bottom,0px));right:max(12px,env(safe-area-inset-right,0px));width:44px;height:44px}}
+.hint{position:fixed;z-index:9;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);padding:9px 16px 7px;border-radius:999px;background:var(--panel);backdrop-filter:var(--glass);font-size:12.5px;color:rgba(255,255,255,.85);transition:opacity .6s;white-space:nowrap}
+@media(max-width:760px){.hint{display:none}}
+.loader{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:var(--navy);transition:opacity .8s}
+.loader.done{opacity:0;pointer-events:none}
+.loader svg{width:70px;height:auto;display:block;margin:0 auto 18px;animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px)}}
+.loader .d{font-size:30px;text-align:center}
+.loader p{margin:10px 0 0;text-align:center;color:rgba(255,255,255,.7);font-size:14px}
+.err{display:none;max-width:420px;margin:16px auto 0;text-align:center;color:#FFC4BB;font-size:14px}
+@media(prefers-reduced-motion:reduce){.play,.loader svg{animation:none}}
+</style>
+<script type="importmap">
+{"imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+  "d3-contour":"https://cdn.jsdelivr.net/npm/d3-contour@4.0.2/+esm"
+}}
+</script>
+</head>
+<body>
+<div id="stage"></div>
+<div id="labels"></div>
+<div class="big-num" id="bigNum"><b id="bigNumV"></b><span id="bigNumL"></span></div>
+
+<div class="loader" id="loader"><div>__ICON_WHITE__<div class="d">Đang dựng sa bàn</div><p>Quần thể U Bò – Thác Chuối</p><div class="err" id="err">Trình duyệt không hỗ trợ WebGL hoặc không tải được thư viện 3D. Hãy thử Chrome hoặc Safari bản mới.</div></div></div>
+
+<header class="top">
+  <a class="brand" href="https://ubo.vn" target="_top" aria-label="ubo.vn">
+    __ICON_WHITE__
+    <span><b class="d">UBO.VN</b><small>Sa bàn 3D · Núi U Bò – Hồ Thác Chuối</small></span>
+  </a>
+  <div class="right">
+    <nav class="modes" aria-label="Chế độ xem">
+      <button data-mode="layers" class="on" type="button">Cắt lớp</button>
+      <button data-mode="explode" type="button">Tách lớp</button>
+      <button data-mode="terrain" type="button">Địa hình</button>
+    </nav>
+    <button class="play" id="playBtn" type="button"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 1 L13 7 L2 13Z" fill="currentColor"/></svg>Trình chiếu</button>
+  </div>
+</header>
+
+<div class="compass" title="Hướng Bắc"><svg id="needle" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 3 L26 20 L20 17 L14 20Z" fill="#FF412B"/><path d="M20 37 L14 20 L20 23 L26 20Z" fill="#fff"/></svg></div>
+
+<aside class="panel" id="panel">
+  <button class="toggle" id="ptoggle" type="button">Phân khu & thông số <span>⌃</span></button>
+  <h2 class="d">Quần thể U Bò –<br>Thác Chuối</h2>
+  <p class="sub">Địa hình thật từ dữ liệu vệ tinh, cắt lớp mỗi 100 m. Chạm vào phân khu để bay tới, hoặc bấm Trình chiếu để xem toàn bộ dự án.</p>
+  <div class="stats">
+    <div class="stat"><b><span class="n" data-count="16234" data-sep="1">0</span> <em>tỷ</em></b><span class="l">Tổng vốn đầu tư (đồng)</span></div>
+    <div class="stat"><b><span class="n" data-count="167">0</span> <em>ha</em></b><span class="l">Quy mô dự án</span></div>
+    <div class="stat"><b>~<span class="n" data-count="6">0</span> <em>km</em></b><span class="l">Tuyến cáp treo dự kiến</span></div>
+    <div class="stat"><b>~<span class="n" data-count="930">0</span> <em>m</em></b><span class="l">Chênh cao ga hồ → ga đỉnh</span></div>
+    <div class="stat"><b><span class="n" data-count="3">0</span> <em>triệu</em></b><span class="l">Lượt khách mỗi năm (mục tiêu)</span></div>
+    <div class="stat"><b><span class="n" data-count="9.4" data-dec="1">0</span> <em>triệu</em></b><span class="l">Lượt khách đến Quảng Trị 9 tháng 2026 (+11,67%)</span></div>
+  </div>
+  <div class="zl" id="zl"></div>
+  <div class="ctl"><label for="ex">Độ cao phóng đại</label><input id="ex" type="range" min="1" max="3" step=".1" value="1.7"><b id="exv">1.7×</b></div>
+  <div class="sw">
+    <button id="bBuild" class="on" type="button">Khối công trình</button>
+    <button id="bZones" class="on" type="button">Phân khu</button>
+    <button id="bCable" class="on" type="button">Cáp treo</button>
+    <button id="bFlow" class="on" type="button">Dòng xe</button>
+    <button id="bLabels" class="on" type="button">Nhãn</button>
+    <button id="bRotate" class="on" type="button">Tự xoay</button>
+    <button id="bReset" type="button">Góc nhìn đầu</button>
+  </div>
+  <p class="note">Mô hình minh hoạ do ubo.vn dựng từ dữ liệu độ cao SRTM (AWS Terrain Tiles) và bản đồ Google Maps. Vị trí phân khu, tuyến cáp và khối công trình phỏng theo sơ đồ dự án đã công bố, không theo tỷ lệ và không phải phương án kiến trúc. Số liệu: <a href="https://baodautu.vn/quang-tri-phe-duyet-quy-hoach-chi-tiet-du-an-nui-u-bo-ho-thac-chuoi-d725073.html" target="_blank" rel="noopener">Báo Đầu tư</a>, <a href="https://www.vietnamplus.vn/du-an-u-bo-thac-chuoi-ngon-co-dong-luc-moi-cua-du-lich-quang-tri-post1138843.vnp" target="_blank" rel="noopener">VietnamPlus</a>, <a href="https://vneconomy.vn/quang-tri-tang-truong-grdp-842-sau-9-thang.htm" target="_blank" rel="noopener">VnEconomy</a>. Trang thông tin độc lập, không phải tài liệu chính thức của chủ đầu tư.</p>
+</aside>
+
+<div class="card" id="card">
+  <div class="k"><i id="ck"></i><span id="ckt">Phân khu</span></div>
+  <h3 class="d" id="ct"></h3>
+  <p id="cd"></p>
+  <div class="row"><a id="cmap" href="#" target="_blank" rel="noopener">Google Maps ↗</a><button class="x" id="cx" type="button">Đóng</button></div>
+</div>
+
+<div class="tour" id="tour" aria-live="polite">
+  <div class="box">
+    <div class="eb" id="tEb"></div>
+    <h3 class="d" id="tH"></h3>
+    <p id="tP"></p>
+    <div class="bar" id="tBar"></div>
+    <div class="ctr"><button id="tPrev" type="button">← Trước</button><a id="tCta" href="https://ubo.vn/#nhan-tin" target="_top" hidden>Đăng ký nhận tin</a><button id="tStop" type="button">Thoát</button><button id="tNext" type="button">Tiếp →</button></div>
+  </div>
+</div>
+<div class="hint" id="hint">Kéo để xoay · Cuộn hoặc chụm để phóng to · Chạm nhãn để xem</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { contours } from 'd3-contour';
+
+/* ================= DỮ LIỆU ================= */
+const DEM = __DEM__;
+const GEO = __GEO__;
+const LAKE_PNG = 'data:image/png;base64,' + GEO.lake;
+const BLUE=0x0147C1, RED=0xFF412B;
+
+const ZONES = [
+  {id:'peak', name:'Tổ hợp vui chơi giải trí đỉnh núi', short:'Vui chơi đỉnh núi', color:'#FF412B', lat:17.4352, lon:106.4040, rx:.55, ry:.95, rot:15, kind:'fun', n:26,
+   desc:'Khu vui chơi giải trí trên đỉnh U Bò, nơi đặt ga đỉnh cáp treo. Theo quy hoạch, khu vực đỉnh núi rộng khoảng 81,96 ha.'},
+  {id:'mtresort', name:'Tổ hợp nghỉ dưỡng trên núi', short:'Nghỉ dưỡng trên núi', color:'#FF8F7A', lat:17.4430, lon:106.3935, rx:.7, ry:1.5, rot:-18, kind:'villa', n:46,
+   desc:'Khu nghỉ dưỡng trên núi, phía tây bắc đỉnh U Bò, gần đường Hồ Chí Minh nhánh Tây (QL15).'},
+  {id:'fun', name:'Tổ hợp vui chơi giải trí – du lịch', short:'Vui chơi – du lịch', color:'#C72A17', lat:17.4615, lon:106.4475, rx:1.25, ry:.75, rot:18, kind:'fun', n:40,
+   desc:'Khu vui chơi giải trí và du lịch phía bắc hồ Thác Chuối.'},
+  {id:'nature', name:'Tổ hợp khám phá thiên nhiên', short:'Khám phá thiên nhiên', color:'#0A2A6E', lat:17.4510, lon:106.4255, rx:.7, ry:1.25, rot:-12, kind:'villa', n:20,
+   desc:'Khu trải nghiệm, khám phá thiên nhiên ở bờ tây nhánh hồ phía bắc.'},
+  {id:'gate', name:'Khu thương mại dịch vụ cửa ngõ', short:'TMDV cửa ngõ', color:'#0147C1', lat:17.4352, lon:106.4680, rx:.6, ry:.45, rot:0, kind:'tower', n:22,
+   desc:'Khu thương mại, dịch vụ ở cửa ngõ phía đông hồ, gần ga dưới của tuyến cáp treo.'},
+  {id:'lakeresort', name:'Tổ hợp nghỉ dưỡng – trị liệu bên hồ', short:'Nghỉ dưỡng bên hồ', color:'#4C86F0', lat:17.4185, lon:106.4370, rx:1.3, ry:1.05, rot:10, kind:'villa', n:60,
+   desc:'Khu nghỉ dưỡng, trị liệu ven hồ ở phía tây nam nhánh hồ phía nam.'},
+  {id:'town', name:'Tổ hợp ở thấp tầng khu cửa ngõ', short:'Ở thấp tầng cửa ngõ', color:'#8FB3F5', lat:17.4235, lon:106.4740, rx:1.0, ry:.7, rot:-30, kind:'house', n:70,
+   desc:'Khu nhà ở thấp tầng ở cửa ngõ phía đông, tiếp cận hướng thành phố Đồng Hới.'}
+];
+const SUMMIT = {lat:17.43446, lon:106.40313};
+const LOW = {lat:GEO.low[0], lon:GEO.low[1]};
+
+/* ================= TOẠ ĐỘ ================= */
+const W = DEM.W, H = DEM.H;
+const raw = Uint8Array.from(atob(DEM.b64), c => c.charCodeAt(0));
+const HM = new Float32Array(W*H); { const dv = new DataView(raw.buffer); for (let i=0;i<W*H;i++) HM[i] = dv.getUint16(i*2, true); }
+const latC = (DEM.lat0+DEM.lat1)/2, lonC = (DEM.lon0+DEM.lon1)/2;
+const KX = 111.32*Math.cos(latC*Math.PI/180)*10, KZ = 110.57*10;  // 1 đơn vị = 100 m
+const WD = (DEM.lon1-DEM.lon0)*KX, DD = (DEM.lat1-DEM.lat0)*KZ;
+let EX = 1.7; const yOf = m => m/100*EX;
+const toX = lon => (lon-lonC)*KX, toZ = lat => -(lat-latC)*KZ;
+const gi = lon => (lon-DEM.lon0)/(DEM.lon1-DEM.lon0)*(W-1), gj = lat => (DEM.lat1-lat)/(DEM.lat1-DEM.lat0)*(H-1);
+function hAtGrid(fi, fj){
+  fi=Math.max(0,Math.min(W-1.001,fi)); fj=Math.max(0,Math.min(H-1.001,fj));
+  const i=Math.floor(fi), j=Math.floor(fj), a=fi-i, b=fj-j;
+  const p=HM[j*W+i], q=HM[j*W+i+1], r=HM[(j+1)*W+i], s=HM[(j+1)*W+i+1];
+  return (p*(1-a)+q*a)*(1-b)+(r*(1-a)+s*a)*b;
+}
+const hAt = (lat,lon) => hAtGrid(gi(lon), gj(lat));
+const gmaps = (lat,lon) => `https://www.google.com/maps/search/?api=1&query=${lat.toFixed(5)},${lon.toFixed(5)}`;
+let seed=7; const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646;};
+
+/* ================= HỒ ================= */
+const lakeImg = await new Promise((res,rej)=>{const i=new Image(); i.onload=()=>res(i); i.onerror=rej; i.src=LAKE_PNG;});
+const LW=lakeImg.width, LH=lakeImg.height;
+const lakeData = (()=>{const c=document.createElement('canvas');c.width=LW;c.height=LH;const x=c.getContext('2d');x.drawImage(lakeImg,0,0);const d=x.getImageData(0,0,LW,LH).data;const m=new Uint8Array(LW*LH);for(let k=0;k<LW*LH;k++)m[k]=d[k*4]>127?1:0;return m;})();
+const inLake=(lat,lon,pad=0)=>{const i=Math.floor((lon-DEM.lon0)/(DEM.lon1-DEM.lon0)*LW), j=Math.floor((DEM.lat1-lat)/(DEM.lat1-DEM.lat0)*LH);
+  for(let dy=-pad;dy<=pad;dy++)for(let dx=-pad;dx<=pad;dx++){const x=i+dx,y=j+dy;if(x>=0&&y>=0&&x<LW&&y<LH&&lakeData[y*LW+x])return true;}return false;};
+const WATER = 50;
+for (let j=0;j<H;j++) for (let i=0;i<W;i++){
+  const li=Math.min(LW-1,Math.floor((i+.5)/W*LW)), lj=Math.min(LH-1,Math.floor((j+.5)/H*LH));
+  let wet=0; for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){const x=li+dx,y=lj+dy;if(x>=0&&y>=0&&x<LW&&y<LH)wet+=lakeData[y*LW+x];}
+  if (wet>3) HM[j*W+i] = Math.min(HM[j*W+i], WATER-8);
+}
+
+/* ================= SCENE ================= */
+const stage = document.getElementById('stage');
+let renderer;
+try { renderer = new THREE.WebGLRenderer({antialias:true, alpha:true}); }
+catch(e){ document.getElementById('err').style.display='block'; throw e; }
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05;
+stage.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x082760, 280, 560);
+const camera = new THREE.PerspectiveCamera(38, innerWidth/innerHeight, 1, 2000);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; controls.dampingFactor = .07;
+controls.maxPolarAngle = Math.PI*0.47; controls.minDistance = 18; controls.maxDistance = 420;
+controls.autoRotate = true; controls.autoRotateSpeed = .45;
+const MOBILE = innerWidth<760;
+const HOME = {pos:new THREE.Vector3(-70,120,175), tgt:new THREE.Vector3(0,6,0)};
+if (MOBILE){ HOME.tgt.set(-10,6,2); HOME.pos.set(150,165,95); }
+// cảnh mở đầu: bay vào từ trên cao
+const INTRO_FROM = HOME.pos.clone().applyAxisAngle(new THREE.Vector3(0,1,0), -1.1).multiplyScalar(1.9).add(new THREE.Vector3(0,120,0));
+camera.position.copy(INTRO_FROM); controls.target.copy(HOME.tgt);
+
+scene.add(new THREE.HemisphereLight(0xf2f5ff, 0x0b2050, 1.2));
+const sun = new THREE.DirectionalLight(0xfff3e6, 2.0);
+sun.position.set(-120,160,-90); sun.castShadow = true;
+sun.shadow.mapSize.set(2048,2048);
+Object.assign(sun.shadow.camera,{left:-120,right:120,top:90,bottom:-90,near:10,far:500});
+sun.shadow.bias = -0.0006; sun.shadow.normalBias = .4;
+scene.add(sun);
+
+/* ================= TEXTURE ================= */
+const TW=1760, TH=Math.round(TW*DD/WD);
+const ramp = [[0,'#cfe0b8'],[150,'#a9cc8f'],[300,'#7fb378'],[450,'#5c9a69'],[600,'#3f7d5a'],[750,'#2c624b'],[900,'#1f4f3e'],[1000,'#e9dcc4']];
+const hex = s=>[parseInt(s.slice(1,3),16),parseInt(s.slice(3,5),16),parseInt(s.slice(5,7),16)];
+const rampRGB = ramp.map(([h,c])=>[h,hex(c)]);
+function rampAt(h){for(let k=1;k<rampRGB.length;k++){if(h<=rampRGB[k][0]){const [h0,c0]=rampRGB[k-1],[h1,c1]=rampRGB[k];const t=(h-h0)/(h1-h0);return c0.map((v,i)=>v+(c1[i]-v)*t);}}return rampRGB[rampRGB.length-1][1];}
+function lakePath(ctx, sx, sy, rgb=[1,71,193]){
+  const c=document.createElement('canvas');c.width=LW;c.height=LH;const x=c.getContext('2d');
+  const id=x.createImageData(LW,LH); for(let k=0;k<LW*LH;k++){if(lakeData[k]){id.data[k*4]=rgb[0];id.data[k*4+1]=rgb[1];id.data[k*4+2]=rgb[2];id.data[k*4+3]=255;}}
+  x.putImageData(id,0,0); ctx.imageSmoothingEnabled=true; ctx.drawImage(c,0,0,sx,sy);
+}
+const px = lon => (lon-DEM.lon0)/(DEM.lon1-DEM.lon0)*TW, py = lat => (DEM.lat1-lat)/(DEM.lat1-DEM.lat0)*TH;
+const kmPx = TW/((DEM.lon1-DEM.lon0)*111.32*Math.cos(latC*Math.PI/180));
+function drawRoads(ctx, scale=1){
+  for (const [pts,w] of [[GEO.ql15,9],[GEO.east,7]]){
+    ctx.lineJoin='round'; ctx.lineCap='round';
+    ctx.beginPath(); pts.forEach(([la,lo],i)=>i?ctx.lineTo(px(lo),py(la)):ctx.moveTo(px(lo),py(la)));
+    ctx.strokeStyle='rgba(6,26,69,.5)'; ctx.lineWidth=(w+4)*scale; ctx.stroke();
+    ctx.strokeStyle='#ffffff'; ctx.lineWidth=w*scale; ctx.stroke();
+  }
+}
+function zonePath(ctx,z,grow=1){
+  ctx.save(); ctx.translate(px(z.lon),py(z.lat)); ctx.rotate(z.rot*Math.PI/180);
+  ctx.beginPath(); const n=64;
+  for(let k=0;k<=n;k++){const a=k/n*Math.PI*2, w=(1+.08*Math.sin(a*3+z.rx*7)+.05*Math.cos(a*5+z.ry*3))*grow;
+    const x=Math.cos(a)*z.rx*kmPx*w, y=Math.sin(a)*z.ry*kmPx*w; k?ctx.lineTo(x,y):ctx.moveTo(x,y);}
+  ctx.closePath();
+}
+function blob(ctx, z){ zonePath(ctx,z); ctx.globalAlpha=.72;ctx.fillStyle=z.color;ctx.fill();ctx.globalAlpha=1;
+  ctx.setLineDash([16,10]);ctx.lineWidth=5;ctx.strokeStyle='#fff';ctx.stroke();ctx.restore(); }
+function drawCableGround(ctx){
+  ctx.save();ctx.setLineDash([22,14]);ctx.lineWidth=6;ctx.strokeStyle='#FF412B';
+  ctx.beginPath();ctx.moveTo(px(LOW.lon),py(LOW.lat));ctx.lineTo(px(SUMMIT.lon),py(SUMMIT.lat));ctx.stroke();ctx.restore();
+}
+const baseCanvas = document.createElement('canvas'); baseCanvas.width=TW; baseCanvas.height=TH;
+{
+  const ctx=baseCanvas.getContext('2d'); const img=ctx.createImageData(TW,TH); const d=img.data;
+  const L=[-0.6,-0.65,0.47]; const n=Math.hypot(...L); L[0]/=n;L[1]/=n;L[2]/=n;
+  const cell=(WD*100)/(W-1);
+  for(let y=0;y<TH;y++){ const fj=(y+.5)/TH*(H-1);
+    for(let x=0;x<TW;x++){ const fi=(x+.5)/TW*(W-1);
+      const h=hAtGrid(fi,fj), hx=hAtGrid(fi+.5,fj)-hAtGrid(fi-.5,fj), hy=hAtGrid(fi,fj+.5)-hAtGrid(fi,fj-.5);
+      const nx=-hx*1.6/cell, ny=-hy*1.6/cell; const nn=Math.hypot(nx,ny,1);
+      let sh=(nx*L[0]+ny*L[1]+L[2])/nn; sh=.55+.6*Math.max(0,sh);
+      const c=rampAt(h); const k=(y*TW+x)*4;
+      const band=h%100; const line=(band<3.2||band>96.8)?.78:((h%50<1.6||h%50>48.4)?.9:1);
+      d[k]=Math.min(255,c[0]*sh*line); d[k+1]=Math.min(255,c[1]*sh*line); d[k+2]=Math.min(255,c[2]*sh*line); d[k+3]=255;
+    }}
+  ctx.putImageData(img,0,0); lakePath(ctx,TW,TH,[52,120,214]);
+}
+const terrainCanvas=document.createElement('canvas'); terrainCanvas.width=TW; terrainCanvas.height=TH;
+const overlayCanvas=document.createElement('canvas'); overlayCanvas.width=TW; overlayCanvas.height=TH;
+const terrainTex=new THREE.CanvasTexture(terrainCanvas), overlayTex=new THREE.CanvasTexture(overlayCanvas);
+for (const t of [terrainTex,overlayTex]){t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=renderer.capabilities.getMaxAnisotropy();}
+let showZones=true, zoneFocus=null;
+function paintTextures(){
+  let c=terrainCanvas.getContext('2d'); c.clearRect(0,0,TW,TH); c.drawImage(baseCanvas,0,0); drawRoads(c);
+  if(showZones){ZONES.forEach(z=>blob(c,z));drawCableGround(c);} terrainTex.needsUpdate=true;
+  c=overlayCanvas.getContext('2d'); c.fillStyle='#fff'; c.fillRect(0,0,TW,TH); drawRoads(c,1.1);
+  if(showZones){ZONES.forEach(z=>blob(c,z));drawCableGround(c);} overlayTex.needsUpdate=true;
+}
+paintTextures();
+
+/* ================= ĐỊA HÌNH ================= */
+const terrainGeo = new THREE.PlaneGeometry(WD, DD, W-1, H-1); terrainGeo.rotateX(-Math.PI/2);
+function updateTerrainHeights(){ const p=terrainGeo.attributes.position;
+  for(let j=0;j<H;j++)for(let i=0;i<W;i++){const k=j*W+i; p.setY(k, yOf(HM[k]));}
+  p.needsUpdate=true; terrainGeo.computeVertexNormals(); }
+updateTerrainHeights();
+const terrain = new THREE.Mesh(terrainGeo, new THREE.MeshStandardMaterial({map:terrainTex, roughness:.95, metalness:0}));
+terrain.receiveShadow = true; terrain.castShadow = true;
+function skirt(){ const g=new THREE.BufferGeometry(); const v=[]; const push=(a,b)=>{v.push(a.x,a.y,a.z,b.x,b.y,b.z,b.x,-3,b.z, a.x,a.y,a.z,b.x,-3,b.z,a.x,-3,a.z);};
+  const P=(i,j)=>new THREE.Vector3(-WD/2+i/(W-1)*WD, yOf(HM[j*W+i]), -DD/2+j/(H-1)*DD);
+  for(let i=0;i<W-1;i++){push(P(i+1,0),P(i,0));push(P(i,H-1),P(i+1,H-1));}
+  for(let j=0;j<H-1;j++){push(P(0,j),P(0,j+1));push(P(W-1,j+1),P(W-1,j));}
+  g.setAttribute('position',new THREE.Float32BufferAttribute(v,3)); g.computeVertexNormals(); return g; }
+const skirtMat = new THREE.MeshStandardMaterial({color:0x0A2A6E, roughness:1, side:THREE.DoubleSide});
+let terrainSkirt = new THREE.Mesh(skirt(), skirtMat);
+const terrainGroup = new THREE.Group(); terrainGroup.add(terrain, terrainSkirt); scene.add(terrainGroup);
+const lakeTex = new THREE.CanvasTexture((()=>{const c=document.createElement('canvas');c.width=LW;c.height=LH;const x=c.getContext('2d');x.drawImage(lakeImg,0,0);return c;})());
+const water = new THREE.Mesh(new THREE.PlaneGeometry(WD,DD).rotateX(-Math.PI/2),
+  new THREE.MeshStandardMaterial({color:0x2f6fd6, transparent:true, opacity:.88, alphaMap:lakeTex, roughness:.45, metalness:0, depthWrite:false}));
+water.renderOrder = 2; scene.add(water);
+
+/* ================= CẮT LỚP ================= */
+const STEP = 100, LEVELS = [];
+for (let t=100; t<=1000; t+=STEP) LEVELS.push(t);
+// sa bàn trắng – xanh, đỉnh đỏ cam
+const plateColors = ['#F2F5FC','#E3EAF9','#D1DDF6','#BCCEF2','#A4BDEC','#8AAAE6','#6D94DD','#3F6FD0','#1F55C6','#0147C1'];
+const layerGroup = new THREE.Group(); scene.add(layerGroup);
+const plates = [];
+const gridToShapeXY = (x,y)=>[-WD/2+(x-.5)/(W-1)*WD, DD/2-(y-.5)/(H-1)*DD];
+function polysToShapes(mp, minArea=0.6){
+  const shapes=[];
+  for(const poly of mp.coordinates){
+    const outer=poly[0].map(([x,y])=>new THREE.Vector2(...gridToShapeXY(x,y)));
+    if(Math.abs(THREE.ShapeUtils.area(outer))<minArea) continue;
+    const s=new THREE.Shape(outer);
+    for(let r=1;r<poly.length;r++){const hole=poly[r].map(([x,y])=>new THREE.Vector2(...gridToShapeXY(x,y))); if(Math.abs(THREE.ShapeUtils.area(hole))>minArea*.5) s.holes.push(new THREE.Path(hole));}
+    shapes.push(s);
+  }
+  return shapes;
+}
+function topDownUV(geo){ const p=geo.attributes.position, uv=new Float32Array(p.count*2);
+  for(let k=0;k<p.count;k++){uv[k*2]=(p.getX(k)+WD/2)/WD; uv[k*2+1]=1-(p.getZ(k)+DD/2)/DD;}
+  geo.setAttribute('uv',new THREE.BufferAttribute(uv,2)); }
+{
+  const vals = Float64Array.from(HM);
+  const res = contours().size([W,H]).smooth(true).thresholds(LEVELS)(vals);
+  const baseGeo = new THREE.BoxGeometry(WD, 1, DD); baseGeo.translate(0,.5,0); topDownUV(baseGeo);
+  const base = new THREE.Mesh(baseGeo, new THREE.MeshStandardMaterial({color:0xF7F9FE, map:overlayTex, roughness:.9}));
+  base.receiveShadow=true; base.castShadow=true; base.userData={level:-1, bottom:0, thick:STEP*.5, base:true};
+  layerGroup.add(base); plates.push(base);
+  res.forEach((mp,k)=>{
+    const shapes=polysToShapes(mp); if(!shapes.length) return;
+    const geo=new THREE.ExtrudeGeometry(shapes,{depth:1,bevelEnabled:false,curveSegments:1});
+    geo.rotateX(-Math.PI/2); topDownUV(geo);
+    const m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:plateColors[k]||'#FF8F7A', map:overlayTex, roughness:.8}));
+    m.castShadow=true; m.receiveShadow=true;
+    m.userData={level:k, bottom:LEVELS[k]-STEP*.5, thick:STEP};
+    layerGroup.add(m); plates.push(m);
+  });
+  const lakeVals=new Float64Array(LW*LH); for(let k=0;k<LW*LH;k++) lakeVals[k]=lakeData[k];
+  const lr=contours().size([LW,LH]).smooth(true).thresholds([.5])(lakeVals)[0];
+  const lshapes=[]; for(const poly of lr.coordinates){const o=poly[0].map(([x,y])=>new THREE.Vector2(-WD/2+x/LW*WD, DD/2-y/LH*DD)); if(Math.abs(THREE.ShapeUtils.area(o))>.15) lshapes.push(new THREE.Shape(o));}
+  const lg=new THREE.ExtrudeGeometry(lshapes,{depth:1,bevelEnabled:false,curveSegments:1}); lg.rotateX(-Math.PI/2);
+  const lakePlate=new THREE.Mesh(lg,new THREE.MeshStandardMaterial({color:BLUE,roughness:.55,metalness:0}));
+  lakePlate.userData={level:-1, bottom:STEP*.5, thick:6, lake:true}; lakePlate.receiveShadow=true;
+  layerGroup.add(lakePlate); plates.push(lakePlate);
+}
+let explode=0, explodeTarget=0;
+const GAP = 1.9, THIN = .62;            // khoảng tách & độ mỏng khi tách lớp
+const thickK = () => 1 - THIN*explode;
+function layoutPlates(intro=1){
+  plates.forEach(m=>{const u=m.userData; const lvl=u.level+1;
+    const dropT=Math.max(0,Math.min(1,(intro - lvl*0.07)/0.35));
+    const ease=1-Math.pow(1-dropT,3);
+    const lift=(1-ease)*60;
+    const th = u.base||u.lake ? yOf(u.thick) : yOf(u.thick)*thickK();
+    m.position.y = (u.lake? yOf(STEP*.5) : yOf(u.bottom)) + lvl*GAP*explode*EX + lift;
+    m.scale.y = Math.max(.001, th);
+    m.visible = dropT>0;
+  });
+}
+
+/* ================= BỀ MẶT ================= */
+let mode='layers';
+function surfaceY(lat,lon){ const h=hAt(lat,lon);
+  if(mode==='terrain') return yOf(h);
+  let top=yOf(STEP*.5), lvl=0;
+  for(let k=0;k<LEVELS.length;k++){ if(h>=LEVELS[k]){ lvl=k+1; top=yOf(LEVELS[k]-STEP*.5)+yOf(STEP)*thickK(); } }
+  return top + lvl*GAP*explode*EX; }
+
+/* ================= CÁP TREO ================= */
+const cableGroup = new THREE.Group(); scene.add(cableGroup);
+let cableCurve, cabins=[], spark;
+const towerMat=new THREE.MeshStandardMaterial({color:0x0A1F4D,roughness:.6});
+const cabinMat=new THREE.MeshStandardMaterial({color:RED,roughness:.4,emissive:0x5a1006});
+function buildCable(){
+  cableGroup.clear(); cabins=[];
+  const a=new THREE.Vector3(toX(LOW.lon), surfaceY(LOW.lat,LOW.lon)+1.6, toZ(LOW.lat));
+  const b=new THREE.Vector3(toX(SUMMIT.lon), surfaceY(SUMMIT.lat,SUMMIT.lon)+2.4, toZ(SUMMIT.lat));
+  const pts=[]; const N=60, len=a.distanceTo(b);
+  for(let k=0;k<=N;k++){const t=k/N; const p=a.clone().lerp(b,t); p.y-=Math.sin(Math.PI*t)*len*.035;
+    const g=surfaceY(LOW.lat+(SUMMIT.lat-LOW.lat)*t, LOW.lon+(SUMMIT.lon-LOW.lon)*t)+1.2; p.y=Math.max(p.y,g); pts.push(p);}
+  cableCurve=new THREE.CatmullRomCurve3(pts);
+  cableGroup.add(new THREE.Mesh(new THREE.TubeGeometry(cableCurve,160,.13,6,false), new THREE.MeshBasicMaterial({color:0x0A1F4D})));
+  const glow=new THREE.Mesh(new THREE.TubeGeometry(cableCurve,160,.34,6,false), new THREE.MeshBasicMaterial({color:RED,transparent:true,opacity:.38})); glow.userData.glow=true; cableGroup.add(glow);
+  for(let k=1;k<6;k++){const t=k/6, p=cableCurve.getPointAt(t);
+    const g=surfaceY(LOW.lat+(SUMMIT.lat-LOW.lat)*t, LOW.lon+(SUMMIT.lon-LOW.lon)*t);
+    const hgt=Math.max(.5,p.y-g); const c=new THREE.Mesh(new THREE.CylinderGeometry(.12,.22,hgt,6),towerMat);
+    c.position.set(p.x,g+hgt/2,p.z); c.castShadow=true; cableGroup.add(c);}
+  for(const [p,s] of [[a,1],[b,1.2]]){
+    const st=new THREE.Mesh(new THREE.BoxGeometry(2.2*s,1.4*s,1.6*s),new THREE.MeshStandardMaterial({color:0xffffff,roughness:.5}));
+    st.position.set(p.x,p.y-1.2,p.z); st.castShadow=true; cableGroup.add(st);
+    const roof=new THREE.Mesh(new THREE.BoxGeometry(2.5*s,.3*s,1.9*s),new THREE.MeshStandardMaterial({color:BLUE}));
+    roof.position.set(p.x,p.y-.35,p.z); cableGroup.add(roof);}
+  for(let k=0;k<6;k++){const g=new THREE.Group(); const box=new THREE.Mesh(new THREE.BoxGeometry(.75,.6,.75),cabinMat); box.position.y=-.55; box.castShadow=true;
+    const win=new THREE.Mesh(new THREE.BoxGeometry(.78,.2,.78),new THREE.MeshBasicMaterial({color:0xffffff})); win.position.y=-.45;
+    const arm=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,.5,4),towerMat); arm.position.y=-.2; g.add(box,win,arm); g.userData.off=k/6; cableGroup.add(g); cabins.push(g);}
+  spark=new THREE.Mesh(new THREE.SphereGeometry(.42,12,10),new THREE.MeshBasicMaterial({color:0xffffff})); cableGroup.add(spark);
+  placeRings();
+}
+
+/* ================= VÒNG SÓNG ================= */
+const rings=[];
+const ringMat=()=>new THREE.MeshBasicMaterial({color:RED,transparent:true,opacity:.6,side:THREE.DoubleSide,depthWrite:false});
+for(const [k,c] of [[0,SUMMIT],[1,LOW]]) for(let r=0;r<2;r++){ const m=new THREE.Mesh(new THREE.RingGeometry(.9,1.15,48).rotateX(-Math.PI/2),ringMat()); m.userData={c,ph:r*.5}; rings.push(m); scene.add(m); }
+function placeRings(){ rings.forEach(m=>{const c=m.userData.c; m.position.set(toX(c.lon),surfaceY(c.lat,c.lon)+.15,toZ(c.lat));}); }
+
+/* ================= KHỐI CÔNG TRÌNH ================= */
+const build = { mesh:null, items:[], t:0, target:1, show:true };
+{
+  const items=[];
+  for(const z of ZONES){
+    const c=new THREE.Color(z.color); let tries=0, made=0;
+    while(made<z.n && tries<z.n*12){ tries++;
+      const a=rnd()*Math.PI*2, r=Math.sqrt(rnd())*.88;
+      const dx=Math.cos(a)*z.rx*r, dy=Math.sin(a)*z.ry*r, ro=z.rot*Math.PI/180;
+      const ex=dx*Math.cos(ro)-dy*Math.sin(ro), ey=dx*Math.sin(ro)+dy*Math.cos(ro); // km, x east, y south
+      const lon=z.lon+ex/(111.32*Math.cos(latC*Math.PI/180)), lat=z.lat-ey/110.57;
+      if(inLake(lat,lon,3)) continue;
+      if(items.some(o=>Math.hypot(o.x-toX(lon),o.z-toZ(lat))<.75)) continue;
+      let w=.5,d=.5,h=.5;
+      if(z.kind==='villa'){w=.45+rnd()*.25;d=.4+rnd()*.25;h=.35+rnd()*.25;}
+      if(z.kind==='house'){w=.35+rnd()*.2;d=.35+rnd()*.2;h=.3+rnd()*.35;}
+      if(z.kind==='fun'){w=.6+rnd()*.6;d=.5+rnd()*.5;h=.5+rnd()*1.3;}
+      if(z.kind==='tower'){w=.6+rnd()*.4;d=.6+rnd()*.4;h=1+rnd()*2.4;}
+      items.push({lat,lon,x:toX(lon),z:toZ(lat),w,d,h,rot:rnd()*Math.PI,delay:rnd()*.6+ZONES.indexOf(z)*.08,color:c.clone().lerp(new THREE.Color(0xffffff),.55)});
+      made++;
+    }
+  }
+  const geo=new THREE.BoxGeometry(1,1,1); geo.translate(0,.5,0);
+  const mesh=new THREE.InstancedMesh(geo,new THREE.MeshStandardMaterial({color:0xffffff,roughness:.5}),items.length);
+  mesh.castShadow=true; mesh.receiveShadow=true;
+  items.forEach((o,i)=>mesh.setColorAt(i,o.color)); mesh.instanceColor.needsUpdate=true;
+  scene.add(mesh); build.mesh=mesh; build.items=items;
+}
+const _m=new THREE.Matrix4(), _q=new THREE.Quaternion(), _s=new THREE.Vector3(), _p=new THREE.Vector3(), _up=new THREE.Vector3(0,1,0);
+function layoutBuild(){
+  const {mesh,items,t}=build; const sc=EX/1.7;
+  items.forEach((o,i)=>{ const g=Math.max(0,Math.min(1,(t*1.6-o.delay)/.5)); const e=g<1?1-Math.pow(1-g,3)*(1+0*g):1;
+    const bounce=g<1? e + Math.sin(g*Math.PI)*.12 : 1;
+    _p.set(o.x,surfaceY(o.lat,o.lon)-.05,o.z); _q.setFromAxisAngle(_up,o.rot); _s.set(o.w,Math.max(.001,o.h*sc*bounce),o.d);
+    _m.compose(_p,_q,_s); mesh.setMatrixAt(i,_m); });
+  mesh.instanceMatrix.needsUpdate=true;
+}
+
+/* ================= DÒNG XE ================= */
+const flow={show:true, lines:[]};
+{
+  const mk=(pts,n,color,sp)=>{ const ptsLL=pts.map(([la,lo])=>({lat:la,lon:lo}));
+    const segs=[]; let L=0; for(let i=1;i<ptsLL.length;i++){const a=ptsLL[i-1],b=ptsLL[i];const d=Math.hypot(toX(b.lon)-toX(a.lon),toZ(b.lat)-toZ(a.lat));segs.push({a,b,d,L});L+=d;}
+    const g=new THREE.BufferGeometry(); g.setAttribute('position',new THREE.BufferAttribute(new Float32Array(n*3),3));
+    const p=new THREE.Points(g,new THREE.PointsMaterial({color,size:.75,sizeAttenuation:true,transparent:true,opacity:.95,depthWrite:false}));
+    scene.add(p); flow.lines.push({segs,L,n,p,sp,off:Array.from({length:n},()=>rnd())});
+  };
+  mk(GEO.ql15,26,0xffffff,.012);
+  mk(GEO.east,34,0xffffff,.014);
+  // lối tiếp cận: từ ĐT563 vào cửa ngõ dự án
+  const e=GEO.east[5]; mk([e,[17.4335,106.4735],[LOW.lat,LOW.lon+.004]],14,RED,.03);
+}
+function layoutFlow(t){
+  for(const f of flow.lines){ const arr=f.p.geometry.attributes.position.array;
+    for(let i=0;i<f.n;i++){ let s=((f.off[i]+t*f.sp*(i%2?1:-1))%1+1)%1*f.L;
+      const sg=f.segs.find(q=>s<=q.L+q.d)||f.segs[f.segs.length-1]; const u=(s-sg.L)/sg.d;
+      const lat=sg.a.lat+(sg.b.lat-sg.a.lat)*u, lon=sg.a.lon+(sg.b.lon-sg.a.lon)*u;
+      arr[i*3]=toX(lon); arr[i*3+1]=surfaceY(lat,lon)+.35; arr[i*3+2]=toZ(lat); }
+    f.p.geometry.attributes.position.needsUpdate=true; f.p.visible=flow.show && mode!=='explode'; }
+}
+
+/* ================= MÂY ================= */
+const cloudTex=(()=>{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d');
+  for(let k=0;k<14;k++){const r=40+rnd()*50,cx=60+rnd()*136,cy=90+rnd()*76;const g=x.createRadialGradient(cx,cy,0,cx,cy,r);g.addColorStop(0,'rgba(255,255,255,.55)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.fillRect(0,0,256,256);}
+  const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;return t;})();
+const clouds=[];
+for(let k=0;k<11;k++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:cloudTex,transparent:true,opacity:.7,depthWrite:false}));
+  const sc=18+rnd()*22; s.scale.set(sc,sc*.55,1);
+  s.userData={x:toX(SUMMIT.lon)+(rnd()-.5)*70, z:toZ(SUMMIT.lat)+(rnd()-.5)*60, sp:.6+rnd()*.8, ph:rnd()*6};
+  scene.add(s); clouds.push(s);}
+
+/* ================= NHÃN ================= */
+const labelsEl=document.getElementById('labels');
+const LABELS=[];
+function addLabel({lat,lon,html,cls='',onClick,lift=0,prio=5,key}){
+  const el=document.createElement('div'); el.className='lb '+cls; el.innerHTML=html+(cls.includes('road')?'':'<div class="stem"></div>');
+  if(onClick) el.addEventListener('click',e=>{e.stopPropagation();onClick();});
+  labelsEl.appendChild(el); const o={el,lat,lon,lift,prio,sz:null,key}; LABELS.push(o); LABELS.sort((a,b)=>a.prio-b.prio); return o;
+}
+const peakInfo={name:'Đỉnh U Bò',color:'#FF412B',kind:'Điểm cao',lat:SUMMIT.lat,lon:SUMMIT.lon,desc:'Nóc nhà Vườn quốc gia Phong Nha – Kẻ Bàng, cao khoảng 1.000 m (dữ liệu SRTM ghi 992 m). Ga đỉnh của tuyến cáp treo dự kiến.'};
+const lakeInfo={name:'Hồ Thác Chuối',color:'#0147C1',kind:'Hồ chứa',lat:17.43916,lon:106.44795,desc:'Hồ thuỷ lợi xây năm 2010, rộng khoảng 3,7 km² theo đường bờ trên bản đồ. Ga dưới cáp treo dự kiến nằm ở bờ đông.'};
+const cableInfo={name:'Tuyến cáp treo dự kiến',color:'#FF412B',kind:'Cáp treo',lat:LOW.lat,lon:LOW.lon,desc:'Từ ga hồ Thác Chuối lên ga đỉnh U Bò, dài khoảng 6 km, chênh cao khoảng 930 m theo sơ đồ dự án. Dự án quy hoạch 5 tuyến cáp treo nối chân núi với đỉnh.'};
+addLabel({lat:SUMMIT.lat,lon:SUMMIT.lon,lift:3.4,cls:'big',prio:0,key:'peak',html:'<div class="tag">Đỉnh U Bò · ~1.000 m</div>',onClick:()=>openCard(peakInfo)});
+addLabel({lat:17.4265,lon:106.4525,prio:2,key:'lake',html:'<div class="tag"><i style="background:#0147C1"></i><span>Hồ Thác Chuối</span></div>',onClick:()=>openCard(lakeInfo)});
+addLabel({lat:LOW.lat,lon:LOW.lon,lift:2.6,prio:1,key:'low',html:'<div class="tag"><i style="background:#FF412B"></i><span>Ga hồ Thác Chuối</span></div>',onClick:()=>openCard(cableInfo)});
+ZONES.forEach(z=>addLabel({lat:z.lat,lon:z.lon,lift:1.6,cls:'zone',prio:3,key:z.id,html:`<div class="tag"><i style="background:${z.color}"></i><span>${z.short}</span></div>`,onClick:()=>focusZone(z)}));
+addLabel({lat:GEO.ql15[3][0],lon:GEO.ql15[3][1],cls:'road',prio:8,html:'<div class="tag">↑ QL15 · Phong Nha – Kẻ Bàng</div>'});
+addLabel({lat:GEO.ql15[GEO.ql15.length-3][0],lon:GEO.ql15[GEO.ql15.length-3][1],cls:'road',prio:8,html:'<div class="tag">↓ Đường Hồ Chí Minh nhánh Tây</div>'});
+addLabel({lat:GEO.east[1][0],lon:GEO.east[1][1],cls:'road',prio:8,html:'<div class="tag">↗ TP. Đồng Hới</div>'});
+addLabel({lat:GEO.east[GEO.east.length-3][0],lon:GEO.east[GEO.east.length-3][1],cls:'road',prio:8,html:'<div class="tag">ĐT563 · QL9E</div>'});
+const v3=new THREE.Vector3();
+let showLabels=true, tourKeys=null;
+function updateLabels(){
+  const w=innerWidth,h=innerHeight, placed=[];
+  const pr=document.getElementById('panel').getBoundingClientRect(); const panelOn=w>=760 && !document.body.classList.contains('touring');
+  const tb=document.getElementById('tour').getBoundingClientRect(); const tourOn=document.body.classList.contains('touring');
+  for(const o of LABELS){
+    const road=o.el.classList.contains('road');
+    v3.set(toX(o.lon),surfaceY(o.lat,o.lon)+o.lift+(road?0.8:0),toZ(o.lat)).project(camera);
+    let vis=showLabels && v3.z<1 && Math.abs(v3.x)<1.05 && Math.abs(v3.y)<1.05;
+    if(tourKeys && !tourKeys.includes(o.key)) vis=false;
+    const sx=(v3.x*.5+.5)*w, sy=(-v3.y*.5+.5)*h;
+    let dot=false;
+    if(vis){
+      if(!o.sz){o.el.classList.remove('dot');const r=o.el.getBoundingClientRect(); o.sz=[Math.max(20,r.width),Math.max(16,r.height)];}
+      const hit=(a,b)=>a[0]<b[2]&&a[2]>b[0]&&a[1]<b[3]&&a[3]>b[1];
+      const box=(bw,bh)=>{const x0=sx-bw/2,y0=road?sy-bh/2:sy-bh;return [x0-3,y0-3,x0+bw+3,y0+bh+3];};
+      const ok=R=>!placed.some(p=>hit(p,R)) && !(panelOn&&hit(R,[pr.left,pr.top,pr.right,pr.bottom])) && !(tourOn&&hit(R,[tb.left,tb.top,tb.right,tb.bottom])) && R[0]>=0 && R[2]<=w && R[1]>=0;
+      let R=box(...o.sz);
+      if(!ok(R)){ if(o.el.classList.contains('zone')||o.prio===2){R=box(24,40);dot=true;if(!ok(R))vis=false;} else vis=false; }
+      if(vis) placed.push(R);
+    }
+    o.el.classList.toggle('dot',dot); o.el.classList.toggle('hide',!vis);
+    if(vis) o.el.style.transform=`translate(${sx}px,${sy}px) translate(-50%,${road?'-50%':'-100%'})`;
+  }
+}
+
+/* ================= UI ================= */
+let showCable=true;
+const zl=document.getElementById('zl');
+ZONES.forEach(z=>{const b=document.createElement('button');b.type='button';b.innerHTML=`<i style="background:${z.color}"></i>${z.name}`;b.onclick=()=>focusZone(z);b.dataset.id=z.id;zl.appendChild(b);});
+const card=document.getElementById('card');
+function openCard(z){
+  document.getElementById('ck').style.background=z.color; document.getElementById('ckt').textContent=z.kind||'Phân khu';
+  document.getElementById('ct').textContent=z.name; document.getElementById('cd').textContent=z.desc;
+  document.getElementById('cmap').href=gmaps(z.lat,z.lon); card.classList.add('show');
+  zl.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.id===z.id));
+}
+document.getElementById('cx').onclick=()=>{card.classList.remove('show');zl.querySelectorAll('button').forEach(b=>b.classList.remove('on'));};
+let fly=null;
+function flyRaw(p1,t1,ms=1600){ fly={s:performance.now(),ms,p0:camera.position.clone(),t0:controls.target.clone(),p1:p1.clone(),t1:t1.clone()}; }
+function flyTo(tgt,dist=70,dirOverride){
+  const dir=(dirOverride||camera.position.clone().sub(controls.target)).normalize();
+  if(dir.y<.45){dir.y=.55;dir.normalize();}
+  flyRaw(tgt.clone().add(dir.multiplyScalar(dist)),tgt);
+  setRotate(false);
+}
+const at=(lat,lon,dy=0)=>new THREE.Vector3(toX(lon),surfaceY(lat,lon)+dy,toZ(lat));
+function focusZone(z){ openCard({...z,kind:'Phân khu'}); flyTo(at(z.lat,z.lon), MOBILE?85:62);
+  if(MOBILE) document.getElementById('panel').classList.remove('open'); }
+function setRotate(v){controls.autoRotate=v;document.getElementById('bRotate').classList.toggle('on',v);}
+function setMode(m){
+  mode=m; document.querySelectorAll('.modes button').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));
+  explodeTarget = m==='explode'?1:0;
+  if(m==='terrain'){explode=0;}
+  terrainGroup.visible=water.visible=(m==='terrain'); layerGroup.visible=(m!=='terrain');
+  buildCable();
+  if(m==='explode' && !touring){const d=HOME.pos.distanceTo(HOME.tgt)*1.08, dir=HOME.pos.clone().sub(HOME.tgt).normalize();
+    flyRaw(HOME.tgt.clone().add(dir.multiplyScalar(d)).add(new THREE.Vector3(0,10,0)),HOME.tgt.clone().add(new THREE.Vector3(0,10,0)));}
+}
+document.querySelectorAll('.modes button').forEach(b=>b.onclick=()=>{ if(touring) stopTour(); setMode(b.dataset.mode); });
+const tog=(id,fn)=>{const b=document.getElementById(id);b.onclick=()=>{b.classList.toggle('on');fn(b.classList.contains('on'));};};
+tog('bZones',v=>{showZones=v;paintTextures();});
+tog('bCable',v=>{showCable=v;});
+tog('bLabels',v=>{showLabels=v;});
+tog('bRotate',v=>{controls.autoRotate=v;});
+tog('bFlow',v=>{flow.show=v;});
+tog('bBuild',v=>{build.target=v?1:0; if(v) build.t=0;});
+document.getElementById('bReset').onclick=()=>flyRaw(HOME.pos,HOME.tgt);
+document.getElementById('ptoggle').onclick=()=>document.getElementById('panel').classList.toggle('open');
+const ex=document.getElementById('ex');
+ex.oninput=()=>{EX=+ex.value;document.getElementById('exv').textContent=EX.toFixed(1)+'×';updateTerrainHeights();
+  terrainGroup.remove(terrainSkirt); terrainSkirt=new THREE.Mesh(skirt(),skirtMat); terrainGroup.add(terrainSkirt);
+  water.position.y=yOf(WATER); buildCable();};
+water.position.y=yOf(WATER);
+renderer.domElement.addEventListener('pointerdown',()=>{ if(!touring) fly=null; document.getElementById('hint').style.opacity=0;});
+function fit(){const w=innerWidth,h=innerHeight;camera.aspect=w/h;
+  if(w>=760) camera.setViewOffset(w,h,-Math.min(190,w*.13),0,w,h); else camera.setViewOffset(w,h,0,Math.round(h*.06),w,h);
+  camera.updateProjectionMatrix();renderer.setSize(w,h);LABELS.forEach(o=>o.sz=null);}
+addEventListener('resize',fit); fit();
+
+/* đếm số */
+function countUp(){ document.querySelectorAll('[data-count]').forEach(el=>{const to=+el.dataset.count, dec=+(el.dataset.dec||0), sep=el.dataset.sep; const s=performance.now();
+  const f=()=>{const t=Math.min(1,(performance.now()-s)/1800), e=1-Math.pow(1-t,4), v=to*e;
+    el.textContent= dec? v.toFixed(dec).replace('.',',') : (sep? Math.round(v).toLocaleString('vi-VN') : Math.round(v)); if(t<1) requestAnimationFrame(f);}; f();}); }
+const bigNum=document.getElementById('bigNum');
+function showBig(val,label,dec=0,sep=false){ const el=document.getElementById('bigNumV'); document.getElementById('bigNumL').textContent=label; bigNum.classList.add('on');
+  const s=performance.now(); const f=()=>{const t=Math.min(1,(performance.now()-s)/1600), e=1-Math.pow(1-t,4), v=val*e;
+    el.textContent=(dec? v.toFixed(dec).replace('.',','):(sep?Math.round(v).toLocaleString('vi-VN'):Math.round(v)))+(bigNum.dataset.suf||''); if(t<1&&bigNum.classList.contains('on')) requestAnimationFrame(f);}; f(); }
+const hideBig=()=>bigNum.classList.remove('on');
+
+/* ================= TRÌNH CHIẾU ================= */
+let touring=false, step=0, stepStart=0, ride=null;
+const STEPS=[
+  {eb:'Toàn cảnh', h:'Quần thể U Bò – Thác Chuối', p:'Khoảng 167 ha trên đỉnh U Bò và quanh hồ Thác Chuối, tỉnh Quảng Trị. Địa hình thật, cắt lớp mỗi 100 m.', dur:7000,
+   go(){ setMode('layers'); flyRaw(HOME.pos.clone().multiplyScalar(1.05),HOME.tgt,2200); setRotate(true); bigNum.dataset.suf=' tỷ'; showBig(16234,'đồng tổng vốn đầu tư',0,true); }, keys:['peak','lake','low']},
+  {eb:'Điểm nhấn', h:'Đỉnh U Bò ~1.000 m', p:'Nóc nhà Vườn quốc gia Phong Nha – Kẻ Bàng. Ngày quang nhìn được về Đồng Hới; sáng sớm và cuối chiều mây phủ kín đỉnh.', dur:7000,
+   go(){ setMode('terrain'); hideBig(); const t=at(SUMMIT.lat,SUMMIT.lon); flyRaw(t.clone().add(new THREE.Vector3(-26,22,34)),t,2600); setRotate(false); }, keys:['peak','mtresort']},
+  {eb:'Cáp treo dự kiến', h:'6 km · chênh cao 930 m', p:'Ngồi cabin từ ga hồ Thác Chuối lên ga đỉnh U Bò, băng qua rừng nguyên sinh.', dur:11000,
+   go(){ setMode('terrain'); hideBig(); ride={s:performance.now(),ms:10500}; setRotate(false); }, keys:['peak','low']},
+  {eb:'Mặt nước', h:'Hồ Thác Chuối', p:'Hồ rộng khoảng 3,7 km², các nhánh nước ôm quanh bán đảo và triền đồi thấp, nơi đặt các khu nghỉ dưỡng ven hồ.', dur:7000,
+   go(){ ride=null; setMode('terrain'); const t=at(17.437,106.446); flyRaw(t.clone().add(new THREE.Vector3(18,40,40)),t,2600); }, keys:['lake','low','lakeresort','nature','fun']},
+  {eb:'7 phân khu', h:'Từ đỉnh núi đến cửa ngõ', p:'Vui chơi đỉnh núi, nghỉ dưỡng trên núi, khám phá thiên nhiên, vui chơi – du lịch, nghỉ dưỡng bên hồ, thương mại dịch vụ và khu ở thấp tầng.', dur:8500,
+   go(){ setMode('layers'); build.t=0; build.target=1; document.getElementById('bBuild').classList.add('on'); flyRaw(HOME.pos.clone().multiplyScalar(.82).add(new THREE.Vector3(10,0,0)),HOME.tgt.clone().add(new THREE.Vector3(8,0,0)),2400); setRotate(true); }, keys:null},
+  {eb:'Kết nối', h:'Cửa ngõ phía đông', p:'Tiếp cận từ ĐT563 – QL9E hướng thành phố Đồng Hới, khoảng 25 km. Phía tây là đường Hồ Chí Minh nhánh Tây (QL15).', dur:7500,
+   go(){ setMode('layers'); setRotate(false); const t=at(17.432,106.468); flyRaw(t.clone().add(new THREE.Vector3(28,34,30)),t,2600); }, keys:['gate','town','low','lake']},
+  {eb:'Cắt lớp', h:'Địa hình mỗi 100 m', p:'Từ mặt hồ khoảng 50 m lên đỉnh gần 1.000 m: mười tầng địa hình tách ra để thấy rõ độ dốc và vị trí từng khu.', dur:7500,
+   go(){ setMode('explode'); const d=HOME.pos.distanceTo(HOME.tgt), dir=HOME.pos.clone().sub(HOME.tgt).normalize(); flyRaw(HOME.tgt.clone().add(dir.multiplyScalar(d*1.05)).add(new THREE.Vector3(0,10,0)),HOME.tgt.clone().add(new THREE.Vector3(0,10,0)),2600); setRotate(true); }, keys:['peak','low']},
+  {eb:'Quy mô', h:'3 triệu lượt khách mỗi năm', p:'Mục tiêu bằng gần 30% kế hoạch 10,5 triệu lượt khách của Quảng Trị năm 2026. Đăng ký để nhận tin tiến độ dự án.', dur:9000, cta:true,
+   go(){ setMode('layers'); flyRaw(HOME.pos,HOME.tgt,2400); setRotate(true); bigNum.dataset.suf=' triệu'; showBig(3,'lượt khách mỗi năm (mục tiêu)'); }, keys:['peak','lake','low']}
+];
+const tBar=document.getElementById('tBar'); STEPS.forEach(()=>{const i=document.createElement('i');i.appendChild(document.createElement('b'));tBar.appendChild(i);});
+function goStep(i){ step=(i+STEPS.length)%STEPS.length; stepStart=performance.now(); const s=STEPS[step];
+  document.getElementById('tEb').textContent=`${String(step+1).padStart(2,'0')} / ${String(STEPS.length).padStart(2,'0')} · ${s.eb}`;
+  document.getElementById('tH').textContent=s.h; document.getElementById('tP').textContent=s.p;
+  document.getElementById('tCta').hidden=!s.cta;
+  tourKeys=s.keys; ride=null; s.go(); }
+function startTour(){ touring=true; document.body.classList.add('touring'); card.classList.remove('show'); document.getElementById('panel').classList.remove('open'); goStep(0); }
+function stopTour(){ touring=false; ride=null; tourKeys=null; hideBig(); document.body.classList.remove('touring'); }
+document.getElementById('playBtn').onclick=()=>touring?stopTour():startTour();
+document.getElementById('tStop').onclick=stopTour;
+document.getElementById('tNext').onclick=()=>goStep(step+1);
+document.getElementById('tPrev').onclick=()=>goStep(step-1);
+addEventListener('keydown',e=>{ if(!touring) return; if(e.key==='ArrowRight')goStep(step+1); if(e.key==='ArrowLeft')goStep(step-1); if(e.key==='Escape')stopTour(); });
+
+/* ================= VÒNG LẶP ================= */
+setMode('layers');
+const clock=new THREE.Clock(); const START=performance.now(); let introT=0, introFlown=false; const needle=document.getElementById('needle');
+const tmpA=new THREE.Vector3(), tmpB=new THREE.Vector3();
+function tick(){
+  const dt=Math.min(clock.getDelta(),.25), t=clock.elapsedTime, now=performance.now();
+  introT=Math.min((now-START)/2400,1.6);
+  if(!introFlown){ introFlown=true; flyRaw(HOME.pos,HOME.tgt,4200); }
+  explode+=(explodeTarget-explode)*Math.min(1,dt*3.2);
+  if(mode!=='terrain') layoutPlates(introT);
+  if(Math.abs(explodeTarget-explode)>.002 || (mode!=='terrain'&&introT<1.6)) buildCable();
+  build.t=Math.min(build.target? build.t+dt*.55 : 0, 2); build.mesh.visible=build.target>0 && build.t>0 && (mode==='terrain'||introT>1.1);
+  if(build.mesh.visible) layoutBuild();
+  layoutFlow(t);
+  if(ride && cableCurve){ const u=Math.min(1,(now-ride.s)/ride.ms), e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;
+    const p=cableCurve.getPointAt(Math.min(.999,e)), q=cableCurve.getPointAt(Math.min(1,e+.04));
+    tmpA.copy(p).sub(q).setY(0).normalize().multiplyScalar(13); tmpA.applyAxisAngle(new THREE.Vector3(0,1,0),.35); camera.position.lerp(tmpB.copy(p).add(tmpA).add(new THREE.Vector3(0,7,0)),.08);
+    controls.target.lerp(q.clone().add(new THREE.Vector3(0,-.6,0)),.12); fly=null; }
+  else if(fly){ const f=Math.min(1,(now-fly.s)/fly.ms), e=f<.5?4*f**3:1-Math.pow(-2*f+2,3)/2;
+    camera.position.lerpVectors(fly.p0,fly.p1,e); controls.target.lerpVectors(fly.t0,fly.t1,e); if(f>=1) fly=null; }
+  controls.update();
+  cableGroup.visible = showCable && mode!=='explode' && (mode==='terrain' || introT>1.05);
+  if(cableCurve&&cableGroup.visible){
+    cabins.forEach((c,k)=>{ if(ride&&k===0){ const u=Math.min(1,(now-ride.s)/ride.ms); const e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2; c.position.copy(cableCurve.getPointAt(Math.min(.999,e))); return; }
+      const u=(t*.035+c.userData.off)%1; c.position.copy(cableCurve.getPointAt(k%2?1-u:u)); });
+    spark.position.copy(cableCurve.getPointAt((t*.22)%1)); spark.material.color.setHSL(0,0,.85+.15*Math.sin(t*8)); }
+  cableGroup.children.forEach(o=>{if(o.userData.glow)o.material.opacity=ride?.12:.38;});
+  rings.forEach(m=>{ const u=((t*.45+m.userData.ph)%1); m.scale.setScalar(1+u*5); m.material.opacity=.65*(1-u); m.visible=cableGroup.visible; });
+  clouds.forEach(s=>{const u=s.userData; s.position.set(u.x+Math.sin(t*.05*u.sp+u.ph)*14, yOf(1150)+Math.sin(t*.3+u.ph)*1.2+(mode==='explode'?explode*GAP*EX*9:0), u.z+Math.cos(t*.04*u.sp+u.ph)*10); s.material.opacity=ride?.35:(mode==='terrain'?.72:.55);});
+  water.material.opacity=.82+Math.sin(t*1.3)*.05;
+  if(touring){ const s=STEPS[step], f=Math.min(1,(now-stepStart)/s.dur); tBar.children.forEach?.call; [...tBar.children].forEach((el,i)=>el.firstChild.style.transform=`scaleX(${i<step?1:i===step?f:0})`); if(f>=1){ if(step<STEPS.length-1) goStep(step+1); else stopTour(); } }
+  const az=Math.atan2(camera.position.x-controls.target.x, camera.position.z-controls.target.z); needle.style.transform=`rotate(${az*180/Math.PI}deg)`;
+  renderer.render(scene,camera); updateLabels();
+  requestAnimationFrame(tick);
+}
+tick();
+document.getElementById('loader').classList.add('done');
+setTimeout(countUp,600);
+setTimeout(()=>document.getElementById('hint').style.opacity=0,8000);
+</script>
+<script>
+setTimeout(function(){var l=document.getElementById('loader');if(l&&!l.classList.contains('done')){document.getElementById('err').style.display='block';}},14000);
+</script>
+</body>
+</html>
