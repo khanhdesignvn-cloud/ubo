@@ -190,17 +190,32 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 
 /* BÁO CHÍ */
 .press{background:var(--paper)}
-.outlets{display:flex;flex-wrap:wrap;gap:10px 34px;align-items:center;margin-top:34px;padding:22px 0;border-top:2px solid var(--line);border-bottom:2px solid var(--line)}
-.outlets .ol{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(20px,3vw,30px);color:#9AAACB;text-decoration:none;letter-spacing:.01em;transition:color .2s}
-.outlets .ol:hover,.outlets .ol:focus-visible{color:var(--pine)}
-.articles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
-@media(max-width:900px){.articles{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.articles{grid-template-columns:1fr}}
-.art{display:flex;flex-direction:column;gap:10px;padding:22px;border-radius:22px;background:var(--mist);text-decoration:none;color:var(--ink);min-height:170px;transition:transform .2s,background .2s}
-.art:hover{transform:translateY(-3px);background:#DCE6FA}
-.art small{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--sun)}
+.press .lead{max-width:640px}
+.outlets{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.outlets .ol{display:inline-flex;align-items:center;gap:10px;padding:8px 16px 8px 10px;border-radius:999px;background:#fff;border:1.5px solid var(--line);text-decoration:none;color:var(--ink);font-family:var(--display);font-weight:800;font-size:15px;transition:border-color .2s,transform .2s}
+.outlets .ol img{width:28px;height:28px;border-radius:50%;object-fit:cover;background:var(--mist)}
+.outlets .ol:hover{border-color:var(--pine);transform:translateY(-2px)}
+.articles{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}
+.art{display:flex;flex-direction:column;border-radius:22px;background:#fff;border:1.5px solid var(--line);overflow:hidden;text-decoration:none;color:var(--ink);transition:transform .2s,box-shadow .2s}
+.art:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(1,71,193,.14)}
+.art .th{position:relative;display:block;aspect-ratio:16/9;background:var(--mist);overflow:hidden}
+.art .th img:first-child{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.art:hover .th img:first-child{transform:scale(1.04)}
+.art .th.nf img:first-child{display:none}
+.art .th.nf{background:linear-gradient(135deg,var(--pine),#4C86F0)}
+.art .src{position:absolute;left:12px;top:12px;display:inline-flex;align-items:center;gap:7px;padding:5px 11px 5px 6px;border-radius:999px;background:rgba(255,255,255,.94);font-family:var(--display);font-weight:800;font-size:12.5px;color:var(--night);backdrop-filter:blur(6px)}
+.art .src img{width:18px;height:18px;border-radius:50%;object-fit:cover}
+.art .bd{display:flex;flex-direction:column;gap:8px;padding:18px 20px 20px;flex:1}
+.art time{font-size:12.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--sun)}
 .art b{font-size:18px;line-height:1.35;font-weight:700;text-wrap:balance}
-.art span{margin-top:auto;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:13px;color:var(--pine)}
+.art .by{font-size:13.5px;color:var(--muted)}
+.art .rd{margin-top:auto;padding-top:8px;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:13px;color:var(--pine)}
+.art.feat{grid-column:span 2;flex-direction:row}
+.art.feat .th{flex:1.15;aspect-ratio:auto;min-height:260px}
+.art.feat .bd{flex:1;padding:28px;justify-content:center}
+.art.feat b{font-size:clamp(22px,2.4vw,30px)}
+@media(max-width:900px){.articles{grid-template-columns:1fr 1fr}.art.feat{flex-direction:column}.art.feat .th{aspect-ratio:16/9;min-height:0}}
+@media(max-width:560px){.articles{grid-template-columns:1fr}.art.feat{grid-column:auto}}
 
 /* MOOD */
 .mood{background:var(--mist)}
@@ -424,6 +439,49 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   </div>
 </section>
 
+<section class="press" id="bao-chi">
+  <div class="wrap">
+    <div class="press-head rv">
+      <div class="eyebrow">Tổng hợp báo chí</div>
+      <h2 class="h2">Báo chí viết<br>về U Bò.</h2>
+      <p class="lead">ubo.vn tổng hợp các bài đã đăng trên báo chí chính thống. Bấm vào từng bài để đọc bản gốc tại toà soạn.</p>
+    </div>
+    <div class="outlets rv" aria-label="Các báo đã đưa tin">
+      <a href="https://tienphong.vn/" target="_blank" rel="noopener" class="ol"><img src="https://www.google.com/s2/favicons?domain=tienphong.vn&sz=64" alt="" width="28" height="28" loading="lazy" referrerpolicy="no-referrer"><span>Tiền Phong</span></a>
+      <a href="https://www.vietnamplus.vn/" target="_blank" rel="noopener" class="ol"><img src="https://www.google.com/s2/favicons?domain=vietnamplus.vn&sz=64" alt="" width="28" height="28" loading="lazy" referrerpolicy="no-referrer"><span>VietnamPlus</span></a>
+      <a href="https://baodautu.vn/" target="_blank" rel="noopener" class="ol"><img src="https://www.google.com/s2/favicons?domain=baodautu.vn&sz=64" alt="" width="28" height="28" loading="lazy" referrerpolicy="no-referrer"><span>Báo Đầu tư</span></a>
+      <a href="https://nhandan.vn/" target="_blank" rel="noopener" class="ol"><img src="https://www.google.com/s2/favicons?domain=nhandan.vn&sz=64" alt="" width="28" height="28" loading="lazy" referrerpolicy="no-referrer"><span>Nhân Dân</span></a>
+      <a href="https://vneconomy.vn/quang-tri-tang-truong-grdp-842-sau-9-thang.htm" target="_blank" rel="noopener" class="ol"><img src="https://www.google.com/s2/favicons?domain=vneconomy.vn&sz=64" alt="" width="28" height="28" loading="lazy" referrerpolicy="no-referrer"><span>VnEconomy</span></a>
+    </div>
+    <div class="articles">
+      <a class="art rv feat" href="https://tienphong.vn/u-bo-may-phu-thac-chuoi-soi-troi-post1887166.tpo" target="_blank" rel="noopener">
+        <span class="th"><img src="https://cdn.tienphong.vn/images/vfxVTqNZg61oqW4AULbiy3bU7HsD4qwI83eH2bHLtadKJ0BQreyAhFg3c2w1no0SVea1Jf--KVz20FV3kKao1rzyG0nZJRnIsmgYwyZ4410/ee768865-ae73-40f3-8ccc-92da366ceb73.png.webp" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('nf')"><span class="src"><img src="https://www.google.com/s2/favicons?domain=tienphong.vn&sz=64" alt="" width="18" height="18" referrerpolicy="no-referrer">Tiền Phong</span></span>
+        <span class="bd"><time datetime="2026-10-21">21/10/2026</time><b>U Bò mây phủ, Thác Chuối soi trời</b><span class="by">Hoàng Nam · Tiền Phong</span><span class="rd">Đọc bài ↗</span></span>
+      </a>
+      <a class="art rv" href="https://baodautu.vn/quang-tri-phe-duyet-quy-hoach-chi-tiet-du-an-nui-u-bo-ho-thac-chuoi-d725073.html" target="_blank" rel="noopener">
+        <span class="th"><img src="https://media.baodautu.vn/Images/ngoctan/2026/10/16/quang-tri-phe-duyet-quy-hoach-chi-tiet-du-an-nui-u-bo--ho-thac-chuoi1792141424.jpg" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('nf')"><span class="src"><img src="https://www.google.com/s2/favicons?domain=baodautu.vn&sz=64" alt="" width="18" height="18" referrerpolicy="no-referrer">Báo Đầu tư</span></span>
+        <span class="bd"><time datetime="2026-10-17">17/10/2026</time><b>Quảng Trị phê duyệt quy hoạch chi tiết dự án du lịch núi U Bò – hồ Thác Chuối</b><span class="by">Ngọc Tân · Báo Đầu tư</span><span class="rd">Đọc bài ↗</span></span>
+      </a>
+      <a class="art rv" href="https://www.vietnamplus.vn/du-an-u-bo-thac-chuoi-ngon-co-dong-luc-moi-cua-du-lich-quang-tri-post1138843.vnp" target="_blank" rel="noopener">
+        <span class="th"><img src="https://media.vietnamplus.vn/images/wU9keeg-MVtM86KQbMalHpz8XwrT53AyppEuD01fPkBx6nH-bKo3RNFOrXmK1xmGp09rG_5wsyA3cseXkCDO-g/thac-chuoi.png.webp" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('nf')"><span class="src"><img src="https://www.google.com/s2/favicons?domain=vietnamplus.vn&sz=64" alt="" width="18" height="18" referrerpolicy="no-referrer">VietnamPlus</span></span>
+        <span class="bd"><time datetime="2026-09-28">28/09/2026</time><b>Dự án U Bò – Thác Chuối: “Ngọn cờ”, “động lực” mới của du lịch Quảng Trị?</b><span class="by">Hi Trang · VietnamPlus</span><span class="rd">Đọc bài ↗</span></span>
+      </a>
+      <a class="art rv" href="https://tienphong.vn/dua-du-an-du-lich-trong-diem-o-quang-tri-vao-luong-xanh-post1879367.tpo" target="_blank" rel="noopener">
+        <span class="th"><img src="https://cdn.tienphong.vn/images/vfxVTqNZg61oqW4AULbiyw9IeS7O6lL1H0qtpCGvePBtvXwkxhRyDOlcYBejOfYp1LL0KRVMUxoovKOQmxWa7uHqS9OcaVcztROjmF3-tj8/dji-20260408093909-0523-d.jpg.webp" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('nf')"><span class="src"><img src="https://www.google.com/s2/favicons?domain=tienphong.vn&sz=64" alt="" width="18" height="18" referrerpolicy="no-referrer">Tiền Phong</span></span>
+        <span class="bd"><time datetime="2026-09-24">24/09/2026</time><b>Đưa dự án du lịch trọng điểm ở Quảng Trị vào “luồng xanh”</b><span class="by">Hoàng Nam · Tiền Phong</span><span class="rd">Đọc bài ↗</span></span>
+      </a>
+      <a class="art rv" href="https://nhandan.vn/gac-rung-tren-dinh-u-bo-post961167.html" target="_blank" rel="noopener">
+        <span class="th"><img src="https://cdn.nhandan.vn/images/IvCZyovHroGqKo00FqhL-PEXcIZJ4_w9kcXZtZMYmYBiw7hq3jD9HbR2IzaxNL3KwKrwvp0VhSoB4MQ-YZbYkA/quang-tri.png.webp" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('nf')"><span class="src"><img src="https://www.google.com/s2/favicons?domain=nhandan.vn&sz=64" alt="" width="18" height="18" referrerpolicy="no-referrer">Nhân Dân</span></span>
+        <span class="bd"><time datetime="2026-05-10">10/05/2026</time><b>Gác rừng trên đỉnh U Bò</b><span class="by">Hương Giang · Nhân Dân</span><span class="rd">Đọc bài ↗</span></span>
+      </a>
+      <a class="art rv" href="https://nhandan.vn/kham-pha-cung-duong-dep-nhu-tranh-giua-dai-ngan-truong-son-post865093.html" target="_blank" rel="noopener">
+        <span class="th"><img src="https://cdn.nhandan.vn/images/IvCZyovHroGqKo00FqhL-DZMLcfLFywYTnYuu8LLdUsGeu2uGZPyXARhjUG9usmAkcaWowg9uphts9-ZLdlZBPxm0Vl5uoBstWMxT1SICF74jVzvmC1vApDKXdJa0v2bpI7wXeEsZcnIcPkA1e_KHUDo55Gs2JPdNR05BBoO8MQ/duong-ho-chi-minh-nhanh-tay-qua-huyen-le-thuy-tinh-quang-binh-3713-9987.jpg.webp" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('nf')"><span class="src"><img src="https://www.google.com/s2/favicons?domain=nhandan.vn&sz=64" alt="" width="18" height="18" referrerpolicy="no-referrer">Nhân Dân</span></span>
+        <span class="bd"><time datetime="2025-03-14">14/03/2025</time><b>Khám phá cung đường đẹp như tranh giữa đại ngàn Trường Sơn</b><span class="by">Hương Giang · Nhân Dân</span><span class="rd">Đọc bài ↗</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
 <section class="mood" id="trai-nghiem">
   <div class="wrap">
     <div class="rv">
@@ -590,29 +648,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   </div>
 </section>
 
-<section class="press" id="bao-chi">
-  <div class="wrap">
-    <div class="press-head rv">
-      <div class="eyebrow">Báo chí</div>
-      <h2 class="h2">Báo chí viết<br>về U Bò.</h2>
-    </div>
-    <div class="outlets rv" aria-label="Các báo đã đưa tin">
-      <a href="https://tienphong.vn/u-bo-may-phu-thac-chuoi-soi-troi-post1887166.tpo" target="_blank" rel="noopener" class="ol">Tiền Phong</a>
-      <a href="https://www.vietnamplus.vn/du-an-u-bo-thac-chuoi-ngon-co-dong-luc-moi-cua-du-lich-quang-tri-post1138843.vnp" target="_blank" rel="noopener" class="ol">VietnamPlus</a>
-      <a href="https://baodautu.vn/quang-tri-phe-duyet-quy-hoach-chi-tiet-du-an-nui-u-bo-ho-thac-chuoi-d725073.html" target="_blank" rel="noopener" class="ol">Báo Đầu tư</a>
-      <a href="https://nhandan.vn/gac-rung-tren-dinh-u-bo-post961167.html" target="_blank" rel="noopener" class="ol">Nhân Dân</a>
-      <a href="https://vneconomy.vn/quang-tri-tang-truong-grdp-842-sau-9-thang.htm" target="_blank" rel="noopener" class="ol">VnEconomy</a>
-    </div>
-    <div class="articles">
-      <a class="art rv" href="https://tienphong.vn/u-bo-may-phu-thac-chuoi-soi-troi-post1887166.tpo" target="_blank" rel="noopener"><small>Tiền Phong</small><b>U Bò mây phủ, Thác Chuối soi trời</b><span>Đọc bài ↗</span></a>
-      <a class="art rv" href="https://www.vietnamplus.vn/du-an-u-bo-thac-chuoi-ngon-co-dong-luc-moi-cua-du-lich-quang-tri-post1138843.vnp" target="_blank" rel="noopener"><small>VietnamPlus</small><b>Dự án U Bò – Thác Chuối: “Ngọn cờ”, “động lực” mới của du lịch Quảng Trị?</b><span>Đọc bài ↗</span></a>
-      <a class="art rv" href="https://baodautu.vn/quang-tri-phe-duyet-quy-hoach-chi-tiet-du-an-nui-u-bo-ho-thac-chuoi-d725073.html" target="_blank" rel="noopener"><small>Báo Đầu tư</small><b>Quảng Trị phê duyệt quy hoạch chi tiết dự án núi U Bò – hồ Thác Chuối</b><span>Đọc bài ↗</span></a>
-      <a class="art rv" href="https://tienphong.vn/dua-du-an-du-lich-trong-diem-o-quang-tri-vao-luong-xanh-post1879367.tpo" target="_blank" rel="noopener"><small>Tiền Phong</small><b>Đưa dự án du lịch trọng điểm ở Quảng Trị vào “luồng xanh”</b><span>Đọc bài ↗</span></a>
-      <a class="art rv" href="https://nhandan.vn/gac-rung-tren-dinh-u-bo-post961167.html" target="_blank" rel="noopener"><small>Nhân Dân</small><b>Gác rừng trên đỉnh U Bò</b><span>Đọc bài ↗</span></a>
-      <a class="art rv" href="https://nhandan.vn/kham-pha-cung-duong-dep-nhu-tranh-giua-dai-ngan-truong-son-post865093.html" target="_blank" rel="noopener"><small>Nhân Dân</small><b>Khám phá cung đường đẹp như tranh giữa đại ngàn Trường Sơn</b><span>Đọc bài ↗</span></a>
-    </div>
-  </div>
-</section>
 
 <footer>
   <div class="wrap">
