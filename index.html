@@ -75,28 +75,36 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 .hero p.sub{color:rgba(255,255,255,.82);max-width:520px;font-size:17px}
 .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
 /* SCENE */
-.scene{width:100%;height:auto;display:block;border-radius:30px;box-shadow:0 30px 60px rgba(0,0,0,.25)}
+.scene-wrap{position:relative;overflow:visible}
+.scene{width:100%;height:auto;display:block;overflow:visible}
+@media(min-width:901px){.scene{width:118%;margin:-8% -9% -5%}}
+.scene .island{animation:bob 7s ease-in-out infinite}
+.scene .shadow{transform-box:fill-box;transform-origin:center;animation:shade 7s ease-in-out infinite}
 .scene .cl1{animation:cdrift 38s ease-in-out infinite alternate}
 .scene .cl2{animation:cdrift 46s ease-in-out infinite alternate-reverse}
 .scene .cl3{animation:cdrift 30s ease-in-out infinite alternate}
-.scene .cl4{animation:cpass 90s linear infinite}
+.scene .cl4{animation:cpass 80s linear infinite}
+.scene .cl5{animation:cpass 110s linear infinite;animation-delay:-50s}
 .scene .lyr1{animation:sway 14s ease-in-out infinite alternate}
 .scene .lyr2{animation:sway 11s ease-in-out infinite alternate-reverse}
-.scene .lyr3{animation:sway 9s ease-in-out infinite alternate}
 .scene .sun circle:first-child{transform-box:fill-box;transform-origin:center;animation:glow 5s ease-in-out infinite alternate}
+.scene .sp circle{animation:tw 4s ease-in-out infinite}
+.scene .sp circle:nth-child(2n){animation-delay:-1.3s}.scene .sp circle:nth-child(3n){animation-delay:-2.6s;animation-duration:5s}
 .scene .rip path{stroke-dasharray:14 10;animation:rip 3s linear infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes shade{0%,100%{transform:scale(1);opacity:.55}50%{transform:scale(.88);opacity:.35}}
 @keyframes cdrift{to{transform:translateX(70px)}}
-@keyframes cpass{from{transform:translateX(0)}to{transform:translateX(920px)}}
-@keyframes sway{from{transform:translateX(-6px)}to{transform:translateX(6px)}}
-@keyframes glow{to{transform:scale(1.12)}}
+@keyframes cpass{from{transform:translateX(0)}to{transform:translateX(960px)}}
+@keyframes sway{from{transform:translateX(-4px)}to{transform:translateX(4px)}}
+@keyframes glow{to{transform:scale(1.15)}}
+@keyframes tw{0%,100%{opacity:.15;transform:translateY(0)}50%{opacity:.9;transform:translateY(-6px)}}
 @keyframes rip{to{stroke-dashoffset:-24}}
 @media(prefers-reduced-motion:reduce){.scene *{animation:none!important}}
-.scene-wrap{position:relative}
-.scene-wrap .chip{position:absolute;background:var(--night,#061A45);color:#fff;font-family:var(--display,sans-serif);font-weight:800;font-size:clamp(10px,1.1vw,13px);letter-spacing:.04em;text-transform:uppercase;padding:6px 11px 5px;border-radius:999px;white-space:nowrap;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.scene-wrap .chip{position:absolute;background:var(--night,#061A45);color:#fff;font-family:var(--display,sans-serif);font-weight:800;font-size:clamp(10px,1.1vw,13px);letter-spacing:.04em;text-transform:uppercase;padding:6px 11px 5px;border-radius:999px;white-space:nowrap;box-shadow:0 6px 16px rgba(0,0,0,.25);animation:bob 7s ease-in-out infinite}
 @media(max-width:900px){.scene-wrap .chip{font-size:clamp(10px,2.6vw,13px)}}
-.scene-wrap .chip.top{right:4%;top:26%}
-.scene-wrap .chip.lake{left:3.5%;top:69%}
-.scene-cap{margin-top:14px;font-size:13px;color:rgba(255,255,255,.7);text-align:center}
+.scene-wrap .chip.top{right:4%;top:25%}
+.scene-wrap .chip.lake{left:3%;top:60%}
+.scene-cap{margin-top:6px;font-size:13px;color:rgba(255,255,255,.7);text-align:center}
 
 /* TICKER */
 .ticker{background:var(--sun);color:#fff;overflow:hidden;white-space:nowrap;padding:16px 0 12px}
@@ -351,73 +359,81 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
       </div>
     </div>
     <div>
-      <div class="scene-wrap rv"><svg class="scene" viewBox="0 0 800 600" role="img" aria-label="Minh hoạ cáp treo chạy từ hồ Thác Chuối lên đỉnh U Bò" xmlns="http://www.w3.org/2000/svg">
+      <div class="scene-wrap rv"><svg class="scene" viewBox="0 0 800 660" role="img" aria-label="Sa bàn núi U Bò lơ lửng với cáp treo chạy từ hồ Thác Chuối lên đỉnh" xmlns="http://www.w3.org/2000/svg">
 <defs>
-  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#07226A"/><stop offset=".55" stop-color="#1A4BB5"/><stop offset="1" stop-color="#4C86F0"/></linearGradient>
-  <linearGradient id="lake" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9DBAF2"/><stop offset="1" stop-color="#4C86F0"/></linearGradient>
-  <radialGradient id="glow"><stop offset="0" stop-color="#FFE8E3" stop-opacity=".55"/><stop offset="1" stop-color="#FFE8E3" stop-opacity="0"/></radialGradient>
-  <linearGradient id="haze" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9DBAF2" stop-opacity="0"/><stop offset="1" stop-color="#9DBAF2" stop-opacity=".9"/></linearGradient>
-  <clipPath id="clip"><rect width="800" height="600" rx="30"/></clipPath>
-  <path id="cab" d="M150 470 C300 430 420 330 545 190"/>
-  <path id="cab2" d="M150 482 C300 442 420 342 545 202"/>
-  <g id="cabin"><path d="M0 0V18" stroke="#061A45" stroke-width="3" stroke-linecap="round"/><rect x="-13" y="18" width="26" height="24" rx="7" fill="#FF412B"/><rect x="-9" y="23" width="8" height="8" rx="2" fill="#FFE8E3"/><rect x="1" y="23" width="8" height="8" rx="2" fill="#FFE8E3"/><rect x="-13" y="36" width="26" height="6" rx="3" fill="#C92F1E"/></g>
+  <radialGradient id="glow"><stop offset="0" stop-color="#FFE8E3" stop-opacity=".5"/><stop offset="1" stop-color="#FFE8E3" stop-opacity="0"/></radialGradient>
+  <linearGradient id="top" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2B63D6"/><stop offset="1" stop-color="#1F52BC"/></linearGradient>
+  <linearGradient id="side" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B2458"/><stop offset="1" stop-color="#061A45"/></linearGradient>
+  <linearGradient id="lake" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B9CDF6"/><stop offset="1" stop-color="#6FA4FF"/></linearGradient>
+  <filter id="blur" x="-30%" y="-80%" width="160%" height="260%"><feGaussianBlur stdDeviation="12"/></filter>
+  <path id="cab" d="M240 505 C360 470 440 330 545 190"/>
+  <path id="cab2" d="M240 517 C360 482 440 342 545 202"/>
+  <g id="cabin"><path d="M0 0V16" stroke="#061A45" stroke-width="3" stroke-linecap="round"/><rect x="-12" y="16" width="24" height="22" rx="6" fill="#FF412B"/><rect x="-8" y="21" width="7" height="7" rx="2" fill="#FFE8E3"/><rect x="1" y="21" width="7" height="7" rx="2" fill="#FFE8E3"/><rect x="-12" y="33" width="24" height="5" rx="2.5" fill="#C92F1E"/></g>
   <g id="cloud"><path d="M20 44Q4 44 4 31Q4 18 20 18Q24 4 42 4Q56 4 61 17Q66 12 74 12Q90 12 90 29Q90 44 76 44Z" fill="#fff"/></g>
   <g id="tree"><path d="M0 -26 12 -8H6L16 10H-16L-6 -8H-12Z" fill="#061A45"/><rect x="-2.5" y="9" width="5" height="7" rx="2" fill="#061A45"/></g>
 </defs>
-<g clip-path="url(#clip)">
-  <rect width="800" height="600" fill="url(#sky)"/>
-  <!-- mặt trời -->
-  <g class="sun"><circle cx="690" cy="104" r="120" fill="url(#glow)"/><circle cx="690" cy="104" r="40" fill="#FF412B"/></g>
-  <!-- mây sau -->
-  <g class="cl cl1" opacity=".55"><use href="#cloud" transform="translate(40 120) scale(1.3)"/></g>
-  <g class="cl cl2" opacity=".4"><use href="#cloud" transform="translate(420 70) scale(.9)"/></g>
+<!-- mặt trời -->
+<g class="sun"><circle cx="690" cy="118" r="130" fill="url(#glow)"/><circle cx="690" cy="118" r="40" fill="#FF412B"/></g>
+<!-- hạt sáng -->
+<g class="sp" fill="#FFE8E3"><circle cx="90" cy="200" r="3"/><circle cx="160" cy="90" r="2"/><circle cx="330" cy="130" r="2.5"/><circle cx="600" cy="260" r="2"/><circle cx="760" cy="330" r="3"/><circle cx="60" cy="560" r="2"/><circle cx="740" cy="560" r="2.5"/><circle cx="480" cy="60" r="2"/></g>
+<!-- mây sau -->
+<g class="cl cl1" opacity=".5"><use href="#cloud" transform="translate(30 150) scale(1.3)"/></g>
+<g class="cl cl2" opacity=".35"><use href="#cloud" transform="translate(430 60) scale(.9)"/></g>
+<!-- bóng đổ -->
+<ellipse class="shadow" cx="400" cy="632" rx="260" ry="22" fill="#020B24" opacity=".55" filter="url(#blur)"/>
+<!-- đảo sa bàn -->
+<g class="island">
+  <!-- thành đảo -->
+  <path d="M40 470 C40 560 170 625 400 625 C630 625 760 560 760 470 Z" fill="url(#side)"/>
+  <path d="M70 520 C150 585 280 612 400 612 C520 612 650 585 730 520" fill="none" stroke="#163C8C" stroke-width="2" opacity=".7"/>
+  <path d="M55 496 C140 560 270 590 400 590 C530 590 660 560 745 496" fill="none" stroke="#163C8C" stroke-width="2" opacity=".5"/>
+  <!-- mặt đảo -->
+  <ellipse cx="400" cy="470" rx="360" ry="110" fill="url(#top)"/>
+  <!-- đường đồng mức -->
+  <g fill="none" stroke="#6FA4FF" stroke-width="1.6" opacity=".55">
+    <ellipse cx="500" cy="462" rx="230" ry="62"/><ellipse cx="510" cy="458" rx="170" ry="44"/><ellipse cx="520" cy="454" rx="110" ry="28"/>
+  </g>
+  <!-- hồ -->
+  <ellipse cx="185" cy="478" rx="120" ry="40" fill="url(#lake)"/>
+  <g class="rip" stroke="#fff" stroke-width="2.5" stroke-linecap="round" fill="none" opacity=".75">
+    <path d="M110 470q12-6 24 0t24 0t24 0"/><path d="M190 490q12-6 24 0t24 0"/><path d="M230 466q12-6 24 0t24 0"/>
+  </g>
   <!-- dãy xa -->
   <g class="lyr lyr1">
-    <path d="M-20 420 120 330 220 380 330 290 430 350 520 270 640 330 720 300 820 360V600H-20Z" fill="#4C86F0"/>
-    <path d="M120 330 220 380 120 420Z M330 290 430 350 330 400Z M520 270 640 330 520 390Z M720 300 820 360 720 420Z" fill="#6FA4FF" opacity=".55"/>
+    <path d="M140 452 230 350 330 400 430 300 520 360 620 290 700 350 740 452Z" fill="#4C86F0"/>
+    <path d="M230 350 330 400 230 452Z M430 300 520 360 430 452Z M620 290 700 350 620 440Z" fill="#6FA4FF" opacity=".55"/>
   </g>
-  <rect x="0" y="300" width="800" height="300" fill="url(#haze)" opacity=".5"/>
   <!-- đỉnh U Bò -->
   <g class="lyr lyr2">
-    <path d="M330 470 545 190 700 330 820 290V600H330Z" fill="#1F52BC"/>
+    <path d="M330 470 545 190 730 470Z" fill="#1F52BC"/>
     <path d="M330 470 545 190 560 470Z" fill="#2B63D6"/>
-    <path d="M545 190 700 330 760 470 560 470Z" fill="#17429E"/>
+    <path d="M545 190 730 470 560 470Z" fill="#17429E"/>
     <path d="M545 190 575 238 556 230 540 246 524 232 512 240Z" fill="#E8EEFB"/>
-    
   </g>
-  <!-- đồi gần + hồ -->
-  <g class="lyr lyr3">
-    <path d="M-20 520 80 470 180 500 260 440 340 480 400 440 460 470 520 450 600 500 700 460 820 500V600H-20Z" fill="#0B2458"/>
-    <path d="M260 440 340 480 260 520Z M400 440 460 470 400 500Z M600 500 700 460 600 540Z" fill="#163C8C" opacity=".6"/>
-    <ellipse cx="140" cy="548" rx="165" ry="30" fill="url(#lake)"/>
-    <g class="rip" stroke="#E8EEFB" stroke-width="3" stroke-linecap="round" fill="none" opacity=".8">
-      <path d="M60 532q12-6 24 0t24 0t24 0"/><path d="M150 552q12-6 24 0t24 0"/><path d="M210 528q12-6 24 0t24 0"/>
-    </g>
-    <use href="#tree" transform="translate(70 495) scale(.8)"/><use href="#tree" transform="translate(300 486) scale(.7)"/><use href="#tree" transform="translate(330 500)"/><use href="#tree" transform="translate(640 510) scale(.9)"/><use href="#tree" transform="translate(680 500) scale(.7)"/>
-  </g>
+  <!-- đồi gần -->
+  <path d="M560 500 630 452 690 480 740 460 760 500Z" fill="#0B2458"/>
+  <path d="M400 500 450 468 500 490 540 476 575 505Z" fill="#163C8C"/>
+  <use href="#tree" transform="translate(330 500) scale(.8)"/><use href="#tree" transform="translate(360 515) scale(.9)"/><use href="#tree" transform="translate(620 520)"/><use href="#tree" transform="translate(660 505) scale(.8)"/><use href="#tree" transform="translate(120 530) scale(.8)"/><use href="#tree" transform="translate(90 510) scale(.6)"/>
   <!-- cáp treo -->
   <g class="cable">
-    <path d="M310 396v84M296 398h28M433 302v120M419 304h28" stroke="#061A45" stroke-width="5" stroke-linecap="round"/>
+    <path d="M348 442v70M336 444h24M444 331v150M432 333h24" stroke="#061A45" stroke-width="5" stroke-linecap="round"/>
     <use href="#cab" stroke="#061A45" stroke-width="3" fill="none"/>
     <use href="#cab2" stroke="#061A45" stroke-width="3" fill="none" opacity=".55"/>
-    <!-- cabin lên -->
     <g><animateMotion dur="16s" repeatCount="indefinite" begin="0s"><mpath href="#cab"/></animateMotion><use href="#cabin"/></g>
     <g><animateMotion dur="16s" repeatCount="indefinite" begin="-5.3s"><mpath href="#cab"/></animateMotion><use href="#cabin"/></g>
     <g><animateMotion dur="16s" repeatCount="indefinite" begin="-10.6s"><mpath href="#cab"/></animateMotion><use href="#cabin"/></g>
-    <!-- cabin xuống -->
     <g opacity=".85"><animateMotion dur="16s" repeatCount="indefinite" begin="-2.6s" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#cab2"/></animateMotion><use href="#cabin" transform="scale(.9)"/></g>
     <g opacity=".85"><animateMotion dur="16s" repeatCount="indefinite" begin="-7.9s" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#cab2"/></animateMotion><use href="#cabin" transform="scale(.9)"/></g>
     <g opacity=".85"><animateMotion dur="16s" repeatCount="indefinite" begin="-13.2s" keyPoints="1;0" keyTimes="0;1" calcMode="linear"><mpath href="#cab2"/></animateMotion><use href="#cabin" transform="scale(.9)"/></g>
-    <!-- ga hồ -->
-    <rect x="118" y="462" width="64" height="30" rx="8" fill="#FFE8E3"/><rect x="128" y="470" width="44" height="6" rx="3" fill="#0147C1"/>
-    <!-- ga đỉnh -->
+    <rect x="208" y="498" width="64" height="30" rx="8" fill="#FFE8E3"/><rect x="218" y="506" width="44" height="6" rx="3" fill="#0147C1"/>
     <rect x="515" y="176" width="62" height="30" rx="8" fill="#FFE8E3"/><rect x="525" y="184" width="42" height="6" rx="3" fill="#0147C1"/>
   </g>
-  <!-- mây trước đỉnh -->
-  <g class="cl cl3" opacity=".9"><use href="#cloud" transform="translate(470 250) scale(1.1)"/></g>
-  <!-- mây trước -->
-  <g class="cl cl4"><use href="#cloud" transform="translate(-60 330) scale(.7)"/></g>
+  <!-- mây quanh đỉnh -->
+  <g class="cl cl3" opacity=".95"><use href="#cloud" transform="translate(470 262) scale(1.05)"/></g>
 </g>
+<!-- mây trước -->
+<g class="cl cl4"><use href="#cloud" transform="translate(-80 540) scale(.75)"/></g>
+<g class="cl cl5" opacity=".8"><use href="#cloud" transform="translate(620 430) scale(.55)"/></g>
 </svg>
 <span class="chip top">Ga đỉnh · 1.000 m</span><span class="chip lake">Ga hồ · 70 m</span></div>
       <p class="scene-cap">Cáp treo dự kiến ~6 km · chênh cao ~930 m · 7 phân khu</p>
