@@ -147,6 +147,10 @@ body.touring .card{opacity:0!important;pointer-events:none!important}
 .loader .d{font-size:30px;text-align:center}
 .loader p{margin:10px 0 0;text-align:center;color:rgba(255,255,255,.7);font-size:14px}
 .err{display:none;max-width:420px;margin:16px auto 0;text-align:center;color:#FFC4BB;font-size:14px}
+body.embed .brand{visibility:hidden}
+body.embed .loader{background:transparent}body.embed .loader svg,body.embed .loader .d,body.embed .loader p{visibility:hidden}
+.hint.force{display:block;opacity:1}
+@media(max-width:760px){body.embed .brand{display:none}body.embed .top{justify-content:flex-end}body.embed .panel{bottom:calc(60px + env(safe-area-inset-bottom,0px))}body.embed .compass{bottom:calc(130px + env(safe-area-inset-bottom,0px))}.hint.force{bottom:calc(120px + env(safe-area-inset-bottom,0px))}}
 @media(prefers-reduced-motion:reduce){.play,.loader svg{animation:none}}
 </style>
 <script type="importmap">
@@ -305,7 +309,11 @@ const camera = new THREE.PerspectiveCamera(38, innerWidth/innerHeight, 1, 2000);
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true; controls.dampingFactor = .07;
 controls.maxPolarAngle = Math.PI*0.47; controls.minDistance = 18; controls.maxDistance = 420;
-controls.autoRotate = true; controls.autoRotateSpeed = .45;
+controls.autoRotate = true; controls.autoRotateSpeed = .45; controls.rotateSpeed = .7; controls.zoomSpeed = .8;
+const EMBED = /[?&]embed=1/.test(location.search);
+if (EMBED){ document.body.classList.add('embed');
+  if (matchMedia('(pointer:coarse)').matches){ controls.touches.ONE = null; renderer.domElement.style.touchAction = 'pan-y';
+    const h=document.getElementById('hint'); h.textContent='Dùng 2 ngón để xoay · chụm để phóng to'; h.classList.add('force'); setTimeout(()=>h.classList.remove('force'),6000); } }
 const MOBILE = innerWidth<760;
 const HOME = {pos:new THREE.Vector3(-70,120,175), tgt:new THREE.Vector3(0,6,0)};
 if (MOBILE){ HOME.tgt.set(-10,6,2); HOME.pos.set(150,165,95); }
@@ -761,6 +769,7 @@ function tick(){
 }
 tick();
 document.getElementById('loader').classList.add('done');
+try{ if(window.parent!==window) parent.postMessage({ubo:'ready'},'*'); }catch(e){}
 setTimeout(countUp,600);
 setTimeout(()=>document.getElementById('hint').style.opacity=0,8000);
 </script>
