@@ -218,12 +218,8 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 .art b{font-size:18px;line-height:1.35;font-weight:700;text-wrap:balance}
 .art .by{font-size:13.5px;color:var(--muted)}
 .art .rd{margin-top:auto;padding-top:8px;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:13px;color:var(--pine)}
-.art.feat{grid-column:span 2;flex-direction:row}
-.art.feat .th{flex:1.15;aspect-ratio:auto;min-height:260px}
-.art.feat .bd{flex:1;padding:28px;justify-content:center}
-.art.feat b{font-size:clamp(22px,2.4vw,30px)}
-@media(max-width:900px){.articles{grid-template-columns:1fr 1fr}.art.feat{flex-direction:column}.art.feat .th{aspect-ratio:16/9;min-height:0}}
-@media(max-width:560px){.articles{grid-template-columns:1fr}.art.feat{grid-column:auto}}
+@media(max-width:900px){.articles{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.articles{grid-template-columns:1fr}}
 
 /* MOOD */
 .mood{background:var(--mist)}
@@ -322,6 +318,29 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
 .totop{position:fixed;right:16px;bottom:16px;z-index:40;background:var(--sun);color:var(--night);width:52px;height:52px;border-radius:50%;display:grid;place-items:center;text-decoration:none;font-weight:800;font-size:20px;box-shadow:0 8px 24px rgba(15,42,35,.25);opacity:0;pointer-events:none;transition:opacity .3s}
 .totop.show{opacity:1;pointer-events:auto}
 
+/* LIÊN HỆ BÊN HÔNG */
+.dock{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:45;display:flex;align-items:center}
+.dock-tab{writing-mode:vertical-rl;transform:rotate(180deg);border:0;cursor:pointer;background:var(--sun);color:#fff;font-family:var(--display);font-weight:900;text-transform:uppercase;letter-spacing:.08em;font-size:13px;padding:18px 12px 18px 11px;border-radius:0 16px 16px 0;box-shadow:0 10px 30px rgba(0,0,0,.25);display:flex;align-items:center;gap:10px;transition:background .2s}
+.dock-tab:hover{background:#E6371F}
+.dock-tab i{display:block;width:9px;height:9px;border-radius:50%;background:#fff;animation:dockPulse 2s ease-in-out infinite}
+@keyframes dockPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.6)}50%{box-shadow:0 0 0 7px rgba(255,255,255,0)}}
+.dock-panel{position:absolute;right:calc(100% + 12px);top:50%;transform:translate(16px,-50%) scale(.96);opacity:0;pointer-events:none;width:min(320px,calc(100vw - 80px));background:#fff;color:var(--ink);border-radius:24px;padding:22px;box-shadow:0 30px 70px rgba(6,26,69,.35);transition:opacity .25s,transform .25s}
+.dock.open .dock-panel{opacity:1;pointer-events:auto;transform:translate(0,-50%) scale(1)}
+.dock-panel .who{display:flex;gap:14px;align-items:center;padding-right:28px}
+.dock-panel .av{width:54px;height:54px;border-radius:50%;background:var(--pine);color:#fff;display:grid;place-items:center;font-family:var(--display);font-weight:900;font-size:20px;flex:none}
+.dock-panel .who b{display:block;font-family:var(--display);font-weight:900;font-size:19px;line-height:1.1;text-transform:uppercase}
+.dock-panel .who span{display:block;font-size:13px;color:var(--muted);margin-top:4px}
+.dock-panel p{font-size:14px;line-height:1.5;color:var(--muted);margin:14px 0 16px}
+.dock-panel .acts{display:grid;gap:8px}
+.dock-panel .acts a{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;text-decoration:none;color:var(--ink);background:var(--mist);font-weight:700;font-size:14.5px;transition:background .2s,transform .2s}
+.dock-panel .acts a:hover{transform:translateX(-3px)}
+.dock-panel .acts a small{display:block;font-weight:500;font-size:12.5px;color:var(--muted)}
+.dock-panel .acts .ic{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:none;color:#fff;font-family:var(--display);font-weight:900;font-size:13px}
+.dock-panel .acts .mail{background:#fff;border:1.5px solid var(--line)}.dock-panel .acts .mail .ic{background:var(--sun)}
+.dock-panel .acts .zalo .ic{background:#0068FF}.dock-panel .acts .tel .ic{background:var(--night)}
+.dock-close{position:absolute;right:12px;top:12px;border:0;background:var(--mist);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;line-height:1;color:var(--ink)}
+@media(max-width:600px){.dock-tab{font-size:12px;padding:14px 10px 14px 9px}}
+
 .rv{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s}
 .rv.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.ticker .row{animation:none}.rv{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
@@ -362,7 +381,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
       <div class="scene-wrap rv"><svg class="scene" viewBox="0 0 800 660" role="img" aria-label="Sa bàn núi U Bò lơ lửng với cáp treo chạy từ hồ Thác Chuối lên đỉnh" xmlns="http://www.w3.org/2000/svg">
 <defs>
   <radialGradient id="glow"><stop offset="0" stop-color="#FFE8E3" stop-opacity=".5"/><stop offset="1" stop-color="#FFE8E3" stop-opacity="0"/></radialGradient>
-  <linearGradient id="top" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2B63D6"/><stop offset="1" stop-color="#1F52BC"/></linearGradient>
+  <linearGradient id="gtop" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2B63D6"/><stop offset="1" stop-color="#1F52BC"/></linearGradient>
   <linearGradient id="side" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0B2458"/><stop offset="1" stop-color="#061A45"/></linearGradient>
   <linearGradient id="lake" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#B9CDF6"/><stop offset="1" stop-color="#6FA4FF"/></linearGradient>
   <filter id="blur" x="-30%" y="-80%" width="160%" height="260%"><feGaussianBlur stdDeviation="12"/></filter>
@@ -388,7 +407,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   <path d="M70 520 C150 585 280 612 400 612 C520 612 650 585 730 520" fill="none" stroke="#163C8C" stroke-width="2" opacity=".7"/>
   <path d="M55 496 C140 560 270 590 400 590 C530 590 660 560 745 496" fill="none" stroke="#163C8C" stroke-width="2" opacity=".5"/>
   <!-- mặt đảo -->
-  <ellipse cx="400" cy="470" rx="360" ry="110" fill="url(#top)"/>
+  <ellipse cx="400" cy="470" rx="360" ry="110" fill="url(#gtop)"/>
   <!-- đường đồng mức -->
   <g fill="none" stroke="#6FA4FF" stroke-width="1.6" opacity=".55">
     <ellipse cx="500" cy="462" rx="230" ry="62"/><ellipse cx="510" cy="458" rx="170" ry="44"/><ellipse cx="520" cy="454" rx="110" ry="28"/>
@@ -470,7 +489,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
       <a href="https://vneconomy.vn/quang-tri-tang-truong-grdp-842-sau-9-thang.htm" target="_blank" rel="noopener" class="ol"><img src="https://www.google.com/s2/favicons?domain=vneconomy.vn&sz=64" alt="" width="28" height="28" loading="lazy" referrerpolicy="no-referrer"><span>VnEconomy</span></a>
     </div>
     <div class="articles">
-      <a class="art rv feat" href="https://tienphong.vn/u-bo-may-phu-thac-chuoi-soi-troi-post1887166.tpo" target="_blank" rel="noopener">
+      <a class="art rv" href="https://tienphong.vn/u-bo-may-phu-thac-chuoi-soi-troi-post1887166.tpo" target="_blank" rel="noopener">
         <span class="th"><img src="https://cdn.tienphong.vn/images/vfxVTqNZg61oqW4AULbiy3bU7HsD4qwI83eH2bHLtadKJ0BQreyAhFg3c2w1no0SVea1Jf--KVz20FV3kKao1rzyG0nZJRnIsmgYwyZ4410/ee768865-ae73-40f3-8ccc-92da366ceb73.png.webp" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.classList.add('nf')"><span class="src"><img src="https://www.google.com/s2/favicons?domain=tienphong.vn&sz=64" alt="" width="18" height="18" referrerpolicy="no-referrer">Tiền Phong</span></span>
         <span class="bd"><time datetime="2026-10-21">21/10/2026</time><b>U Bò mây phủ, Thác Chuối soi trời</b><span class="by">Hoàng Nam · Tiền Phong</span><span class="rd">Đọc bài ↗</span></span>
       </a>
@@ -694,6 +713,19 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
     <div class="fbot"><span>© 2026 U Bò. Trang thông tin độc lập, không đại diện cho chủ đầu tư.</span><span class="d">Mây phủ · Rừng xanh · Chạm đỉnh</span></div>
   </div>
 </footer>
+<div class="dock" id="dock">
+  <div class="dock-panel" id="dockPanel" role="dialog" aria-label="Liên hệ" aria-hidden="true">
+    <button class="dock-close" type="button" id="dockClose" aria-label="Đóng">×</button>
+    <div class="who"><div class="av">K</div><div><b>Nguyễn Quốc Khánh</b><span>Người kể chuyện thương hiệu · ubo.vn</span></div></div>
+    <p>Hợp tác nội dung, truyền thông dự án hay chỉ muốn hỏi thêm về U Bò, nhắn mình một tiếng.</p>
+    <div class="acts">
+      <a class="mail" id="dockMail" href="#"><span class="ic">@</span><span>Gửi email<small>khanhdesignvn@gmail.com</small></span></a>
+      <a class="zalo" id="dockZalo" href="#" target="_blank" rel="noopener"><span class="ic">Z</span><span>Nhắn Zalo<small>0988 886 901</small></span></a>
+      <a class="tel" id="dockTel" href="#"><span class="ic">☎</span><span>Gọi điện<small>0988 886 901</small></span></a>
+    </div>
+  </div>
+  <button class="dock-tab" type="button" id="dockTab" aria-expanded="false" aria-controls="dockPanel"><i aria-hidden="true"></i>Liên hệ</button>
+</div>
 <a class="totop" id="totop" href="#top" aria-label="Về đầu trang">↑</a>
 
 <script>
@@ -725,6 +757,15 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
     mg.appendChild(b);
   });
 
+  document.getElementById('dockMail').href='mailto:'+CONTACT_EMAIL+'?subject='+encodeURIComponent('Liên hệ từ ubo.vn');
+  document.getElementById('dockZalo').href='https://zalo.me/'+ZALO;
+  document.getElementById('dockTel').href='tel:'+ZALO;
+  var dock=document.getElementById('dock'),dockTab=document.getElementById('dockTab');
+  function dockSet(o){dock.classList.toggle('open',o);dockTab.setAttribute('aria-expanded',o);document.getElementById('dockPanel').setAttribute('aria-hidden',!o);}
+  dockTab.addEventListener('click',function(){dockSet(!dock.classList.contains('open'))});
+  document.getElementById('dockClose').addEventListener('click',function(){dockSet(false)});
+  document.addEventListener('click',function(e){if(!dock.contains(e.target))dockSet(false)});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')dockSet(false)});
   document.getElementById('mailLink').href='mailto:'+CONTACT_EMAIL;
   document.getElementById('zaloLink').href='https://zalo.me/'+ZALO;
   document.getElementById('form').addEventListener('submit',function(e){
