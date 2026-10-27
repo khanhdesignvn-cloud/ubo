@@ -39,7 +39,14 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--red);outline-offset
 .play{display:flex;align-items:center;gap:8px;padding:12px 18px 10px;border-radius:999px;background:var(--red);color:#fff;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:14px;letter-spacing:.03em;box-shadow:0 8px 26px rgba(255,65,43,.45);animation:glow 2.4s ease-in-out infinite}
 .play svg{width:14px;height:14px}
 @keyframes glow{50%{box-shadow:0 8px 34px rgba(255,65,43,.75)}}
-@media(max-width:760px){.top{flex-direction:column;align-items:stretch}.right{flex-direction:column;align-items:stretch}.modes{justify-content:space-between}.modes button{flex:1;padding:10px 6px 8px;font-size:12.5px}.brand b{font-size:20px}.play{justify-content:center}}
+@media(max-width:760px){
+  .top{align-items:center;padding:calc(10px + env(safe-area-inset-top,0px)) max(10px,env(safe-area-inset-right,0px)) 10px max(10px,env(safe-area-inset-left,0px));gap:8px;transition:opacity .4s,transform .4s}
+  .brand svg{width:28px}.brand b{font-size:17px}.brand small{display:none}
+  .right{gap:6px}.modes{padding:3px}.modes button{padding:8px 10px 6px;font-size:11.5px;letter-spacing:.02em}
+  .play{width:40px;height:40px;padding:0;justify-content:center;font-size:0;gap:0}.play svg{width:14px;height:14px}
+  body.touring .top{opacity:0;pointer-events:none;transform:translateY(-10px)}
+  body.touring .compass{opacity:0}
+}
 
 /* nhãn */
 #labels{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden}
@@ -95,7 +102,7 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--red);outline-offset
 .card a,.card .x{display:inline-flex;align-items:center;gap:6px;padding:11px 16px 9px;border-radius:999px;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:13.5px;text-decoration:none}
 .card a{background:var(--blue);color:#fff}
 .card .x{background:var(--sky);color:var(--ink)}
-@media(max-width:760px){.card{left:max(8px,env(safe-area-inset-left,0px));right:max(8px,env(safe-area-inset-right,0px));width:auto;bottom:auto;top:calc(176px + env(safe-area-inset-top,0px))}}
+@media(max-width:760px){.card{left:max(8px,env(safe-area-inset-left,0px));right:max(8px,env(safe-area-inset-right,0px));width:auto;bottom:auto;top:calc(68px + env(safe-area-inset-top,0px));padding:16px}.card h3{font-size:21px}.card p{font-size:13.5px}}
 
 /* trình chiếu */
 .tour{position:fixed;z-index:12;left:50%;bottom:calc(28px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);width:min(640px,calc(100% - 32px));opacity:0;pointer-events:none;transition:all .5s cubic-bezier(.3,.7,.2,1)}
@@ -117,7 +124,11 @@ body.touring .card{opacity:0!important;pointer-events:none!important}
 .big-num.on{opacity:1}
 .big-num b{display:block;white-space:nowrap;font-family:var(--display);font-weight:900;font-size:clamp(46px,11vw,150px);line-height:.9;color:#fff;text-shadow:0 8px 40px rgba(3,14,42,.6);font-variant-numeric:tabular-nums}
 .big-num span{display:block;margin-top:8px;font-size:clamp(13px,2vw,18px);letter-spacing:.16em;text-transform:uppercase;color:#fff;font-weight:700;text-shadow:0 2px 14px rgba(3,14,42,.8)}
-@media(max-width:760px){.big-num{top:40%;width:100%}.big-num b{font-size:clamp(40px,12vw,64px)}}
+@media(max-width:760px){.big-num{top:13%;width:100%}.big-num b{font-size:clamp(36px,11vw,56px)}.big-num span{font-size:11px;letter-spacing:.12em}
+  .tour{bottom:calc(10px + env(safe-area-inset-bottom,0px));width:calc(100% - 16px)}
+  .tour .box{padding:14px 16px 12px;border-radius:20px}
+  .tour .eb{font-size:10.5px;letter-spacing:.1em}.tour h3{font-size:22px;margin:4px 0 6px}.tour p{font-size:13px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .tour .bar{margin-top:10px}.tour .ctr{margin-top:10px;gap:6px}.tour .ctr button,.tour .ctr a{padding:8px 12px 6px;font-size:11.5px}}
 
 /* khác */
 .compass{position:fixed;z-index:9;right:max(16px,env(safe-area-inset-right,0px));top:calc(84px + env(safe-area-inset-top,0px));width:48px;height:48px;border-radius:50%;background:var(--panel);backdrop-filter:var(--glass);display:grid;place-items:center}
