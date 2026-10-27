@@ -765,7 +765,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
     if(!name||!phone||!msg){dockMsg.className='dk-msg err';dockMsg.textContent='Bạn điền đủ tên, số điện thoại và nội dung giúp mình nhé.';return;}
     if(f._honey.value)return;
     dockSend.disabled=true;dockMsg.className='dk-msg';dockMsg.textContent='Đang gửi…';
-    fetch('https://formsubmit.co/ajax/'+CONTACT_EMAIL,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+    fetch('https://formsubmit.co/ajax/dd637a1b9e44491b5da94360143241d7',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
       body:JSON.stringify({name:name,phone:phone,message:msg,_subject:'[ubo.vn] Lời nhắn từ '+name+' · '+phone,_template:'table',_captcha:'false'})})
     .then(function(r){return r.json()}).then(function(d){
       if(d&&(d.success==='true'||d.success===true)){dockMsg.className='dk-msg ok';dockMsg.textContent='Đã gửi. Mình sẽ liên hệ lại sớm, cảm ơn bạn!';f.reset();}
