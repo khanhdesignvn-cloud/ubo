@@ -64,8 +64,14 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 @media(max-width:900px){.hero .wrap{grid-template-columns:1fr;gap:36px}}
 .pill{display:inline-block;background:rgba(255,255,255,.12);border-radius:999px;padding:8px 16px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
 .pill b{color:#fff}
-.hero h1{font-size:clamp(52px,11vw,104px);margin:20px 0 22px}
-.hero h1 em{font-style:normal;color:#fff;background:var(--sun);padding:.06em .14em 0;border-radius:.1em;-webkit-box-decoration-break:clone;box-decoration-break:clone;line-height:1.12}
+.hero h1{font-size:clamp(48px,6.6vw,92px);margin:20px 0 22px;line-height:1}
+@media(max-width:900px){.hero h1{font-size:clamp(48px,11vw,92px)}}
+.hero h1 .ln{display:block;animation:drift 6s ease-in-out infinite}
+.hero h1 .ln:nth-child(2){animation-delay:-2s;animation-duration:7s}
+.hero h1 .ln:nth-child(3){animation-delay:-4s;animation-duration:8s}
+.hero h1 em{font-style:normal;display:inline-block;color:#fff;background:var(--sun);padding:.12em .16em .04em;margin-top:.1em;border-radius:.12em;line-height:1.02;max-width:100%}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(.06em,-.08em)}}
+@media(prefers-reduced-motion:reduce){.hero h1 .ln{animation:none}}
 .hero p.sub{color:rgba(255,255,255,.82);max-width:520px;font-size:17px}
 .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
@@ -311,7 +317,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   <div class="wrap">
     <div>
       <span class="pill">Quảng Trị · <b>Phong Nha – Kẻ Bàng</b></span>
-      <h1>Mây phủ.<br>Rừng xanh.<br><em>Chạm đỉnh U&nbsp;Bò.</em></h1>
+      <h1><span class="ln">Mây phủ.</span><span class="ln">Rừng xanh.</span><span class="ln"><em>Chạm đỉnh U&nbsp;Bò.</em></span></h1>
       <p class="sub">Nóc nhà của Vườn quốc gia Phong Nha – Kẻ Bàng, ngay trên đường Hồ Chí Minh nhánh Tây. Khí trời mát, mây quấn núi và hồ Thác Chuối dưới chân.</p>
       <div class="actions">
         <a class="btn sun" href="#nhan-tin">Nhận tin dự án →</a>
