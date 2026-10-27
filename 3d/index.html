@@ -150,7 +150,19 @@ body.touring .card{opacity:0!important;pointer-events:none!important}
 body.embed .brand{visibility:hidden}
 body.embed .loader{background:transparent}body.embed .loader svg,body.embed .loader .d,body.embed .loader p{visibility:hidden}
 .hint.force{display:block;opacity:1}
-@media(max-width:760px){body.embed .brand{display:none}body.embed .top{justify-content:flex-end}body.embed .panel{left:0;right:0;bottom:0;border-radius:22px 22px 0 0;max-height:min(58%,440px);padding-bottom:18px;box-shadow:0 -10px 40px rgba(3,14,42,.5)}body.embed .panel .toggle{position:sticky;top:-14px;margin-top:-14px;padding-top:14px;background:var(--panel);z-index:1}body.embed .compass{bottom:calc(130px + env(safe-area-inset-bottom,0px))}.hint.force{bottom:calc(120px + env(safe-area-inset-bottom,0px))}}
+@media(max-width:760px){body.embed .brand{display:none}body.embed .top{justify-content:flex-end}body.embed .panel{left:0;right:0;bottom:0;border-radius:22px 22px 0 0;max-height:min(58%,440px);padding-bottom:18px;box-shadow:0 -10px 40px rgba(3,14,42,.5)}body.embed .panel{max-height:none;overflow:hidden;padding:12px 14px 14px}
+body.embed .panel .sub,body.embed .panel .ctl,body.embed .panel .note,body.embed .panel .sw{display:none}
+body.embed .panel .toggle{margin:0 0 8px}
+body.embed .stats{grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+body.embed .stat{padding:8px 9px;border-radius:12px}
+body.embed .stat b{font-size:18px}
+body.embed .stat .l{font-size:10px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.embed .stat:nth-child(n+4){display:none}
+body.embed .zl{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin:0 -14px;padding-left:14px;padding-right:14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+body.embed .zl::-webkit-scrollbar{display:none}
+body.embed .zl button{flex:none;white-space:nowrap;padding:8px 12px;font-size:12.5px;border-radius:999px;gap:7px}
+body.embed .zl i{width:10px;height:10px;border-radius:50%}
+body.embed .panel.open{transform:none}body.embed .compass{bottom:calc(130px + env(safe-area-inset-bottom,0px))}.hint.force{bottom:calc(120px + env(safe-area-inset-bottom,0px))}}
 @media(prefers-reduced-motion:reduce){.play,.loader svg{animation:none}}
 </style>
 <script type="importmap">
