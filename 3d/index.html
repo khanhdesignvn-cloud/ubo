@@ -149,13 +149,18 @@ body.touring .card{opacity:0!important;pointer-events:none!important}
 .err{display:none;max-width:420px;margin:16px auto 0;text-align:center;color:#FFC4BB;font-size:14px}
 body.embed .brand{visibility:hidden}
 /* bảng gọn (desktop) */
-.panel{max-height:none;overflow:hidden;width:330px;padding:16px}
+.panel{max-height:none;overflow:hidden;width:356px;padding:18px;bottom:auto;top:50%;transform:translateY(-46%);border:1px solid rgba(255,255,255,.1);box-shadow:0 24px 60px rgba(2,10,36,.55),0 0 0 1px rgba(255,255,255,.04) inset;transition:transform .4s cubic-bezier(.3,.7,.2,1),box-shadow .4s,opacity .4s}
+@media(hover:hover) and (min-width:761px){.panel:hover{transform:translateY(-46%) translateY(-4px);box-shadow:0 34px 80px rgba(2,10,36,.65),0 0 0 1px rgba(255,255,255,.06) inset}}
+.stat{transition:background .2s,transform .2s}.stat:hover{background:rgba(255,255,255,.14);transform:translateY(-2px)}
+.zl button:hover{transform:translateX(3px)}.zl button{transition:background .2s,transform .2s}
+.sw button{transition:background .2s,transform .2s}.sw button:hover{background:rgba(255,255,255,.18);transform:translateY(-1px)}
+@media(max-width:760px){.panel{top:auto;bottom:calc(8px + env(safe-area-inset-bottom,0px));transform:translateY(calc(100% - 64px));border:0;box-shadow:0 -10px 40px rgba(3,14,42,.5)}.panel.open{transform:none}}
 .panel h2{font-size:22px;margin:0 0 10px}
 .panel .sub,.panel .ctl,.panel .note{display:none}
-.stats{grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
+.stats{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr) minmax(0,1fr);gap:6px;margin-bottom:12px}
 .stat{padding:9px 10px;border-radius:12px}
-.stat b{font-size:19px}
-.stat .l{font-size:10.5px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat b{font-size:18px;white-space:nowrap}
+.stat .l{font-size:10.5px;margin-top:3px;line-height:1.25}
 .stat:nth-child(n+4){display:none}
 .zl{display:flex;flex-wrap:wrap;gap:6px}
 .zl button{padding:7px 11px;font-size:12.5px;border-radius:999px;gap:7px}
@@ -164,15 +169,15 @@ body.embed .brand{visibility:hidden}
 #bBuild,#bZones,#bCable,#bFlow{display:none}
 body.embed .loader{background:transparent}body.embed .loader svg,body.embed .loader .d,body.embed .loader p{visibility:hidden}
 .hint.force{display:block;opacity:1}
-@media(max-width:760px){body.embed .brand{display:none}body.embed .top{justify-content:flex-end}body.embed .panel{left:0;right:0;bottom:0;border-radius:22px 22px 0 0;max-height:min(58%,440px);padding-bottom:18px;box-shadow:0 -10px 40px rgba(3,14,42,.5)}body.embed .panel{max-height:none;overflow:hidden;padding:12px 14px 14px}
+@media(max-width:760px){body.embed .brand{display:none}body.embed .top{justify-content:flex-end}body.embed .panel{left:0;right:0;width:auto;bottom:0;top:auto;border:0;box-shadow:none;border-radius:22px 22px 0 0;max-height:min(58%,440px);padding-bottom:18px;box-shadow:0 -10px 40px rgba(3,14,42,.5)}body.embed .panel{max-height:none;overflow:hidden;padding:12px 14px 14px}
 body.embed .panel .sub,body.embed .panel .ctl,body.embed .panel .note,body.embed .panel .sw{display:none}
 body.embed .panel .toggle{margin:0 0 8px}
-body.embed .stats{grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px}
+body.embed .stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:10px}
 body.embed .stat{padding:8px 9px;border-radius:12px}
 body.embed .stat b{font-size:18px}
-body.embed .stat .l{font-size:10px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+body.embed .stat .l{font-size:10px;margin-top:3px;line-height:1.2}
 body.embed .stat:nth-child(n+4){display:none}
-body.embed .zl{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin:0 -14px;padding-left:14px;padding-right:14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+body.embed .zl{display:flex;flex-wrap:nowrap;gap:6px;overflow-x:auto;padding-bottom:4px;margin:0 -14px;padding-left:14px;padding-right:14px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 body.embed .zl::-webkit-scrollbar{display:none}
 body.embed .zl button{flex:none;white-space:nowrap;padding:8px 12px;font-size:12.5px;border-radius:999px;gap:7px}
 body.embed .zl i{width:10px;height:10px;border-radius:50%}
