@@ -271,8 +271,10 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 
 /* FAQ */
 .faq{background:var(--mist)}
-.faq .wrap>.rv:first-child{text-align:center}.faq .eyebrow{justify-content:center}
-.qa{margin:32px auto 0;display:grid;gap:12px;max-width:860px}
+.faq .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+.faq-head{text-align:right;position:sticky;top:110px}
+@media(max-width:900px){.faq .wrap{grid-template-columns:1fr}.faq-head{order:-1;text-align:left;position:static}}
+.qa{display:grid;gap:12px}
 details{background:#fff;border-radius:22px;padding:4px 22px}
 summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;align-items:center;padding:16px 0;font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(17px,3vw,21px)}
 summary::-webkit-details-marker{display:none}
@@ -309,14 +311,18 @@ footer ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
 footer a{text-decoration:none}footer a:hover{color:var(--sun)}
 .fbot{margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 .fbot .d{color:var(--sun);font-size:14px}
-.totop{position:fixed;right:16px;bottom:16px;z-index:40;background:var(--sun);color:var(--night);width:52px;height:52px;border-radius:50%;display:grid;place-items:center;text-decoration:none;font-weight:800;font-size:20px;box-shadow:0 8px 24px rgba(15,42,35,.25);opacity:0;pointer-events:none;transition:opacity .3s}
-.totop.show{opacity:1;pointer-events:auto}
 
 /* LIÊN HỆ BÊN HÔNG */
 .dock{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:45;display:flex;align-items:center}
-.dock-tab{writing-mode:vertical-rl;transform:rotate(180deg);border:0;cursor:pointer;background:var(--sun);color:#fff;font-family:var(--display);font-weight:900;text-transform:uppercase;letter-spacing:.08em;font-size:13px;padding:18px 12px 18px 11px;border-radius:0 16px 16px 0;box-shadow:0 10px 30px rgba(0,0,0,.25);display:flex;align-items:center;gap:10px;transition:background .2s}
+.dock-tab{position:relative;writing-mode:vertical-rl;transform:rotate(180deg);border:0;cursor:pointer;background:var(--sun);color:#fff;font-family:var(--display);font-weight:900;text-transform:uppercase;letter-spacing:.1em;font-size:16px;padding:26px 17px 26px 15px;border-radius:0 22px 22px 0;box-shadow:0 12px 34px rgba(255,65,43,.45);display:flex;align-items:center;gap:12px;transition:background .2s}
+.dock-tab:before,.dock-tab:after{content:'';position:absolute;inset:0;border-radius:inherit;border:2px solid var(--sun);opacity:0;pointer-events:none;animation:dockRipple 2.6s ease-out infinite}
+.dock-tab:after{animation-delay:1.3s}
+@keyframes dockRipple{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(1.35,1.18)}}
+.dock-tab.shake{animation:dockShake .5s ease-in-out}
+@keyframes dockShake{0%,100%{transform:rotate(180deg) translateY(0)}20%{transform:rotate(180deg) translateY(-5px) rotate(-4deg)}40%{transform:rotate(180deg) translateY(4px) rotate(3deg)}60%{transform:rotate(180deg) translateY(-3px) rotate(-2deg)}80%{transform:rotate(180deg) translateY(2px)}}
+@media(prefers-reduced-motion:reduce){.dock-tab:before,.dock-tab:after,.dock-tab.shake{animation:none}}
 .dock-tab:hover{background:#E6371F}
-.dock-tab i{display:block;width:9px;height:9px;border-radius:50%;background:#fff;animation:dockPulse 2s ease-in-out infinite}
+.dock-tab i{display:block;width:11px;height:11px;border-radius:50%;background:#fff;animation:dockPulse 2s ease-in-out infinite}
 @keyframes dockPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.6)}50%{box-shadow:0 0 0 7px rgba(255,255,255,0)}}
 .dock-panel{position:absolute;right:calc(100% + 12px);top:50%;transform:translate(16px,-50%) scale(.96);opacity:0;pointer-events:none;width:min(320px,calc(100vw - 80px));background:#fff;color:var(--ink);border-radius:24px;padding:22px;box-shadow:0 30px 70px rgba(6,26,69,.35);transition:opacity .25s,transform .25s}
 .dock.open .dock-panel{opacity:1;pointer-events:auto;transform:translate(0,-50%) scale(1)}
@@ -332,7 +338,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
 .dk-msg{margin:0;font-size:13.5px;line-height:1.45;min-height:0;color:var(--muted)}
 .dk-msg.ok{color:#0A7A3E;font-weight:700}.dk-msg.err{color:var(--sun);font-weight:700}
 .dock-close{position:absolute;right:12px;top:12px;border:0;background:var(--mist);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;line-height:1;color:var(--ink)}
-@media(max-width:600px){.dock-tab{font-size:12px;padding:14px 10px 14px 9px}}
+@media(max-width:600px){.dock-tab{font-size:14px;padding:20px 13px 20px 12px}}
 
 .rv{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s}
 .rv.in{opacity:1;transform:none}
@@ -539,16 +545,16 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
 
 <section class="faq" id="hoi-dap">
   <div class="wrap">
-    <div class="rv">
-      <div class="eyebrow">Nên biết</div>
-      <h2 class="h2">Hỏi nhanh,<br>đáp gọn.</h2>
-    </div>
     <div class="qa">
       <details class="rv"><summary>U Bò nằm ở đâu? <i>+</i></summary><p>Trên đường Hồ Chí Minh nhánh Tây, trong không gian Vườn quốc gia Phong Nha – Kẻ Bàng, tỉnh Quảng Trị (trước sáp nhập thuộc Quảng Bình). Cách trung tâm Đồng Hới khoảng 70 km.</p></details>
       <details class="rv"><summary>Đã có cáp treo chưa? <i>+</i></summary><p>Chưa. Dự án cáp treo và khu nghỉ dưỡng đang ở giai đoạn chuẩn bị đầu tư, mốc khởi công dự kiến cuối tháng 10/2026. Hiện lên đỉnh bằng cách leo bộ từ trạm kiểm lâm.</p></details>
       <details class="rv"><summary>Có cần đặt tour không? <i>+</i></summary><p>Hiện chưa có tour chính thức trên đỉnh. Du khách tự đi và ghé trạm kiểm lâm U Bò để được hướng dẫn.</p></details>
       <details class="rv"><summary>Đi mùa nào đẹp? <i>+</i></summary><p>Ngày nắng ráo cho tầm nhìn xa nhất. Muốn thấy mây phủ thì đến vào sáng sớm hoặc cuối chiều. Tránh ngày mưa bão vì đường đèo trơn trượt.</p></details>
       <details class="rv"><summary>Có chỗ ở gần U Bò không? <i>+</i></summary><p>Trên núi gần như chưa có dịch vụ lưu trú. Nên ở Đồng Hới hoặc khu Phong Nha rồi đi trong ngày. Danh sách chỗ ở sẽ được cập nhật trên trang này.</p></details>
+    </div>
+    <div class="rv faq-head">
+      <div class="eyebrow">Nên biết</div>
+      <h2 class="h2">Hỏi nhanh,<br>đáp gọn.</h2>
     </div>
   </div>
 </section>
@@ -620,7 +626,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
         </ul>
       </div>
     </div>
-    <div class="fbot"><span>© 2026 U Bò. Trang thông tin độc lập, không đại diện cho chủ đầu tư.</span><span class="d">Mây phủ · Rừng xanh · Chạm đỉnh</span></div>
+    <div class="fbot"><span>© 2026 U Bò. Trang thông tin độc lập, không đại diện cho chủ đầu tư.</span><span class="d">Ngồi giữa mây, ngắm trọn Trường Sơn.</span></div>
   </div>
 </footer>
 <div class="dock" id="dock">
@@ -638,7 +644,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   </div>
   <button class="dock-tab" type="button" id="dockTab" aria-expanded="false" aria-controls="dockPanel"><i aria-hidden="true"></i>Liên hệ</button>
 </div>
-<a class="totop" id="totop" href="#top" aria-label="Về đầu trang">↑</a>
 
 <script>
 (function(){
@@ -691,6 +696,9 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   document.getElementById('dockClose').addEventListener('click',function(){dockSet(false)});
   document.addEventListener('click',function(e){if(!dock.contains(e.target))dockSet(false)});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')dockSet(false)});
+  var lastShake=0,shakeT=null;
+  window.addEventListener('scroll',function(){if(dock.classList.contains('open'))return;clearTimeout(shakeT);shakeT=setTimeout(function(){var n=Date.now();if(n-lastShake<2500)return;lastShake=n;dockTab.classList.remove('shake');void dockTab.offsetWidth;dockTab.classList.add('shake');},180);},{passive:true});
+  dockTab.addEventListener('animationend',function(e){if(e.animationName==='dockShake')dockTab.classList.remove('shake');});
   var s3dStage=document.getElementById('s3dStage');
   function fitStage(){var vh=(window.visualViewport?window.visualViewport.height:window.innerHeight);s3dStage.style.height=Math.max(440,Math.round(vh-68))+'px';}
   fitStage();window.addEventListener('resize',fitStage);if(window.visualViewport)window.visualViewport.addEventListener('resize',fitStage);
@@ -709,8 +717,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
     document.getElementById('ok').style.display='block';
   });
 
-  var top=document.getElementById('totop');
-  window.addEventListener('scroll',function(){top.classList.toggle('show',scrollY>600)},{passive:true});
   var els=document.querySelectorAll('.rv');
   if('IntersectionObserver' in window){
     var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}})},{threshold:.1});
