@@ -222,8 +222,10 @@ nav .wrap{display:flex;align-items:center;justify-content:space-between;height:6
 .mb{border:0;border-radius:var(--r);background:#fff;padding:22px 18px;text-align:left;cursor:pointer;font:inherit;color:var(--ink);transition:transform .2s,background .2s}
 .mb:hover{transform:translateY(-3px)}
 .mb .d{font-size:clamp(20px,3.6vw,28px);display:block;margin-top:10px}
-.mb .ic{width:44px;height:44px;border-radius:50%;background:var(--mist);display:grid;place-items:center}
-.mb.on{background:var(--pine);color:#fff}.mb.on .ic{background:var(--sun)}
+.mb .ic{width:56px;height:56px;border-radius:16px;background:var(--mist);color:var(--pine);display:grid;place-items:center;transition:background .2s,color .2s,transform .3s}
+.mb .ic svg{width:32px;height:32px;display:block}
+.mb:hover .ic{transform:rotate(-6deg) scale(1.06)}
+.mb.on{background:var(--pine);color:#fff}.mb.on .ic{background:#fff;color:var(--pine)}
 .answer{margin-top:16px;background:var(--night);color:#fff;border-radius:var(--r);padding:24px;min-height:120px}
 .answer .d{color:var(--sun);font-size:24px;margin-bottom:8px}
 .answer p{color:rgba(255,255,255,.85);font-size:15px}
@@ -658,10 +660,10 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   document.getElementById('ticker').innerHTML=html;
 
   var moods=[
-    {k:'Săn mây',ic:'☁',h:'Đến thật sớm.',p:'Mây mù thường phủ U Bò vào sáng sớm và cuối chiều. Xuất phát từ Đồng Hới khi trời còn tối, mang áo ấm và áo mưa.'},
-    {k:'Phượt',ic:'🏍',h:'Cung đường nhánh Tây.',p:'Đường Hồ Chí Minh nhánh Tây nhiều khúc cua giữa rừng. Đi ban ngày, đổ đầy xăng, có thể nối tiếp về Khe Sanh qua dốc Sa Mù.'},
-    {k:'Chụp ảnh',ic:'📷',h:'Chọn ngày quang.',p:'Ngày trời trong, từ chòi canh rừng nhìn được về Đồng Hới. Buổi chiều ghé hồ Thác Chuối để có ảnh mặt hồ phản chiếu trời mây.'},
-    {k:'Nghỉ dưỡng',ic:'🌿',h:'Chờ thêm một chút.',p:'Khu nghỉ dưỡng và cáp treo đang trong giai đoạn đầu tư. Đăng ký nhận tin để biết ngay khi có mốc mở cửa.'}
+    {k:'Săn mây',ic:'<svg viewBox="0 0 48 48"><path d="M14 36Q5 36 5 28Q5 21 13 20Q15 11 25 11Q33 11 36 19Q44 19 44 27.5Q44 36 35 36Z" fill="currentColor"/><path d="M10 42H38" stroke="var(--sun)" stroke-width="4" stroke-linecap="round"/></svg>',h:'Đến thật sớm.',p:'Mây mù thường phủ U Bò vào sáng sớm và cuối chiều. Xuất phát từ Đồng Hới khi trời còn tối, mang áo ấm và áo mưa.'},
+    {k:'Phượt',ic:'<svg viewBox="0 0 48 48"><circle cx="11" cy="33" r="7" fill="none" stroke="currentColor" stroke-width="4.5"/><circle cx="37" cy="33" r="7" fill="none" stroke="currentColor" stroke-width="4.5"/><path d="M11 33L19 22H29L37 33" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round" stroke-linecap="round"/><path d="M27 14H34L37 22" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 22H25" stroke="var(--sun)" stroke-width="5" stroke-linecap="round"/></svg>',h:'Cung đường nhánh Tây.',p:'Đường Hồ Chí Minh nhánh Tây nhiều khúc cua giữa rừng. Đi ban ngày, đổ đầy xăng, có thể nối tiếp về Khe Sanh qua dốc Sa Mù.'},
+    {k:'Chụp ảnh',ic:'<svg viewBox="0 0 48 48"><path d="M6 16Q6 13 9 13H15L18 8H30L33 13H39Q42 13 42 16V37Q42 40 39 40H9Q6 40 6 37Z" fill="currentColor"/><circle cx="24" cy="26" r="8" fill="var(--sun)"/><circle cx="24" cy="26" r="3.5" fill="#fff"/></svg>',h:'Chọn ngày quang.',p:'Ngày trời trong, từ chòi canh rừng nhìn được về Đồng Hới. Buổi chiều ghé hồ Thác Chuối để có ảnh mặt hồ phản chiếu trời mây.'},
+    {k:'Nghỉ dưỡng',ic:'<svg viewBox="0 0 48 48"><path d="M24 6L36 25H30L40 41H8L18 25H12Z" fill="currentColor"/><rect x="21" y="38" width="6" height="7" rx="2" fill="var(--sun)"/></svg>',h:'Chờ thêm một chút.',p:'Khu nghỉ dưỡng và cáp treo đang trong giai đoạn đầu tư. Đăng ký nhận tin để biết ngay khi có mốc mở cửa.'}
   ];
   var mg=document.getElementById('moods'),ans=document.getElementById('answer');
   moods.forEach(function(m){
