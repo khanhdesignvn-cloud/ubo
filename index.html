@@ -674,7 +674,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
       </div>
       <div>
         <h4>Liên hệ</h4>
-        <ul><li><a id="mailLink" href="#">Email</a></li><li><a id="zaloLink" href="#" target="_blank" rel="noopener">Zalo</a></li><li><a href="#nhan-tin">Hợp tác quảng bá</a></li></ul>
+        <ul><li><a href="#nhan-tin">Gửi lời nhắn</a></li><li><a href="#nhan-tin">Hợp tác quảng bá</a></li></ul>
       </div>
       <div>
         <h4>Nguồn tin</h4>
@@ -736,8 +736,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
 <script>
 (function(){
   // ===== Thông tin liên hệ – sửa tại đây =====
-  var CONTACT_EMAIL = 'khanhdesignvn@gmail.com';
-  var ZALO = '0988886901';
 
   var C={pine:'#0147C1',sun:'#FF412B',night:'#061A45',mist:'#E8EEFB',cream:'#FFE8E3'};
 
@@ -800,8 +798,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
       if(d.updated){var u=new Date(d.updated);upd.textContent='Tự động cập nhật từ các toà soạn · lần quét gần nhất '+u.getDate()+'/'+(u.getMonth()+1)+' '+String(u.getHours()).padStart(2,'0')+':'+String(u.getMinutes()).padStart(2,'0');}
     }).catch(function(){});
   })();
-  document.getElementById('mailLink').href='mailto:'+CONTACT_EMAIL;
-  document.getElementById('zaloLink').href='https://zalo.me/'+ZALO;
   /* ===== gửi lời nhắn về email + popup cảm ơn + tung hoa ===== */
   var thx=document.getElementById('thx'),fx=document.getElementById('fx'),fxc=fx.getContext('2d'),parts=[],raf=0;
   function flower(c,x,y,r,col,rot){c.save();c.translate(x,y);c.rotate(rot);c.fillStyle=col;for(var k=0;k<5;k++){c.rotate(Math.PI*2/5);c.beginPath();c.ellipse(0,-r*.62,r*.34,r*.62,0,0,7);c.fill();}c.fillStyle='#FFD23F';c.beginPath();c.arc(0,0,r*.26,0,7);c.fill();c.restore();}
@@ -834,10 +830,9 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
     function fs(){return fetch('https://formsubmit.co/ajax/dd637a1b9e44491b5da94360143241d7',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
       body:JSON.stringify(Object.assign({_subject:subj,_template:'table',_captcha:'false'},data))}).then(function(r){return r.json()}).then(function(d){if(!d||!(d.success==='true'||d.success===true))throw new Error('fs');return d;});}
     w3().catch(fs)
-    .then(function(){f.reset();note('','');if(typeof dockSet==='function')dockSet(false);thanks();}).catch(function(){var body='Tên: '+name+'\nSố điện thoại: '+phone+'\nQuan tâm: '+(f.topic.value||'-')+'\nNội dung: '+msg;
-      note('','err');var m='mailto:'+CONTACT_EMAIL+'?subject='+encodeURIComponent('[ubo.vn] Lời nhắn từ '+name+' · '+phone)+'&body='+encodeURIComponent(body);
-      var box=btn.parentNode.querySelector('.ok,.dk-msg');box.style.display='block';box.className=box.className.replace(/ ?err/,'')+' err';
-      box.innerHTML='Hệ thống gửi đang bận. Bạn bấm <a href="'+m+'" style="color:inherit;text-decoration:underline;font-weight:800">gửi qua email</a> hoặc nhắn <a href="https://zalo.me/'+ZALO+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;font-weight:800">Zalo</a> giúp mình nhé.';})
+    .then(function(){f.reset();note('','');if(typeof dockSet==='function')dockSet(false);thanks();}).catch(function(){
+      note('','err');var box=btn.parentNode.querySelector('.ok,.dk-msg');box.style.display='block';box.className=box.className.replace(/ ?err/,'')+' err';
+      box.textContent='Chưa gửi được. Bạn thử lại sau ít phút giúp mình nhé.';})
     .finally(function(){btn.disabled=false;});
   }
   var okEl=document.getElementById('ok');
