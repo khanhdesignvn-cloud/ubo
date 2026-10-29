@@ -814,12 +814,14 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
     if(!name||!phone||!msg){note('Bạn điền đủ tên, số điện thoại và nội dung giúp mình nhé.','err');return;}
     if(f._honey&&f._honey.value)return;
     btn.disabled=true;note('Đang gửi…','');
-    fetch('https://formsubmit.co/ajax/dd637a1b9e44491b5da94360143241d7',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify({name:name,phone:phone,topic:f.topic.value||'(không chọn)',message:msg,source:src,_subject:'[ubo.vn] Lời nhắn từ '+name+' · '+phone,_template:'table',_captcha:'false'})})
-    .then(function(r){return r.json()}).then(function(d){
-      if(d&&(d.success==='true'||d.success===true)){f.reset();note('','');if(typeof dockSet==='function')dockSet(false);thanks();}
-      else throw new Error('');
-    }).catch(function(){var body='Tên: '+name+'\nSố điện thoại: '+phone+'\nQuan tâm: '+(f.topic.value||'-')+'\nNội dung: '+msg;
+    var data={name:name,phone:phone,topic:f.topic.value||'(không chọn)',message:msg,source:src};
+    var subj='[ubo.vn] Lời nhắn từ '+name+' · '+phone;
+    function w3(){return fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(Object.assign({access_key:'6f17bc6f-a7c0-4ab8-8309-88700947ab9c',subject:subj,from_name:'ubo.vn'},data))}).then(function(r){return r.json()}).then(function(d){if(!d||d.success!==true)throw new Error('w3f');return d;});}
+    function fs(){return fetch('https://formsubmit.co/ajax/dd637a1b9e44491b5da94360143241d7',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(Object.assign({_subject:subj,_template:'table',_captcha:'false'},data))}).then(function(r){return r.json()}).then(function(d){if(!d||!(d.success==='true'||d.success===true))throw new Error('fs');return d;});}
+    w3().catch(fs)
+    .then(function(){f.reset();note('','');if(typeof dockSet==='function')dockSet(false);thanks();}).catch(function(){var body='Tên: '+name+'\nSố điện thoại: '+phone+'\nQuan tâm: '+(f.topic.value||'-')+'\nNội dung: '+msg;
       note('','err');var m='mailto:'+CONTACT_EMAIL+'?subject='+encodeURIComponent('[ubo.vn] Lời nhắn từ '+name+' · '+phone)+'&body='+encodeURIComponent(body);
       var box=btn.parentNode.querySelector('.ok,.dk-msg');box.style.display='block';box.className=box.className.replace(/ ?err/,'')+' err';
       box.innerHTML='Hệ thống gửi đang bận. Bạn bấm <a href="'+m+'" style="color:inherit;text-decoration:underline;font-weight:800">gửi qua email</a> hoặc nhắn <a href="https://zalo.me/'+ZALO+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;font-weight:800">Zalo</a> giúp mình nhé.';})
