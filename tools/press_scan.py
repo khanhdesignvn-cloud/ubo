@@ -100,6 +100,7 @@ def enrich(a):
         log('trang lỗi', a['url'], e); return a
     a['url'] = final.split('#')[0]
     a['title'] = (meta(h, 'og:title') or a['title']).strip()
+    a['_desc'] = meta(h, 'og:description', 'description') or ''
     a['image'] = meta(h, 'og:image', 'twitter:image') or a.get('image')
     a['date'] = parse_date(meta(h, 'article:published_time', 'pubdate', 'datePublished', 'og:updated_time') or '') or a.get('date')
     au = meta(h, 'article:author', 'author', 'dable:author')
@@ -115,28 +116,30 @@ def main():
     for q in QUERIES:
         qq = urllib.parse.quote(q)
         found += rss_items(f'https://www.bing.com/news/search?q={qq}&format=rss&setlang=vi&cc=VN')
-        found += rss_items(f'https://news.google.com/rss/search?q={qq}&hl=vi&gl=VN&ceid=VN:vi')
         time.sleep(1)
     for u in SEEDS:
-        if u not in items: found.insert(0, {'title': 'U Bò', 'link': u, 'pub': '', 'img': None})
+        if u not in items: found.insert(0, {'title': 'U Bò', 'link': u, 'pub': '', 'img': None, 'seed': True})
     log(f'rss: {len(found)} mục')
     skip = {'domain':0,'title':0,'dup':0}
     added = 0
     for f in found:
         link = f['link']
-        if 'news.google.com' in link:
-            link = gn_decode(link) or ''
+        if 'bing.com' in link:
+            qs = urllib.parse.parse_qs(urllib.parse.urlparse(link).query)
+            link = (qs.get('url') or [''])[0]
             if not link: continue
+        f['seed'] = f.get('seed', False)
         link = link.split('?utm')[0].split('#')[0]
         d = domain(link)
         if d not in ALLOW: skip['domain']+=1; log('bỏ domain', d, f['title'][:60]); continue
-        if not MUST.search(f['title']): skip['title']+=1; continue
+        if not f['seed'] and not MUST.search(f['title']) and not re.search(r'sun group|quảng trị|cáp treo', f['title'], re.I): skip['title']+=1; continue
         key = re.sub(r'\W+', '', f['title'].lower())
         if link in items or key in seen_titles: skip['dup']+=1; continue
         a = {'url': link, 'title': f['title'], 'outlet': ALLOW[d], 'domain': d, 'date': parse_date(f['pub']), 'image': f.get('img'), 'author': None,
              'added': dt.date.today().isoformat()}
         a = enrich(a)
-        if not MUST.search(a['title']): continue
+        if not f['seed'] and not MUST.search(a['title'] + ' ' + a.get('_desc','')): skip['title']+=1; continue
+        a.pop('_desc', None)
         items[a['url']] = a; seen_titles.add(key); added += 1
         log('mới:', a['date'], a['outlet'], a['title'])
         time.sleep(1)
