@@ -468,8 +468,11 @@ function drawCableGround(ctx){
   const ax=px(LOW.lon),ay=py(LOW.lat),bx=px(SUMMIT.lon),by=py(SUMMIT.lat); const dx=bx-ax,dy=by-ay,L=Math.hypot(dx,dy),nx=-dy/L,ny=dx/L;
   const sc=(TW/W)/((WD*100)/(W-1))*100; // px trên 100 m
   ctx.save();ctx.setLineDash([18,12]);ctx.lineWidth=5;
-  for(let i=0;i<5;i++){const o=i-2; ctx.strokeStyle=cols[i]; ctx.beginPath();
-    ctx.moveTo(ax+nx*o*1.1*sc,ay+ny*o*1.1*sc); ctx.lineTo(ax+dx*.56+nx*o*1.9*sc,ay+dy*.56+ny*o*1.9*sc); ctx.lineTo(bx+nx*o*.6*sc,by+ny*o*.6*sc); ctx.stroke();}
+  const mx=ax+dx*.28,my=ay+dy*.28;  // ga trung gian bên bờ hồ; tuyến 1-2: chân núi → trung gian, tuyến 3-5: trung gian → đỉnh
+  for(let i=0;i<5;i++){ctx.strokeStyle=cols[i]; ctx.beginPath();
+    if(i<2){const o=i-.5; ctx.moveTo(ax+nx*o*1.4*sc,ay+ny*o*1.4*sc); ctx.lineTo(mx+nx*o*.5*sc,my+ny*o*.5*sc);}
+    else{const o=i-3; ctx.moveTo(mx+nx*o*.5*sc,my+ny*o*.5*sc); ctx.lineTo(bx+nx*o*1.3*sc,by+ny*o*1.3*sc);}
+    ctx.stroke();}
   ctx.restore();
 }
 const baseCanvas = document.createElement('canvas'); baseCanvas.width=TW; baseCanvas.height=TH;
@@ -604,7 +607,7 @@ function surfaceY(lat,lon){ const h=hAt(lat,lon);
 const cableGroup = new THREE.Group(); scene.add(cableGroup);
 let cableCurve, cabins=[], spark, LINES=[];
 const LINE_COLORS=[0xE53935,0x1E88E5,0xF2B705,0x2DB55D,0x8E44AD];
-const MID = {t:.56, lat:LOW.lat+(SUMMIT.lat-LOW.lat)*.56, lon:LOW.lon+(SUMMIT.lon-LOW.lon)*.56};
+const MID = {t:.28, lat:LOW.lat+(SUMMIT.lat-LOW.lat)*.56, lon:LOW.lon+(SUMMIT.lon-LOW.lon)*.56};
 const towerMat=new THREE.MeshStandardMaterial({color:0x0A1F4D,roughness:.6});
 const whiteMat=new THREE.MeshStandardMaterial({color:0xffffff,roughness:.45});
 const roofMat=new THREE.MeshStandardMaterial({color:0xE8EEFB,roughness:.35,metalness:.1});
@@ -639,24 +642,30 @@ function buildCable(){
   arcRoofBuilding(B.x,B.z,3.0,1.8,1.0,rotY);
   { const ty=surfXZ(B.x+perp.x*1.6,B.z+perp.z*1.6); const tw=new THREE.Mesh(new THREE.CylinderGeometry(.14,.22,4.2,8),towerMat); tw.position.set(B.x+perp.x*1.6,ty+2.1,B.z+perp.z*1.6); cableGroup.add(tw);
     const top=new THREE.Mesh(new THREE.SphereGeometry(.42,14,10),new THREE.MeshStandardMaterial({color:RED,emissive:0x5a1006})); top.position.set(B.x+perp.x*1.6,ty+4.3,B.z+perp.z*1.6); cableGroup.add(top); }
-  const midsDone=new Set();
+  const mp=A.clone().lerp(B,MID.t), mid0=new THREE.Vector3(mp.x,0,mp.z); mid0.y=surfXZ(mid0.x,mid0.z)+2.6;
+  midStation(mp.x,mp.z,rotY,1.15);   // một ga trung gian bên bờ hồ
+  const fullPts=[];
   for(let i=0;i<5;i++){
-    const o=i-2, oa=o*1.1, om=o*1.9, ob=o*.6;
-    const a=new THREE.Vector3(A.x+perp.x*oa,0,A.z+perp.z*oa); a.y=surfXZ(a.x,a.z)+1.5;
-    const mp=A.clone().lerp(B,MID.t); const m=new THREE.Vector3(mp.x+perp.x*om,0,mp.z+perp.z*om); m.y=surfXZ(m.x,m.z)+2.6;
-    const b=new THREE.Vector3(B.x+perp.x*ob,0,B.z+perp.z*ob); b.y=surfXZ(b.x,b.z)+2.2;
-    const pts=[...span(a,m,.04),...span(m,b,.045).slice(1)];
+    const low=i<2, o=low?i-.5:i-3;
+    let p0,p1;
+    if(low){ p0=new THREE.Vector3(A.x+perp.x*o*1.4,0,A.z+perp.z*o*1.4); p0.y=surfXZ(p0.x,p0.z)+1.5;
+             p1=new THREE.Vector3(mp.x+perp.x*o*.5,0,mp.z+perp.z*o*.5); p1.y=surfXZ(p1.x,p1.z)+2.6; }
+    else    { p0=new THREE.Vector3(mp.x+perp.x*o*.5,0,mp.z+perp.z*o*.5); p0.y=surfXZ(p0.x,p0.z)+2.6;
+             p1=new THREE.Vector3(B.x+perp.x*o*1.3,0,B.z+perp.z*o*1.3); p1.y=surfXZ(p1.x,p1.z)+2.2; }
+    const sag=low?.04:.045, pts=span(p0,p1,sag);
     const curve=new THREE.CatmullRomCurve3(pts); curve.curveType='centripetal';
-    cableGroup.add(new THREE.Mesh(new THREE.TubeGeometry(curve,200,.11,6,false), new THREE.MeshBasicMaterial({color:0x0A1F4D})));
-    const glow=new THREE.Mesh(new THREE.TubeGeometry(curve,200,.3,6,false), new THREE.MeshBasicMaterial({color:LINE_COLORS[i],transparent:true,opacity:.42})); glow.userData.glow=true; cableGroup.add(glow);
-    pylons(new THREE.CatmullRomCurve3(span(a,m,.04)),4); pylons(new THREE.CatmullRomCurve3(span(m,b,.045)),4);
-    midStation(m.x,m.z,rotY,.75);
-    for(let k=0;k<3;k++){const g=new THREE.Group(); const box=new THREE.Mesh(new THREE.BoxGeometry(.7,.56,.7),cabinMats[i]); box.position.y=-.52; box.castShadow=true;
+    cableGroup.add(new THREE.Mesh(new THREE.TubeGeometry(curve,160,.11,6,false), new THREE.MeshBasicMaterial({color:0x0A1F4D})));
+    const glow=new THREE.Mesh(new THREE.TubeGeometry(curve,160,.3,6,false), new THREE.MeshBasicMaterial({color:LINE_COLORS[i],transparent:true,opacity:.42})); glow.userData.glow=true; cableGroup.add(glow);
+    pylons(curve,low?3:6);
+    for(let k=0;k<(low?2:3);k++){const g=new THREE.Group(); const box=new THREE.Mesh(new THREE.BoxGeometry(.7,.56,.7),cabinMats[i]); box.position.y=-.52; box.castShadow=true;
       const win=new THREE.Mesh(new THREE.BoxGeometry(.73,.18,.73),new THREE.MeshBasicMaterial({color:0xffffff})); win.position.y=-.42;
-      const arm=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,.5,4),towerMat); arm.position.y=-.2; g.add(box,win,arm); g.userData={off:k/3+i*.07,line:i}; cableGroup.add(g); cabins.push(g);}
+      const arm=new THREE.Mesh(new THREE.CylinderGeometry(.03,.03,.5,4),towerMat); arm.position.y=-.2; g.add(box,win,arm); g.userData={off:k/(low?2:3)+i*.07,line:i}; cableGroup.add(g); cabins.push(g);}
     LINES.push(curve);
   }
-  cableCurve=LINES[2];
+  { // đường đi liền mạch chân núi → ga trung gian → đỉnh, dùng cho chế độ trình chiếu
+    const a0=new THREE.Vector3(A.x,0,A.z); a0.y=surfXZ(a0.x,a0.z)+1.5; const b0=new THREE.Vector3(B.x,0,B.z); b0.y=surfXZ(b0.x,b0.z)+2.2;
+    fullPts.push(...span(a0,mid0,.04),...span(mid0,b0,.045).slice(1));
+    cableCurve=new THREE.CatmullRomCurve3(fullPts); cableCurve.curveType='centripetal'; }
   spark=new THREE.Mesh(new THREE.SphereGeometry(.4,12,10),new THREE.MeshBasicMaterial({color:0xffffff})); cableGroup.add(spark);
   placeRings();
 }
@@ -748,10 +757,10 @@ function addLabel({lat,lon,html,cls='',onClick,lift=0,prio=5,key}){
 }
 const peakInfo={name:'Đỉnh U Bò',color:'#FF412B',kind:'Điểm cao',lat:SUMMIT.lat,lon:SUMMIT.lon,desc:'Nóc nhà Vườn quốc gia Phong Nha – Kẻ Bàng, cao khoảng 1.000 m (dữ liệu SRTM ghi 992 m). Ga đỉnh của tuyến cáp treo dự kiến.'};
 const lakeInfo={name:'Hồ Thác Chuối',color:'#0147C1',kind:'Hồ chứa',lat:17.43916,lon:106.44795,desc:'Hồ thuỷ lợi xây năm 2010, rộng khoảng 3,7 km² theo đường bờ trên bản đồ. Ga dưới cáp treo dự kiến nằm ở bờ đông.'};
-const cableInfo={name:'Ga chân núi, 5 tuyến cáp treo',color:'#FF412B',kind:'Cáp treo',lat:LOW.lat,lon:LOW.lon,desc:'Cụm nhà ga bên hồ Thác Chuối, điểm xuất phát của 5 tuyến cáp treo qua ga trung gian lên đỉnh U Bò. Tuyến dài khoảng 6 km, chênh cao khoảng 930 m theo sơ đồ dự án.'};
+const cableInfo={name:'Ga chân núi, 5 tuyến cáp treo',color:'#FF412B',kind:'Cáp treo',lat:LOW.lat,lon:LOW.lon,desc:'Cụm nhà ga bên hồ Thác Chuối, điểm đầu của tuyến cáp treo: hai tuyến số 1, 2 đi qua mặt hồ tới ga trung gian, rồi ba tuyến số 3, 4, 5 lên đỉnh U Bò. Tổng chiều dài khoảng 6 km, chênh cao khoảng 930 m theo sơ đồ dự án.'};
 addLabel({lat:SUMMIT.lat,lon:SUMMIT.lon,lift:3.4,cls:'big',prio:0,key:'peak',html:'<div class="tag">Đỉnh U Bò · ~1.000 m</div>',onClick:()=>openCard(peakInfo)});
 addLabel({lat:17.4265,lon:106.4525,prio:2,key:'lake',html:'<div class="tag"><i style="background:#0147C1"></i><span>Hồ Thác Chuối</span></div>',onClick:()=>openCard(lakeInfo)});
-const midInfo={name:'Ga trung gian',color:'#F2B705',kind:'Cáp treo',lat:MID.lat,lon:MID.lon,desc:'Ga trung chuyển giữa chân núi và đỉnh U Bò theo sơ đồ quy hoạch (khoảng 7,98 ha). Hành khách đổi tuyến hoặc dừng ngắm cảnh tại đây.'};
+const midInfo={name:'Ga trung gian',color:'#F2B705',kind:'Cáp treo',lat:MID.lat,lon:MID.lon,desc:'Ga trung chuyển trên bờ tây hồ Thác Chuối, theo sơ đồ cắm mốc ranh giới dự án (khoảng 7,98 ha). Hai tuyến từ chân núi tới đây, ba tuyến từ đây lên đỉnh U Bò; hành khách đổi tuyến hoặc dừng ngắm cảnh.'};
 addLabel({lat:MID.lat,lon:MID.lon,lift:3.2,prio:2,key:'mid',html:'<div class="tag"><i style="background:#F2B705"></i><span>Ga trung gian</span></div>',onClick:()=>openCard(midInfo)});
 addLabel({lat:LOW.lat,lon:LOW.lon,lift:2.6,prio:1,key:'low',html:'<div class="tag"><i style="background:#FF412B"></i><span>Ga chân núi</span></div>',onClick:()=>openCard(cableInfo)});
 ZONES.forEach(z=>addLabel({lat:z.lat,lon:z.lon,lift:1.6,cls:'zone',prio:3,key:z.id,html:`<div class="tag"><i style="background:${z.color}"></i><span>${z.short}</span></div>`,onClick:()=>focusZone(z)}));
@@ -851,7 +860,7 @@ function countUp(){ document.querySelectorAll('[data-count]').forEach(el=>{const
 const STATS={
   von:{eb:'Tổng vốn đầu tư',big:'16.234 <em>tỷ đồng</em>',h:'Dự án du lịch lớn nhất Quảng Trị',p:'Gồm khoảng 2.435 tỷ đồng vốn chủ sở hữu và 13.799 tỷ đồng vốn huy động. UBND tỉnh chấp thuận chủ trương đầu tư tháng 3/2026, nhà đầu tư là Công ty TNHH Mặt Trời Quảng Bình thuộc Sun Group. Thời hạn hoạt động 70 năm, triển khai từ quý 3/2026 đến quý 2/2037.',src:'Nguồn: VietnamPlus, Báo Đầu tư, tháng 9 và 10/2026'},
   dientich:{eb:'Quy mô dự án',big:'167,47 <em>ha</em>',h:'Ba khu chức năng trên một trục cáp treo',p:'Khu đỉnh núi khoảng 82 ha, khu chân núi bên hồ Thác Chuối khoảng 76,6 ha, ga trung gian khoảng 8 ha và móng trụ cáp khoảng 1 ha. Thuộc các xã Bố Trạch, Thượng Trạch và Trường Sơn, kèm 51 ha nghiên cứu ngoài ranh giới.',src:'Nguồn: Tuổi Trẻ, Báo Đầu tư, quy hoạch 1/500 tháng 10/2026'},
-  cap:{eb:'Cáp treo',big:'5 <em>tuyến</em>',h:'Chân núi, ga trung gian, đỉnh U Bò',p:'Năm tuyến cáp treo nối cụm ga chân núi bên hồ với đỉnh U Bò cao khoảng 1.000 m, dừng tại ga trung gian trên sườn núi. Chiều dài khoảng 6 km, chênh cao khoảng 930 m. Vị trí tuyến trên sa bàn phỏng theo sơ đồ đã công bố.',src:'Nguồn: Tuổi Trẻ, sơ đồ quy hoạch dự án'},
+  cap:{eb:'Cáp treo',big:'5 <em>tuyến</em>',h:'Chân núi, ga trung gian, đỉnh U Bò',p:'Năm tuyến cáp treo chia hai chặng qua ga trung gian bên bờ tây hồ: tuyến số 1, 2 nối ga chân núi với ga trung gian, tuyến số 3, 4, 5 nối ga trung gian lên đỉnh U Bò cao khoảng 1.000 m. Tổng chiều dài khoảng 6 km, chênh cao khoảng 930 m. Vị trí tuyến phỏng theo sơ đồ cắm mốc ranh giới dự án.',src:'Nguồn: Tuổi Trẻ, sơ đồ quy hoạch dự án'},
   khach:{eb:'Mục tiêu đón khách',big:'3 <em>triệu lượt/năm</em>',h:'Điểm đến mới của miền Trung',p:'Quy mô đón khách dự kiến khoảng 3 triệu lượt mỗi năm khi vận hành đầy đủ. Để so sánh, toàn tỉnh Quảng Trị đón khoảng 9,4 triệu lượt khách trong 9 tháng năm 2026, tăng 11,67% so với cùng kỳ.',src:'Nguồn: Tuổi Trẻ, Cục Thống kê tỉnh Quảng Trị'}};
 const spop=document.getElementById('spop');
 function openStat(k){const d=STATS[k]; if(!d) return; document.getElementById('spopEb').textContent=d.eb; document.getElementById('spopBig').innerHTML=d.big; document.getElementById('spopH').textContent=d.h; document.getElementById('spopP').textContent=d.p; document.getElementById('spopSrc').textContent=d.src; spop.classList.add('on'); spop.setAttribute('aria-hidden','false');}
@@ -873,7 +882,7 @@ const STEPS=[
    go(){ setMode('layers'); flyRaw(HOME.pos.clone().multiplyScalar(1.05),HOME.tgt,2200); setRotate(true); bigNum.dataset.suf=' tỷ'; showBig(16234,'đồng tổng vốn đầu tư',0,true); }, keys:['peak','lake','low']},
   {eb:'Điểm nhấn', h:'Đỉnh U Bò ~1.000 m', p:'Nóc nhà Vườn quốc gia Phong Nha – Kẻ Bàng. Ngày quang nhìn được về Đồng Hới; sáng sớm và cuối chiều mây phủ kín đỉnh.', dur:7000,
    go(){ setMode('terrain'); hideBig(); const t=at(SUMMIT.lat,SUMMIT.lon); flyRaw(t.clone().add(new THREE.Vector3(-26,22,34)),t,2600); setRotate(false); }, keys:['peak','mtresort']},
-  {eb:'Cáp treo dự kiến', h:'5 tuyến · chênh cao 930 m', p:'Năm tuyến cáp từ ga chân núi bên hồ, qua ga trung gian, lên đỉnh U Bò. Ngồi cabin băng qua rừng nguyên sinh.', dur:11000,
+  {eb:'Cáp treo dự kiến', h:'5 tuyến · chênh cao 930 m', p:'Hai tuyến cáp vượt hồ tới ga trung gian, ba tuyến tiếp tục lên đỉnh U Bò. Ngồi cabin băng qua mặt nước và rừng nguyên sinh.', dur:11000,
    go(){ setMode('terrain'); hideBig(); ride={s:performance.now(),ms:10500}; setRotate(false); }, keys:['peak','mid','low']},
   {eb:'Mặt nước', h:'Hồ Thác Chuối', p:'Hồ rộng khoảng 3,7 km², các nhánh nước ôm quanh bán đảo và triền đồi thấp, nơi đặt các khu nghỉ dưỡng ven hồ.', dur:7000,
    go(){ ride=null; setMode('terrain'); const t=at(17.437,106.446); flyRaw(t.clone().add(new THREE.Vector3(18,40,40)),t,2600); }, keys:['lake','low','lakeresort','nature','fun']},
