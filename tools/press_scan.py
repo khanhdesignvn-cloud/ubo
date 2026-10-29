@@ -26,7 +26,7 @@ ALLOW = {
   'vietnamnet.vn':'VietNamNet','sggp.org.vn':'SGGP','kinhtedothi.vn':'Kinh tế & Đô thị','baoxaydung.com.vn':'Báo Xây dựng',
   'nhadautu.vn':'Nhà Đầu tư','vietnamfinance.vn':'VietnamFinance','thuonghieucongluan.com.vn':'Thương hiệu & Công luận',
   'baovanhoa.vn':'Báo Văn hoá','vnbusiness.vn':'VnBusiness','diendandoanhnghiep.vn':'Diễn đàn Doanh nghiệp','cafeland.vn':'CafeLand',
-  'soha.vn':'Soha','24hmoney.vn':'24hMoney','vietnambiz.vn':'VietnamBiz','baogiaothong.vn':'Báo Giao thông','baoquangbinh.vn':'Báo Quảng Bình','vtcnews.vn':'VTC News','nld.com.vn':'Người Lao Động','tienphong.vn':'Tiền Phong','znews.vn':'Znews','vietnamnet.vn':'VietNamNet','baophapluat.vn':'Báo Pháp luật','tapchitaichinh.vn':'Tạp chí Tài chính','thesaigontimes.vn':'Saigon Times','reatimes.vn':'Reatimes','batdongsan.com.vn':'Batdongsan.com.vn','nguoiquansat.vn':'Người Quan Sát','markettimes.vn':'MarketTimes','congluan.vn':'Công Luận','baotintuc.vn':'Tin tức TTXVN',
+  'soha.vn':'Soha','tinnhanhchungkhoan.vn':'Đầu tư Chứng khoán','cafebiz.vn':'CafeBiz','kenh14.vn':'Kenh14','nhipsongkinhdoanh.vn':'Nhịp sống Kinh doanh','baotintuc.vn':'Tin tức TTXVN','24hmoney.vn':'24hMoney','vietnambiz.vn':'VietnamBiz','baogiaothong.vn':'Báo Giao thông','baoquangbinh.vn':'Báo Quảng Bình','vtcnews.vn':'VTC News','nld.com.vn':'Người Lao Động','tienphong.vn':'Tiền Phong','znews.vn':'Znews','vietnamnet.vn':'VietNamNet','baophapluat.vn':'Báo Pháp luật','tapchitaichinh.vn':'Tạp chí Tài chính','thesaigontimes.vn':'Saigon Times','reatimes.vn':'Reatimes','batdongsan.com.vn':'Batdongsan.com.vn','nguoiquansat.vn':'Người Quan Sát','markettimes.vn':'MarketTimes','congluan.vn':'Công Luận','baotintuc.vn':'Tin tức TTXVN',
 }
 MUST = re.compile(r'(u\s?bò|thác chuối)', re.I)
 
@@ -104,8 +104,23 @@ def enrich(a):
     a['image'] = meta(h, 'og:image', 'twitter:image') or a.get('image')
     a['date'] = parse_date(meta(h, 'article:published_time', 'pubdate', 'datePublished', 'og:updated_time') or '') or a.get('date')
     au = meta(h, 'article:author', 'author', 'dable:author')
-    if au and len(au) < 60 and not re.search(r'báo|vietnam\+|tạp chí|online', au, re.I): a['author'] = au
+    a['author'] = clean_author(au)
+    a['title'] = clean_title(a['title'])
+    if not a.get('date'):
+        m = re.search(r'(\d{1,2})/(\d{1,2})/(\d{4})', h[:200000])
+        if m: a['date'] = f'{m.group(3)}-{int(m.group(2)):02d}-{int(m.group(1)):02d}'
     return a
+
+def clean_author(au):
+    if not au: return None
+    au = au.strip()
+    if re.search(r'https?://|www\.|\.vn|\.com|vccorp|báo|vietnam\+|tạp chí|online|@|group|ban biên tập|theo ', au, re.I): return None
+    if len(au) > 40 or len(au.split()) > 5: return None
+    return au
+
+def clean_title(t):
+    t = re.sub(r'\s*[-|–]\s*(Báo\s+)?(VnExpress|CafeLand\.Vn|CafeF|Tuổi Trẻ Online|Dân trí|VietnamPlus|Báo Đầu tư|Tiền Phong|Nhân Dân|Soha|VnEconomy)\s*$', '', t, flags=re.I)
+    return t.strip()
 
 def main():
     try: data = json.load(open(OUT, encoding='utf-8'))
@@ -138,6 +153,7 @@ def main():
         a = {'url': link, 'title': f['title'], 'outlet': ALLOW[d], 'domain': d, 'date': parse_date(f['pub']), 'image': f.get('img'), 'author': None,
              'added': dt.date.today().isoformat()}
         a = enrich(a)
+        if len(a['title']) < 25 or re.search(r'/tag/|/video/[a-z-]{0,12}\.html$', a['url']) or re.search(r'tin mới nhất về|tin tức mới nhất|chủ đề', a['title'], re.I): skip['title']+=1; continue
         if not f['seed'] and not MUST.search(a['title'] + ' ' + a.get('_desc','')): skip['title']+=1; continue
         a.pop('_desc', None)
         items[a['url']] = a; seen_titles.add(key); added += 1
