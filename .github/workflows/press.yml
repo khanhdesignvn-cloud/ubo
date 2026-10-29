@@ -26,8 +26,8 @@ jobs:
         run: |
           git config user.name "ubo-bot"
           git config user.email "actions@users.noreply.github.com"
-          if ! git diff --quiet -- data/press.json; then
-            git add data/press.json
+          git add data/press.json data/press-scan.log
+          if ! git diff --cached --quiet; then
             git commit -m "Cập nhật bài báo mới ($(date -u +'%Y-%m-%d %H:%M' ) UTC)"
             git push
           else

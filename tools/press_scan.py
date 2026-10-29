@@ -10,8 +10,13 @@ from xml.etree import ElementTree as ET
 
 ROOT = __import__('os').path.dirname(__import__('os').path.dirname(__import__('os').path.abspath(__file__)))
 OUT = ROOT + '/data/press.json'
-UA = {'User-Agent': 'Mozilla/5.0 (compatible; ubo.vn press scanner; +https://www.ubo.vn)'}
-QUERIES = ['"núi U Bò"', '"U Bò" "Thác Chuối"', '"hồ Thác Chuối"', '"U Bò" cáp treo Quảng Trị']
+UA = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36', 'Accept-Language': 'vi-VN,vi;q=0.9'}
+LOG = []
+def log(*a):
+    m=' '.join(str(x) for x in a); print(m); LOG.append(m)
+QUERIES = ['"núi U Bò"', '"U Bò" "Thác Chuối"', '"hồ Thác Chuối"', '"U Bò" cáp treo Quảng Trị', '"U Bò" Sun Group']
+# Bài luôn có mặt (thêm tay)
+SEEDS = ['https://24hmoney.vn/news/quang-tri-chuan-bi-don-du-an-hon-16-200-ty-dong-cua-sun-group-5-tuyen-cap-treo-dan-len-dau-c3a2851060.html']
 # Chỉ nhận toà soạn chính thống
 ALLOW = {
   'tienphong.vn':'Tiền Phong','vietnamplus.vn':'VietnamPlus','baodautu.vn':'Báo Đầu tư','nhandan.vn':'Nhân Dân',
@@ -21,7 +26,7 @@ ALLOW = {
   'vietnamnet.vn':'VietNamNet','sggp.org.vn':'SGGP','kinhtedothi.vn':'Kinh tế & Đô thị','baoxaydung.com.vn':'Báo Xây dựng',
   'nhadautu.vn':'Nhà Đầu tư','vietnamfinance.vn':'VietnamFinance','thuonghieucongluan.com.vn':'Thương hiệu & Công luận',
   'baovanhoa.vn':'Báo Văn hoá','vnbusiness.vn':'VnBusiness','diendandoanhnghiep.vn':'Diễn đàn Doanh nghiệp','cafeland.vn':'CafeLand',
-  'soha.vn':'Soha','nguoiquansat.vn':'Người Quan Sát','markettimes.vn':'MarketTimes','congluan.vn':'Công Luận','baotintuc.vn':'Tin tức TTXVN',
+  'soha.vn':'Soha','24hmoney.vn':'24hMoney','vietnambiz.vn':'VietnamBiz','baogiaothong.vn':'Báo Giao thông','baoquangbinh.vn':'Báo Quảng Bình','vtcnews.vn':'VTC News','nld.com.vn':'Người Lao Động','tienphong.vn':'Tiền Phong','znews.vn':'Znews','vietnamnet.vn':'VietNamNet','baophapluat.vn':'Báo Pháp luật','tapchitaichinh.vn':'Tạp chí Tài chính','thesaigontimes.vn':'Saigon Times','reatimes.vn':'Reatimes','batdongsan.com.vn':'Batdongsan.com.vn','nguoiquansat.vn':'Người Quan Sát','markettimes.vn':'MarketTimes','congluan.vn':'Công Luận','baotintuc.vn':'Tin tức TTXVN',
 }
 MUST = re.compile(r'(u\s?bò|thác chuối)', re.I)
 
@@ -39,7 +44,7 @@ def rss_items(url):
         raw, _ = get(url)
         root = ET.fromstring(raw)
     except Exception as e:
-        print('rss lỗi', url, e, file=sys.stderr); return []
+        log('rss lỗi', url, e); return []
     out = []
     for it in root.iter('item'):
         t = (it.findtext('title') or '').strip()
@@ -50,6 +55,25 @@ def rss_items(url):
             if el.tag.lower().endswith('image') and (el.text or '').startswith('http'): img = el.text.strip()
         out.append({'title': html.unescape(t), 'link': l, 'pub': d, 'img': img})
     return out
+
+def gn_decode(url):
+    """Giải mã link news.google.com/rss/articles/<id> về URL gốc."""
+    try:
+        m = re.search(r'/articles/([^/?]+)', url)
+        if not m: return None
+        gid = m.group(1)
+        raw, _ = get(f'https://news.google.com/articles/{gid}')
+        h = raw.decode('utf-8', 'ignore')
+        sg = re.search(r'data-n-a-sg="([^"]+)"', h); ts = re.search(r'data-n-a-ts="([^"]+)"', h)
+        if not (sg and ts): return None
+        payload = json.dumps([[["Fbv4je", json.dumps(["garturlreq",[["vi","VN",["FINANCE_TOP_INDICES","WEB_TEST_1_0_0"],None,None,1,1,"VN:vi",None,180,None,None,None,None,None,0,None,None,[1608992183,723341000]],"vi","VN",1,[2,3,4,8],1,0,"655000234",0,0,None,0],gid,ts.group(1),sg.group(1)]), None, "generic"]]])
+        body = urllib.parse.urlencode({'f.req': payload}).encode()
+        req = urllib.request.Request('https://news.google.com/_/DotsSplashUi/data/batchexecute', data=body, headers={**UA, 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'})
+        with urllib.request.urlopen(req, timeout=20) as r: txt = r.read().decode('utf-8', 'ignore')
+        mm = re.search(r'"garturlres","(https?://[^"]+)"', txt)
+        return mm.group(1) if mm else None
+    except Exception as e:
+        log('gn lỗi', e); return None
 
 def parse_date(s):
     for f in ('%a, %d %b %Y %H:%M:%S %Z', '%a, %d %b %Y %H:%M:%S %z', '%Y-%m-%dT%H:%M:%S%z', '%Y-%m-%dT%H:%M:%S.%f%z', '%Y-%m-%d'):
@@ -73,7 +97,7 @@ def enrich(a):
         raw, final = get(a['url'])
         h = raw.decode('utf-8', 'ignore')
     except Exception as e:
-        print('trang lỗi', a['url'], e, file=sys.stderr); return a
+        log('trang lỗi', a['url'], e); return a
     a['url'] = final.split('#')[0]
     a['title'] = (meta(h, 'og:title') or a['title']).strip()
     a['image'] = meta(h, 'og:image', 'twitter:image') or a.get('image')
@@ -93,29 +117,34 @@ def main():
         found += rss_items(f'https://www.bing.com/news/search?q={qq}&format=rss&setlang=vi&cc=VN')
         found += rss_items(f'https://news.google.com/rss/search?q={qq}&hl=vi&gl=VN&ceid=VN:vi')
         time.sleep(1)
+    for u in SEEDS:
+        if u not in items: found.insert(0, {'title': 'U Bò', 'link': u, 'pub': '', 'img': None})
+    log(f'rss: {len(found)} mục')
+    skip = {'domain':0,'title':0,'dup':0}
     added = 0
     for f in found:
         link = f['link']
         if 'news.google.com' in link:
-            try: _, link = get(link)   # theo chuyển hướng về toà soạn
-            except Exception: continue
+            link = gn_decode(link) or ''
+            if not link: continue
         link = link.split('?utm')[0].split('#')[0]
         d = domain(link)
-        if d not in ALLOW: continue
-        if not MUST.search(f['title']): continue
+        if d not in ALLOW: skip['domain']+=1; log('bỏ domain', d, f['title'][:60]); continue
+        if not MUST.search(f['title']): skip['title']+=1; continue
         key = re.sub(r'\W+', '', f['title'].lower())
-        if link in items or key in seen_titles: continue
+        if link in items or key in seen_titles: skip['dup']+=1; continue
         a = {'url': link, 'title': f['title'], 'outlet': ALLOW[d], 'domain': d, 'date': parse_date(f['pub']), 'image': f.get('img'), 'author': None,
              'added': dt.date.today().isoformat()}
         a = enrich(a)
         if not MUST.search(a['title']): continue
         items[a['url']] = a; seen_titles.add(key); added += 1
-        print('mới:', a['date'], a['outlet'], a['title'])
+        log('mới:', a['date'], a['outlet'], a['title'])
         time.sleep(1)
     lst = sorted(items.values(), key=lambda x: (x.get('date') or '0000', x.get('added') or '0000'), reverse=True)
     data = {'updated': dt.datetime.now(dt.timezone(dt.timedelta(hours=7))).isoformat(timespec='minutes'), 'items': lst}
     json.dump(data, open(OUT, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
-    print(f'xong: {len(lst)} bài, thêm {added}')
+    log(f'xong: {len(lst)} bài, thêm {added}, bỏ {skip}')
+    open(ROOT + '/data/press-scan.log', 'w', encoding='utf-8').write(data['updated'] + '\n' + '\n'.join(LOG[-80:]) + '\n')
 
 if __name__ == '__main__':
     main()
