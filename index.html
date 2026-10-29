@@ -347,6 +347,10 @@ footer{background:var(--night);color:rgba(255,255,255,.75);padding:64px 0 28px;f
 footer h4{font-family:var(--display);font-weight:800;text-transform:uppercase;color:#fff;font-size:16px;margin:0 0 12px;letter-spacing:.04em}
 footer ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
 footer a{text-decoration:none}footer a:hover{color:var(--sun)}
+.disc{margin-top:36px;padding:18px 20px;border:1px solid rgba(255,255,255,.18);border-radius:16px;background:rgba(255,255,255,.05);font-size:13.5px;line-height:1.6;color:rgba(255,255,255,.82)}
+.disc b{color:#fff}.disc ul{margin:8px 0 0;padding-left:18px}.disc li{margin:3px 0}
+.fbot a{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.consent{margin:2px 0 0;font-size:12.5px;line-height:1.5;color:var(--muted)}.consent a{color:inherit;text-decoration:underline}
 .fbot{margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 .fbot .d{color:var(--sun);font-size:14px}
 
@@ -632,6 +636,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
         </select>
         <textarea name="message" required placeholder="Bạn muốn hỏi gì về U Bò?"></textarea>
         <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none">
+        <p class="consent">Khi gửi, bạn đồng ý để ubo.vn dùng thông tin này để liên hệ lại. Xem <a href="privacy.html">Chính sách riêng tư</a>.</p>
         <button class="btn sun" type="submit">Gửi lời nhắn →</button>
         <div class="ok" id="ok" role="status" aria-live="polite"></div>
       </form>
@@ -681,7 +686,14 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
         </ul>
       </div>
     </div>
-    <div class="fbot"><span>© 2026 U Bò. Trang thông tin độc lập, không đại diện cho chủ đầu tư.</span><span class="d">Ngồi giữa mây, ngắm trọn Trường Sơn.</span></div>
+    <div class="disc" id="mien-tru" role="note"><b>Miễn trừ trách nhiệm</b>
+      <ul>
+        <li>ubo.vn là trang thông tin độc lập, không phải kênh chính thức của UBND tỉnh Quảng Trị, Sun Group hay chủ đầu tư dự án.</li>
+        <li>Tên, thương hiệu và hình ảnh của bên thứ ba thuộc về chủ sở hữu tương ứng. ubo.vn không sử dụng chúng để mạo danh hay ngụ ý liên kết.</li>
+        <li>Thông tin tổng hợp từ báo chí và nguồn công khai, có thể thay đổi. Sa bàn 3D chỉ mang tính minh hoạ, không phải bản đồ pháp lý hay hồ sơ quy hoạch.</li>
+        <li>ubo.vn không môi giới, không bán hay nhận đặt chỗ, đặt cọc đất đai, căn hộ hay sản phẩm của dự án. Hãy liên hệ chủ đầu tư và cơ quan chức năng để có thông tin chính thức.</li>
+      </ul></div>
+    <div class="fbot"><span>© 2026 U Bò. Trang thông tin độc lập, không đại diện cho chủ đầu tư.</span><span><a href="privacy.html">Chính sách riêng tư</a> · <a href="#mien-tru">Miễn trừ trách nhiệm</a></span><span class="d">Ngồi giữa mây, ngắm trọn Trường Sơn.</span></div>
   </div>
 </footer>
 <div class="dock" id="dock">
@@ -703,6 +715,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
       </select></label>
       <label><span>Nội dung</span><textarea name="message" rows="3" required placeholder="Bạn muốn hỏi gì về U Bò?"></textarea></label>
       <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none">
+      <p class="consent">Khi gửi, bạn đồng ý để ubo.vn dùng thông tin này để liên hệ lại. Xem <a href="privacy.html">Chính sách riêng tư</a>.</p>
       <button class="btn sun" type="submit" id="dockSend">Gửi lời nhắn →</button>
       <p class="dk-msg" id="dockMsg" role="status" aria-live="polite"></p>
     </form>
