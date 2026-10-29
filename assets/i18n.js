@@ -12,7 +12,7 @@ var D={
 'Tên, thương hiệu và hình ảnh của bên thứ ba thuộc về chủ sở hữu tương ứng. ubo.vn không sử dụng chúng để mạo danh hay ngụ ý liên kết.':'Third-party names, trademarks and images belong to their respective owners. ubo.vn does not use them to impersonate or imply any affiliation.',
 'Thông tin tổng hợp từ báo chí và nguồn công khai, có thể thay đổi. Sa bàn 3D chỉ mang tính minh hoạ, không phải bản đồ pháp lý hay hồ sơ quy hoạch.':'Information is compiled from press and public sources and may change. The 3D model is illustrative only, not a legal map or planning document.',
 'ubo.vn không môi giới, không bán hay nhận đặt chỗ, đặt cọc đất đai, căn hộ hay sản phẩm của dự án. Hãy liên hệ chủ đầu tư và cơ quan chức năng để có thông tin chính thức.':'ubo.vn does not broker, sell, or take reservations or deposits for land, apartments or any project products. Please contact the developer and the authorities for official information.',
-'Khi gửi, bạn đồng ý để ubo.vn dùng thông tin này để liên hệ lại. Xem':'By sending, you agree that ubo.vn may use this information to get back to you. See the',
+'Bằng việc đăng ký, bạn đồng ý nhận tin từ ubo.vn. Xem':'By subscribing, you agree to receive updates from ubo.vn. See the',
 /* ---------- menu, chung ---------- */
 'Sa bàn 3D':'3D model','Vị trí':'Location','Trải nghiệm':'Experience','Hành trình':'Itinerary','Dự án':'Project','Hỏi đáp':'FAQ','Nhận tin':'Updates',
 'Đang dựng sa bàn…':'Building the model…','Đang dựng sa bàn':'Building the model','Cuộn xuống':'Scroll down','Đóng':'Close','Email':'Email','Zalo':'Zalo',
