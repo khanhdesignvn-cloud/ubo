@@ -2,6 +2,7 @@
    Cách dùng: <script src="/assets/i18n.js"></script>; UboI18n.set('en'|'vi'); UboI18n.lang */
 (function(){
 var D={
+'Lời nhắn đã được gửi. Mình sẽ liên hệ lại sớm nhất có thể.':'Your message has been sent. I will get back to you as soon as I can.','Đóng':'Close','Chưa gửi được. Bạn nhắn Zalo giúp mình nhé: zalo.me/0988886901':'Could not send. Please message me on Zalo: zalo.me/0988886901','Để lại tên, số điện thoại và lời nhắn. Mình sẽ báo tin khởi công, tiến độ cáp treo, ngày mở cửa và trả lời mọi câu hỏi về U Bò.':'Leave your name, phone number and a message. I will share groundbreaking news, cable car progress and the opening date, and answer any question about U Bò.',
 'Bạn điền tên và email hoặc số Zalo giúp mình nhé.':'Please enter your name and an email or Zalo number.','Đang gửi…':'Sending…','Đã gửi đăng ký. Cảm ơn bạn, mình sẽ gửi tin khi có cập nhật!':'Sent. Thank you, I will send news as soon as there are updates!','Đã gửi. Mình sẽ liên hệ lại sớm, cảm ơn bạn!':'Sent. I will get back to you soon, thank you!','Bạn điền đủ tên, số điện thoại và nội dung giúp mình nhé.':'Please fill in your name, phone number and message.','Cảm ơn bạn!':'Thank you!','Du lịch':'Travel',
 /* ---------- menu, chung ---------- */
 'Sa bàn 3D':'3D model','Vị trí':'Location','Trải nghiệm':'Experience','Hành trình':'Itinerary','Dự án':'Project','Hỏi đáp':'FAQ','Nhận tin':'Updates',

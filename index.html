@@ -369,6 +369,15 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
 .dk-f input:focus,.dk-f textarea:focus{outline:none;border-color:var(--pine);box-shadow:0 0 0 3px rgba(1,71,193,.15)}
 .dk-f .btn{width:100%;justify-content:center;margin-top:2px}
 .dk-f .btn[disabled]{opacity:.6;cursor:wait}
+.thx{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(6,26,69,.55);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .25s}
+.thx.on{opacity:1;pointer-events:auto}
+.thx-card{background:#fff;color:var(--night);width:min(400px,100%);border-radius:28px;padding:36px 30px 30px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.35);transform:translateY(18px) scale(.94);transition:transform .45s cubic-bezier(.2,1.5,.4,1)}
+.thx.on .thx-card{transform:none}
+.thx-ico{width:72px;height:72px;border-radius:50%;background:var(--sun);margin:0 auto 18px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 10px rgba(255,65,43,.14)}
+.thx-ico svg{width:38px;height:38px}
+.thx h3{font-family:var(--display);font-size:34px;line-height:1;margin:0 0 10px;color:var(--pine);text-transform:uppercase}
+.thx p{margin:0 0 22px;color:var(--muted);font-size:16px;line-height:1.5}
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:95;pointer-events:none}
 .dk-msg{margin:0;font-size:13.5px;line-height:1.45;min-height:0;color:var(--muted)}
 .dk-msg.ok{color:#0A7A3E;font-weight:700}.dk-msg.err{color:var(--sun);font-weight:700}
 .dock-close{position:absolute;right:12px;top:12px;border:0;background:var(--mist);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;line-height:1;color:var(--ink)}
@@ -602,20 +611,15 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
       <div>
         <div class="eyebrow">Nhận tin</div>
         <h2 class="h2">Biết trước<br>khi mây mở cửa.</h2>
-        <p class="lead">Đăng ký để nhận tin khởi công, tiến độ cáp treo, ngày mở cửa và ưu đãi đầu tiên từ các đơn vị quanh U Bò.</p>
+        <p class="lead">Để lại tên, số điện thoại và lời nhắn. Mình sẽ báo tin khởi công, tiến độ cáp treo, ngày mở cửa và trả lời mọi câu hỏi về U Bò.</p>
       </div>
-      <form id="form">
-        <input name="ten" placeholder="Tên của bạn" required>
-        <input name="lienhe" placeholder="Email hoặc số Zalo" required>
-        <div class="chips" aria-label="Bạn quan tâm">
-          <label><input type="checkbox" name="qt" value="Du lịch" checked><span>Du lịch</span></label>
-          <label><input type="checkbox" name="qt" value="Tiến độ dự án"><span>Tiến độ dự án</span></label>
-          <label><input type="checkbox" name="qt" value="Kinh doanh quanh U Bò"><span>Kinh doanh quanh U Bò</span></label>
-          <label><input type="checkbox" name="qt" value="Hợp tác quảng bá"><span>Hợp tác quảng bá</span></label>
-        </div>
-        <textarea name="loinhan" placeholder="Lời nhắn (không bắt buộc)"></textarea>
-        <button class="btn sun" type="submit">Gửi đăng ký →</button>
-        <div class="ok" id="ok">Cảm ơn bạn!</div>
+      <form id="form" novalidate>
+        <input name="name" type="text" required autocomplete="name" placeholder="Tên của bạn">
+        <input name="phone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="Số điện thoại">
+        <textarea name="message" required placeholder="Bạn muốn hỏi gì về U Bò?"></textarea>
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none">
+        <button class="btn sun" type="submit">Gửi lời nhắn →</button>
+        <div class="ok" id="ok" role="status" aria-live="polite"></div>
       </form>
     </div>
   </div>
@@ -682,6 +686,16 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   <button class="dock-tab" type="button" id="dockTab" aria-expanded="false" aria-controls="dockPanel"><i aria-hidden="true"></i>Liên hệ</button>
 </div>
 
+<div class="thx" id="thx" role="dialog" aria-modal="true" aria-labelledby="thxT" aria-hidden="true">
+  <div class="thx-card">
+    <div class="thx-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h3 id="thxT">Cảm ơn bạn!</h3>
+    <p>Lời nhắn đã được gửi. Mình sẽ liên hệ lại sớm nhất có thể.</p>
+    <button class="btn sun" type="button" id="thxClose">Đóng</button>
+  </div>
+</div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
 <script>
 (function(){
   // ===== Thông tin liên hệ – sửa tại đây =====
@@ -712,21 +726,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   });
 
   var dockForm=document.getElementById('dockForm'),dockMsg=document.getElementById('dockMsg'),dockSend=document.getElementById('dockSend');
-  dockForm.addEventListener('submit',function(e){
-    e.preventDefault();
-    var f=dockForm,name=f.name.value.trim(),phone=f.phone.value.trim(),msg=f.message.value.trim();
-    if(!name||!phone||!msg){dockMsg.className='dk-msg err';dockMsg.textContent='Bạn điền đủ tên, số điện thoại và nội dung giúp mình nhé.';return;}
-    if(f._honey.value)return;
-    dockSend.disabled=true;dockMsg.className='dk-msg';dockMsg.textContent='Đang gửi…';
-    fetch('https://formsubmit.co/ajax/dd637a1b9e44491b5da94360143241d7',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify({name:name,phone:phone,message:msg,_subject:'[ubo.vn] Lời nhắn từ '+name+' · '+phone,_template:'table',_captcha:'false'})})
-    .then(function(r){return r.json()}).then(function(d){
-      if(d&&(d.success==='true'||d.success===true)){dockMsg.className='dk-msg ok';dockMsg.textContent='Đã gửi. Mình sẽ liên hệ lại sớm, cảm ơn bạn!';f.reset();}
-      else throw new Error(d&&d.message||'');
-    }).catch(function(){
-      dockMsg.className='dk-msg err';dockMsg.innerHTML='Chưa gửi được. Bạn nhắn Zalo <a href="https://zalo.me/'+ZALO+'" target="_blank" rel="noopener">tại đây</a> giúp mình nhé.';
-    }).finally(function(){dockSend.disabled=false;});
-  });
   var dock=document.getElementById('dock'),dockTab=document.getElementById('dockTab');
   function dockSet(o){dock.classList.toggle('open',o);dockTab.setAttribute('aria-expanded',o);document.getElementById('dockPanel').setAttribute('aria-hidden',!o);}
   dockTab.addEventListener('click',function(){dockSet(!dock.classList.contains('open'))});
@@ -766,21 +765,44 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   })();
   document.getElementById('mailLink').href='mailto:'+CONTACT_EMAIL;
   document.getElementById('zaloLink').href='https://zalo.me/'+ZALO;
-  document.getElementById('form').addEventListener('submit',function(e){
-    e.preventDefault();var f=e.target,ok=document.getElementById('ok'),btn=f.querySelector('button[type=submit],button:not([type])');
-    var ten=f.ten.value.trim(),lh=f.lienhe.value.trim();
-    var qt=[].map.call(f.querySelectorAll('input[name=qt]:checked'),function(x){return x.value}).join(', ');
-    function say(t,c){ok.style.display='block';ok.textContent=t;ok.style.color=c||'';}
-    if(!ten||!lh){say('Bạn điền tên và email hoặc số Zalo giúp mình nhé.','#ffd2cc');return;}
-    if(btn)btn.disabled=true;say('Đang gửi…');
+  /* ===== gửi lời nhắn về email + popup cảm ơn + tung hoa ===== */
+  var thx=document.getElementById('thx'),fx=document.getElementById('fx'),fxc=fx.getContext('2d'),parts=[],raf=0;
+  function flower(c,x,y,r,col,rot){c.save();c.translate(x,y);c.rotate(rot);c.fillStyle=col;for(var k=0;k<5;k++){c.rotate(Math.PI*2/5);c.beginPath();c.ellipse(0,-r*.62,r*.34,r*.62,0,0,7);c.fill();}c.fillStyle='#FFD23F';c.beginPath();c.arc(0,0,r*.26,0,7);c.fill();c.restore();}
+  function burst(){
+    if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+    var dpr=Math.min(2,window.devicePixelRatio||1),W=innerWidth,H=innerHeight;fx.width=W*dpr;fx.height=H*dpr;fxc.setTransform(dpr,0,0,dpr,0,0);
+    var cols=['#FF412B','#0147C1','#FFD23F','#FFFFFF','#FF8A75','#6FA8FF'];
+    [[.18,.55],[.82,.55],[.5,.4]].forEach(function(o){for(var n=0;n<46;n++){var a=-Math.PI/2+(Math.random()-.5)*1.7,s=9+Math.random()*13;
+      parts.push({x:W*o[0],y:H*o[1],vx:Math.cos(a)*s*(o[0]<.5?1.1:o[0]>.5?-.3:0)+Math.cos(a)*s*.6,vy:Math.sin(a)*s,r:5+Math.random()*8,c:cols[n%cols.length],rot:Math.random()*6,vr:(Math.random()-.5)*.25,f:Math.random()<.55,life:0});}});
+    if(!raf)raf=requestAnimationFrame(tick);
+  }
+  function tick(){fxc.clearRect(0,0,innerWidth,innerHeight);
+    parts=parts.filter(function(q){q.life++;q.vy+=.34;q.vx*=.985;q.vy*=.985;q.x+=q.vx;q.y+=q.vy;q.rot+=q.vr;return q.y<innerHeight+40&&q.life<260;});
+    parts.forEach(function(q){fxc.globalAlpha=Math.max(0,Math.min(1,(260-q.life)/60));if(q.f)flower(fxc,q.x,q.y,q.r*1.5,q.c,q.rot);else{fxc.save();fxc.translate(q.x,q.y);fxc.rotate(q.rot);fxc.fillStyle=q.c;fxc.fillRect(-q.r/2,-q.r/4,q.r,q.r/2);fxc.restore();}});
+    fxc.globalAlpha=1;raf=parts.length?requestAnimationFrame(tick):0;if(!raf)fxc.clearRect(0,0,innerWidth,innerHeight);}
+  function thanks(){thx.classList.add('on');thx.setAttribute('aria-hidden','false');burst();setTimeout(burst,380);document.getElementById('thxClose').focus({preventScroll:true});}
+  function thxOff(){thx.classList.remove('on');thx.setAttribute('aria-hidden','true');}
+  document.getElementById('thxClose').addEventListener('click',thxOff);
+  thx.addEventListener('click',function(e){if(e.target===thx)thxOff();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')thxOff();});
+  function lead(f,src,btn,note){
+    var name=f.name.value.trim(),phone=f.phone.value.trim(),msg=f.message.value.trim();
+    if(!name||!phone||!msg){note('Bạn điền đủ tên, số điện thoại và nội dung giúp mình nhé.','err');return;}
+    if(f._honey&&f._honey.value)return;
+    btn.disabled=true;note('Đang gửi…','');
     fetch('https://formsubmit.co/ajax/dd637a1b9e44491b5da94360143241d7',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify({name:ten,contact:lh,interested_in:qt||'(không chọn)',message:f.loinhan.value.trim()||'(không có)',_subject:'[ubo.vn] Đăng ký nhận tin: '+ten,_template:'table',_captcha:'false'})})
+      body:JSON.stringify({name:name,phone:phone,message:msg,source:src,_subject:'[ubo.vn] Lời nhắn từ '+name+' · '+phone,_template:'table',_captcha:'false'})})
     .then(function(r){return r.json()}).then(function(d){
-      if(d&&(d.success==='true'||d.success===true)){say('Đã gửi đăng ký. Cảm ơn bạn, mình sẽ gửi tin khi có cập nhật!');f.reset();}
+      if(d&&(d.success==='true'||d.success===true)){f.reset();note('','');if(typeof dockSet==='function')dockSet(false);thanks();}
       else throw new Error('');
-    }).catch(function(){say('Chưa gửi được. Bạn nhắn Zalo giúp mình nhé: zalo.me/'+ZALO,'#ffd2cc');})
-    .finally(function(){if(btn)btn.disabled=false;});
-  });
+    }).catch(function(){note('Chưa gửi được. Bạn nhắn Zalo giúp mình nhé: zalo.me/'+ZALO,'err');})
+    .finally(function(){btn.disabled=false;});
+  }
+  var okEl=document.getElementById('ok');
+  document.getElementById('form').addEventListener('submit',function(e){e.preventDefault();var f=e.target;
+    lead(f,'Form Nhận tin (cuối trang)',f.querySelector('button[type=submit]'),function(t,c){okEl.textContent=t;okEl.style.display=t?'block':'none';okEl.style.color=c==='err'?'#fff':'';});});
+  document.getElementById('dockForm').addEventListener('submit',function(e){e.preventDefault();
+    lead(e.target,'Form nổi bên hông',dockSend,function(t,c){dockMsg.className='dk-msg'+(c?' '+c:'');dockMsg.textContent=t;});});
 
   var els=document.querySelectorAll('.rv');
   if('IntersectionObserver' in window){
