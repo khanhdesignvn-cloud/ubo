@@ -322,6 +322,10 @@ details p{padding:0 0 18px;color:var(--muted)}
 .sign .lead{color:rgba(255,255,255,.8)}
 form{display:grid;gap:12px}
 input,select,textarea{font:inherit;width:100%;border:0;border-radius:18px;padding:15px 18px;background:#fff;color:var(--ink)}
+select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:46px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10' fill='none' stroke='%230147C1' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 2l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 18px center}
+select:invalid,select.empty{color:#757575}
+.dk-f select{border:1.5px solid var(--line);border-radius:12px;padding:10px 40px 10px 12px;font-size:14.5px;background-position:right 14px center}
+.dk-f select:focus{outline:none;border-color:var(--pine);box-shadow:0 0 0 3px rgba(1,71,193,.15)}
 textarea{min-height:96px;resize:vertical}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chips label{cursor:pointer}
@@ -616,6 +620,16 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
       <form id="form" novalidate>
         <input name="name" type="text" required autocomplete="name" placeholder="Tên của bạn">
         <input name="phone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="Số điện thoại">
+        <select name="topic" aria-label="Bạn quan tâm đến">
+          <option value="">Bạn quan tâm đến…</option>
+          <option>Tiến độ dự án</option>
+          <option>Du lịch, trải nghiệm U Bò</option>
+          <option>Kinh doanh quanh U Bò</option>
+          <option>Hợp tác quảng bá, truyền thông</option>
+          <option>Đầu tư, hợp tác phát triển</option>
+          <option>Mua hoặc cấp phép ubo.vn</option>
+          <option>Khác</option>
+        </select>
         <textarea name="message" required placeholder="Bạn muốn hỏi gì về U Bò?"></textarea>
         <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none">
         <button class="btn sun" type="submit">Gửi lời nhắn →</button>
@@ -677,6 +691,16 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
     <form id="dockForm" class="dk-f" novalidate>
       <label><span>Tên của bạn</span><input name="name" type="text" required autocomplete="name" placeholder="Nguyễn Văn A"></label>
       <label><span>Số điện thoại</span><input name="phone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="09xx xxx xxx"></label>
+      <label><span>Bạn quan tâm đến</span><select name="topic">
+          <option value="">Bạn quan tâm đến…</option>
+          <option>Tiến độ dự án</option>
+          <option>Du lịch, trải nghiệm U Bò</option>
+          <option>Kinh doanh quanh U Bò</option>
+          <option>Hợp tác quảng bá, truyền thông</option>
+          <option>Đầu tư, hợp tác phát triển</option>
+          <option>Mua hoặc cấp phép ubo.vn</option>
+          <option>Khác</option>
+      </select></label>
       <label><span>Nội dung</span><textarea name="message" rows="3" required placeholder="Bạn muốn hỏi gì về U Bò?"></textarea></label>
       <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none">
       <button class="btn sun" type="submit" id="dockSend">Gửi lời nhắn →</button>
@@ -791,11 +815,14 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
     if(f._honey&&f._honey.value)return;
     btn.disabled=true;note('Đang gửi…','');
     fetch('https://formsubmit.co/ajax/dd637a1b9e44491b5da94360143241d7',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify({name:name,phone:phone,message:msg,source:src,_subject:'[ubo.vn] Lời nhắn từ '+name+' · '+phone,_template:'table',_captcha:'false'})})
+      body:JSON.stringify({name:name,phone:phone,topic:f.topic.value||'(không chọn)',message:msg,source:src,_subject:'[ubo.vn] Lời nhắn từ '+name+' · '+phone,_template:'table',_captcha:'false'})})
     .then(function(r){return r.json()}).then(function(d){
       if(d&&(d.success==='true'||d.success===true)){f.reset();note('','');if(typeof dockSet==='function')dockSet(false);thanks();}
       else throw new Error('');
-    }).catch(function(){note('Chưa gửi được. Bạn nhắn Zalo giúp mình nhé: zalo.me/'+ZALO,'err');})
+    }).catch(function(){var body='Tên: '+name+'\nSố điện thoại: '+phone+'\nQuan tâm: '+(f.topic.value||'-')+'\nNội dung: '+msg;
+      note('','err');var m='mailto:'+CONTACT_EMAIL+'?subject='+encodeURIComponent('[ubo.vn] Lời nhắn từ '+name+' · '+phone)+'&body='+encodeURIComponent(body);
+      var box=btn.parentNode.querySelector('.ok,.dk-msg');box.style.display='block';box.className=box.className.replace(/ ?err/,'')+' err';
+      box.innerHTML='Hệ thống gửi đang bận. Bạn bấm <a href="'+m+'" style="color:inherit;text-decoration:underline;font-weight:800">gửi qua email</a> hoặc nhắn <a href="https://zalo.me/'+ZALO+'" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline;font-weight:800">Zalo</a> giúp mình nhé.';})
     .finally(function(){btn.disabled=false;});
   }
   var okEl=document.getElementById('ok');
