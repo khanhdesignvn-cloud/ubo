@@ -446,13 +446,23 @@ function lakePath(ctx, sx, sy, rgb=[1,71,193]){
 }
 const px = lon => (lon-DEM.lon0)/(DEM.lon1-DEM.lon0)*TW, py = lat => (DEM.lat1-lat)/(DEM.lat1-DEM.lat0)*TH;
 const kmPx = TW/((DEM.lon1-DEM.lon0)*111.32*Math.cos(latC*Math.PI/180));
+function roadArrow(ctx,pts,scale,col){ // mũi tên cuối đường, chỉ hướng ra ngoài dự án
+  const [la0,lo0]=pts[0],[la1,lo1]=pts[2]; const x0=px(lo0),y0=py(la0),x1=px(lo1),y1=py(la1);
+  const ang=Math.atan2(y0-y1,x0-x1), S=50*scale;
+  ctx.save(); ctx.translate(x0,y0); ctx.rotate(ang); ctx.translate(-S*.8,0); ctx.lineJoin='round';
+  ctx.beginPath(); ctx.moveTo(S*.9,0); ctx.lineTo(-S*.5,-S*.62); ctx.lineTo(-S*.18,0); ctx.lineTo(-S*.5,S*.62); ctx.closePath();
+  ctx.fillStyle=col; ctx.strokeStyle='#fff'; ctx.lineWidth=5*scale; ctx.stroke(); ctx.lineWidth=2; ctx.strokeStyle='rgba(6,26,69,.55)'; ctx.stroke(); ctx.fill(); ctx.restore(); }
 function drawRoads(ctx, scale=1){
-  for (const [pts,w] of [[GEO.ql15,9],[GEO.east,7]]){
-    ctx.lineJoin='round'; ctx.lineCap='round';
+  for (const [pts,w,fill] of [[GEO.ql15,14,'#FFFFFF'],[GEO.east,12,'#FFE08A']]){
+    ctx.lineJoin='round'; ctx.lineCap='round'; ctx.setLineDash([]);
     ctx.beginPath(); pts.forEach(([la,lo],i)=>i?ctx.lineTo(px(lo),py(la)):ctx.moveTo(px(lo),py(la)));
-    ctx.strokeStyle='rgba(6,26,69,.5)'; ctx.lineWidth=(w+4)*scale; ctx.stroke();
-    ctx.strokeStyle='#ffffff'; ctx.lineWidth=w*scale; ctx.stroke();
+    ctx.strokeStyle='rgba(6,26,69,.85)'; ctx.lineWidth=(w+6)*scale; ctx.stroke();      // viền đậm
+    ctx.strokeStyle=fill; ctx.lineWidth=w*scale; ctx.stroke();                          // mặt đường
+    ctx.strokeStyle='rgba(6,26,69,.55)'; ctx.lineWidth=2*scale; ctx.setLineDash([14*scale,12*scale]); ctx.stroke(); ctx.setLineDash([]); // vạch giữa
   }
+  roadArrow(ctx,GEO.east,scale,'#FF412B');                       // → TP. Đồng Hới
+  roadArrow(ctx,GEO.ql15,scale,'#FF412B');                       // ↑ Phong Nha – Kẻ Bàng
+  roadArrow(ctx,[...GEO.ql15].reverse(),scale,'#FF412B');        // ↓ đường HCM nhánh Tây
 }
 function zonePath(ctx,z,grow=1){
   ctx.save(); ctx.translate(px(z.lon),py(z.lat)); ctx.rotate(z.rot*Math.PI/180);
