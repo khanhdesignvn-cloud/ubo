@@ -2,6 +2,7 @@
    Cách dùng: <script src="/assets/i18n.js"></script>; UboI18n.set('en'|'vi'); UboI18n.lang */
 (function(){
 var D={
+'Bạn điền tên và email hoặc số Zalo giúp mình nhé.':'Please enter your name and an email or Zalo number.','Đang gửi…':'Sending…','Đã gửi đăng ký. Cảm ơn bạn, mình sẽ gửi tin khi có cập nhật!':'Sent. Thank you, I will send news as soon as there are updates!','Đã gửi. Mình sẽ liên hệ lại sớm, cảm ơn bạn!':'Sent. I will get back to you soon, thank you!','Bạn điền đủ tên, số điện thoại và nội dung giúp mình nhé.':'Please fill in your name, phone number and message.','Cảm ơn bạn!':'Thank you!','Du lịch':'Travel',
 /* ---------- menu, chung ---------- */
 'Sa bàn 3D':'3D model','Vị trí':'Location','Trải nghiệm':'Experience','Hành trình':'Itinerary','Dự án':'Project','Hỏi đáp':'FAQ','Nhận tin':'Updates',
 'Đang dựng sa bàn…':'Building the model…','Đang dựng sa bàn':'Building the model','Cuộn xuống':'Scroll down','Đóng':'Close','Email':'Email','Zalo':'Zalo',

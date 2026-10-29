@@ -615,7 +615,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
         </div>
         <textarea name="loinhan" placeholder="Lời nhắn (không bắt buộc)"></textarea>
         <button class="btn sun" type="submit">Gửi đăng ký →</button>
-        <div class="ok" id="ok">Cảm ơn bạn! Ứng dụng email sẽ mở để gửi đăng ký.</div>
+        <div class="ok" id="ok">Cảm ơn bạn!</div>
       </form>
     </div>
   </div>
@@ -767,11 +767,19 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   document.getElementById('mailLink').href='mailto:'+CONTACT_EMAIL;
   document.getElementById('zaloLink').href='https://zalo.me/'+ZALO;
   document.getElementById('form').addEventListener('submit',function(e){
-    e.preventDefault();var f=e.target;
+    e.preventDefault();var f=e.target,ok=document.getElementById('ok'),btn=f.querySelector('button[type=submit],button:not([type])');
+    var ten=f.ten.value.trim(),lh=f.lienhe.value.trim();
     var qt=[].map.call(f.querySelectorAll('input[name=qt]:checked'),function(x){return x.value}).join(', ');
-    var body='Tên: '+f.ten.value+'\nLiên hệ: '+f.lienhe.value+'\nQuan tâm: '+qt+'\nLời nhắn: '+f.loinhan.value;
-    location.href='mailto:'+CONTACT_EMAIL+'?subject='+encodeURIComponent('Đăng ký nhận tin U Bò')+'&body='+encodeURIComponent(body);
-    document.getElementById('ok').style.display='block';
+    function say(t,c){ok.style.display='block';ok.textContent=t;ok.style.color=c||'';}
+    if(!ten||!lh){say('Bạn điền tên và email hoặc số Zalo giúp mình nhé.','#ffd2cc');return;}
+    if(btn)btn.disabled=true;say('Đang gửi…');
+    fetch('https://formsubmit.co/ajax/dd637a1b9e44491b5da94360143241d7',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({name:ten,contact:lh,interested_in:qt||'(không chọn)',message:f.loinhan.value.trim()||'(không có)',_subject:'[ubo.vn] Đăng ký nhận tin: '+ten,_template:'table',_captcha:'false'})})
+    .then(function(r){return r.json()}).then(function(d){
+      if(d&&(d.success==='true'||d.success===true)){say('Đã gửi đăng ký. Cảm ơn bạn, mình sẽ gửi tin khi có cập nhật!');f.reset();}
+      else throw new Error('');
+    }).catch(function(){say('Chưa gửi được. Bạn nhắn Zalo giúp mình nhé: zalo.me/'+ZALO,'#ffd2cc');})
+    .finally(function(){if(btn)btn.disabled=false;});
   });
 
   var els=document.querySelectorAll('.rv');
