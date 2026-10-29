@@ -1,0 +1,35 @@
+name: Quét bài báo mới
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'   # 6 giờ một lần
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/press.yml'
+      - 'tools/press_scan.py'
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Quét và cập nhật data/press.json
+        run: python tools/press_scan.py
+      - name: Đẩy thay đổi
+        run: |
+          git config user.name "ubo-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if ! git diff --quiet -- data/press.json; then
+            git add data/press.json
+            git commit -m "Cập nhật bài báo mới ($(date -u +'%Y-%m-%d %H:%M' ) UTC)"
+            git push
+          else
+            echo "Không có bài mới"
+          fi
