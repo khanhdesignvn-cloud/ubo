@@ -165,6 +165,35 @@ body.embed .brand{visibility:hidden}
 #bBuild,#bZones,#bCable,#bFlow{display:none}
 body.embed .loader{background:transparent}body.embed .loader svg,body.embed .loader .d,body.embed .loader p{visibility:hidden}
 .hint.force{display:block;opacity:1}
+/* thanh thông số nổi (chế độ nhúng) */
+.sbar{display:none;position:fixed;z-index:12;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(760px,calc(100% - 24px));padding:8px;border-radius:22px;background:var(--panel);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);box-shadow:0 18px 50px rgba(3,14,42,.45);border:1px solid rgba(255,255,255,.1);gap:6px;transition:opacity .35s,transform .35s}
+.sbar button{flex:1;min-width:0;border:0;border-radius:16px;background:rgba(255,255,255,.06);color:#fff;padding:12px 10px 10px;text-align:left;cursor:pointer;transition:background .2s,transform .2s;font:inherit}
+.sbar button:hover{background:rgba(255,255,255,.16);transform:translateY(-2px)}
+.sbar b{display:block;font-family:var(--display);font-weight:900;font-size:clamp(17px,4.6vw,26px);line-height:1;white-space:nowrap;font-variant-numeric:tabular-nums}
+.sbar b em{font-style:normal;color:var(--red)}
+.sbar .l{display:block;margin-top:5px;font-size:11px;color:rgba(255,255,255,.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500;letter-spacing:.02em}
+body.embed .sbar{display:flex}
+body.embed .panel{display:none}
+body.embed.touring .sbar{opacity:0;pointer-events:none;transform:translate(-50%,20px)}
+body.embed .hint.force{bottom:calc(104px + env(safe-area-inset-bottom,0px))}
+@media(max-width:420px){.sbar button:nth-child(4){display:none}}
+/* popup diễn giải số liệu */
+.spop{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:16px;opacity:0;pointer-events:none;transition:opacity .3s}
+.spop.on{opacity:1;pointer-events:auto}
+.spop-bg{position:absolute;inset:0;background:rgba(3,14,42,.6);backdrop-filter:blur(4px)}
+.spop-box{position:relative;width:min(440px,100%);background:#fff;color:var(--ink);border-radius:26px;padding:26px 26px 22px;box-shadow:0 30px 80px rgba(3,14,42,.5);transform:translateY(16px) scale(.97);transition:transform .35s cubic-bezier(.3,.7,.2,1)}
+.spop.on .spop-box{transform:none}
+.spop .x{position:absolute;right:14px;top:14px;width:34px;height:34px;border-radius:50%;background:var(--sky);color:var(--ink);font-size:20px;line-height:1}
+.spop .eb{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+.spop .big{font-size:clamp(40px,10vw,58px);line-height:1;color:var(--blue);margin:8px 0 4px;font-variant-numeric:tabular-nums}
+.spop .big em{font-style:normal;color:var(--red);font-size:.55em}
+.spop h3{font-size:22px;margin:0 0 10px}
+.spop p{margin:0;font-size:14.5px;line-height:1.55;color:#33456E;font-weight:500}
+.spop .src{margin-top:12px;font-size:12px;color:#7A88A6;line-height:1.45}
+.spop .row{display:flex;gap:8px;margin-top:18px}
+.spop .cta{flex:1;display:flex;align-items:center;justify-content:center;padding:13px 16px 11px;border-radius:999px;background:var(--red);color:#fff;font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:13.5px;text-decoration:none;box-shadow:0 8px 22px rgba(255,65,43,.35)}
+.spop .ghost{padding:13px 18px 11px;border-radius:999px;background:var(--sky);color:var(--ink);font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:13.5px}
+@media(max-width:760px){body.embed .mfab{top:auto;bottom:calc(104px + env(safe-area-inset-bottom,0px))}}
 .mfab{display:none;position:fixed;z-index:9;right:max(12px,env(safe-area-inset-right,0px));top:calc(72px + env(safe-area-inset-top,0px));flex-direction:column;gap:8px}
 .mfab button,.mfab a{width:44px;height:44px;border-radius:50%;background:var(--panel);backdrop-filter:var(--glass);-webkit-backdrop-filter:var(--glass);color:#fff;display:grid;place-items:center;border:0;text-decoration:none;box-shadow:0 6px 18px rgba(3,14,42,.35)}
 .mfab button.on{background:#fff;color:var(--blue)}
@@ -217,6 +246,24 @@ body.embed .panel.open{transform:none}body.embed .compass{bottom:calc(130px + en
   </div>
 </header>
 
+<div class="sbar" id="sbar" role="group" aria-label="Thông số dự án">
+  <button type="button" data-stat="von"><b><span class="n" data-count="16234" data-sep="1">0</span> <em>tỷ</em></b><span class="l">Tổng vốn đầu tư</span></button>
+  <button type="button" data-stat="dientich"><b><span class="n" data-count="167">0</span> <em>ha</em></b><span class="l">Quy mô dự án</span></button>
+  <button type="button" data-stat="cap"><b><span class="n" data-count="5">0</span> <em>tuyến</em></b><span class="l">Cáp treo</span></button>
+  <button type="button" data-stat="khach"><b><span class="n" data-count="3">0</span> <em>triệu</em></b><span class="l">Lượt khách/năm</span></button>
+</div>
+<div class="spop" id="spop" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="spop-bg" id="spopBg"></div>
+  <div class="spop-box">
+    <button class="x" id="spopX" type="button" aria-label="Đóng">×</button>
+    <div class="eb" id="spopEb"></div>
+    <div class="big d" id="spopBig"></div>
+    <h3 class="d" id="spopH"></h3>
+    <p id="spopP"></p>
+    <div class="src" id="spopSrc"></div>
+    <div class="row"><a class="cta" id="spopContact" href="https://www.ubo.vn/#nhan-tin" target="_top">Liên hệ về dự án</a><button class="ghost" id="spopClose" type="button">Đóng</button></div>
+  </div>
+</div>
 <div class="mfab" id="mfab" aria-label="Thao tác nhanh">
   <button id="fabRotate" class="on" type="button" aria-label="Tự xoay" title="Tự xoay"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4a8 8 0 1 1-7.4 5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M3 3v6h6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
   <button id="fabHome" type="button" aria-label="Góc nhìn đầu" title="Góc nhìn đầu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v9H4z" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"/></svg></button>
@@ -782,8 +829,20 @@ addEventListener('resize',fit); fit();
 
 /* đếm số */
 function countUp(){ document.querySelectorAll('[data-count]').forEach(el=>{const to=+el.dataset.count, dec=+(el.dataset.dec||0), sep=el.dataset.sep; const s=performance.now();
-  const f=()=>{const t=Math.min(1,(performance.now()-s)/1800), e=1-Math.pow(1-t,4), v=to*e;
+  const f=()=>{const t=Math.min(1,(performance.now()-s)/(el.closest('.sbar')?1100:1800)), e=1-Math.pow(1-t,4), v=to*e;
     el.textContent= dec? v.toFixed(dec).replace('.',',') : (sep? Math.round(v).toLocaleString('vi-VN') : Math.round(v)); if(t<1) requestAnimationFrame(f);}; f();}); }
+const STATS={
+  von:{eb:'Tổng vốn đầu tư',big:'16.234 <em>tỷ đồng</em>',h:'Dự án du lịch lớn nhất Quảng Trị',p:'Gồm khoảng 2.435 tỷ đồng vốn chủ sở hữu và 13.799 tỷ đồng vốn huy động. UBND tỉnh chấp thuận chủ trương đầu tư tháng 3/2026, nhà đầu tư là Công ty TNHH Mặt Trời Quảng Bình thuộc Sun Group. Thời hạn hoạt động 70 năm, triển khai từ quý 3/2026 đến quý 2/2037.',src:'Nguồn: VietnamPlus, Báo Đầu tư, tháng 9 và 10/2026'},
+  dientich:{eb:'Quy mô dự án',big:'167,47 <em>ha</em>',h:'Ba khu chức năng trên một trục cáp treo',p:'Khu đỉnh núi khoảng 82 ha, khu chân núi bên hồ Thác Chuối khoảng 76,6 ha, ga trung gian khoảng 8 ha và móng trụ cáp khoảng 1 ha. Thuộc các xã Bố Trạch, Thượng Trạch và Trường Sơn, kèm 51 ha nghiên cứu ngoài ranh giới.',src:'Nguồn: Tuổi Trẻ, Báo Đầu tư, quy hoạch 1/500 tháng 10/2026'},
+  cap:{eb:'Cáp treo',big:'5 <em>tuyến</em>',h:'Chân núi, ga trung gian, đỉnh U Bò',p:'Năm tuyến cáp treo nối cụm ga chân núi bên hồ với đỉnh U Bò cao khoảng 1.000 m, dừng tại ga trung gian trên sườn núi. Chiều dài khoảng 6 km, chênh cao khoảng 930 m. Vị trí tuyến trên sa bàn phỏng theo sơ đồ đã công bố.',src:'Nguồn: Tuổi Trẻ, sơ đồ quy hoạch dự án'},
+  khach:{eb:'Mục tiêu đón khách',big:'3 <em>triệu lượt/năm</em>',h:'Điểm đến mới của miền Trung',p:'Quy mô đón khách dự kiến khoảng 3 triệu lượt mỗi năm khi vận hành đầy đủ. Để so sánh, toàn tỉnh Quảng Trị đón khoảng 9,4 triệu lượt khách trong 9 tháng năm 2026, tăng 11,67% so với cùng kỳ.',src:'Nguồn: Tuổi Trẻ, Cục Thống kê tỉnh Quảng Trị'}};
+const spop=document.getElementById('spop');
+function openStat(k){const d=STATS[k]; if(!d) return; document.getElementById('spopEb').textContent=d.eb; document.getElementById('spopBig').innerHTML=d.big; document.getElementById('spopH').textContent=d.h; document.getElementById('spopP').textContent=d.p; document.getElementById('spopSrc').textContent=d.src; spop.classList.add('on'); spop.setAttribute('aria-hidden','false');}
+function closeStat(){spop.classList.remove('on'); spop.setAttribute('aria-hidden','true');}
+document.querySelectorAll('.sbar button').forEach(b=>b.onclick=()=>openStat(b.dataset.stat));
+document.getElementById('spopX').onclick=document.getElementById('spopClose').onclick=document.getElementById('spopBg').onclick=closeStat;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeStat();});
+document.getElementById('spopContact').addEventListener('click',e=>{ if(window.parent!==window){ e.preventDefault(); closeStat(); try{parent.postMessage({ubo:'contact'},'*');}catch(_){} } });
 const bigNum=document.getElementById('bigNum');
 function showBig(val,label,dec=0,sep=false){ const el=document.getElementById('bigNumV'); document.getElementById('bigNumL').textContent=label; bigNum.classList.add('on');
   const s=performance.now(); const f=()=>{const t=Math.min(1,(performance.now()-s)/1600), e=1-Math.pow(1-t,4), v=val*e;
