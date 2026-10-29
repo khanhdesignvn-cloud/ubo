@@ -158,7 +158,7 @@ function attrs(el){for(var i=0;i<ATTRS.length;i++){var a=ATTRS[i];if(!el.hasAttr
 function walk(n){if(n.nodeType===3){text(n);return;}if(n.nodeType!==1)return;if(/^(SCRIPT|STYLE|CANVAS)$/.test(n.tagName))return;attrs(n);
  for(var c=n.firstChild;c;c=c.nextSibling)walk(c);}
 function apply(){document.documentElement.lang=lang;if(TITLES[lang])document.title=TITLES[lang];walk(document.body);
- document.querySelectorAll('[data-lang-btn]').forEach(function(b){b.textContent=lang==='vi'?'EN':'VI';b.setAttribute('aria-label',lang==='vi'?'Switch to English':'Chuyển sang tiếng Việt');});
+ document.querySelectorAll('[data-lang-btn]').forEach(function(b){b.classList.toggle('en',lang==='en');b.setAttribute('aria-checked',lang==='en');b.setAttribute('aria-label',lang==='vi'?'Switch to English':'Chuyển sang tiếng Việt');});
  document.querySelectorAll('iframe').forEach(function(f){try{f.contentWindow.postMessage({ubo:'lang',lang:lang},'*');}catch(e){}});}
 function set(l){lang=l==='en'?'en':'vi';try{localStorage.setItem('ubo-lang',lang);}catch(e){}apply();
  if(!obs){obs=new MutationObserver(function(ms){if(lang!=='en')return;ms.forEach(function(m){for(var i=0;i<m.addedNodes.length;i++)walk(m.addedNodes[i]);});});

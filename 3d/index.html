@@ -228,8 +228,15 @@ body.embed .zl button{flex:none;white-space:nowrap;padding:8px 12px;font-size:12
 body.embed .zl i{width:10px;height:10px;border-radius:50%}
 body.embed .panel.open{transform:none}body.embed .compass{bottom:calc(130px + env(safe-area-inset-bottom,0px))}.hint.force{bottom:calc(120px + env(safe-area-inset-bottom,0px))}}
 @media(prefers-reduced-motion:reduce){.play,.loader svg{animation:none}}
-.langb{position:fixed;top:66px;left:16px;z-index:60;font:800 12px/1 system-ui,sans-serif;letter-spacing:.08em;color:#fff;background:rgba(6,26,69,.55);backdrop-filter:blur(8px);border:0;box-shadow:inset 0 0 0 2px rgba(255,255,255,.45);border-radius:999px;padding:9px 13px;cursor:pointer}
 .embed .langb{display:none}
+.langb{position:fixed;top:66px;left:16px;z-index:60;display:inline-grid;grid-template-columns:1fr 1fr;align-items:center;width:78px;height:34px;padding:0;border:0;border-radius:999px;background:rgba(6,26,69,.55);backdrop-filter:blur(8px);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.45);cursor:pointer;font:800 12px/1 system-ui,sans-serif;letter-spacing:.08em;color:#fff}
+.langb i{position:absolute;top:3px;left:3px;width:36px;height:28px;border-radius:999px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.28);transition:transform .28s cubic-bezier(.3,1.4,.5,1)}
+.langb span{position:relative;z-index:1;text-align:center;padding-top:2px;transition:color .2s}
+.langb span:first-of-type{color:var(--pine,#0147C1)}
+.langb.en i{transform:translateX(36px)}
+.langb.en span:first-of-type{color:#fff}.langb.en span:last-of-type{color:var(--pine,#0147C1)}
+.langb:focus-visible{outline:2px solid #fff;outline-offset:3px}
+
 </style>
 <script type="importmap">
 {"imports":{
@@ -939,7 +946,7 @@ setTimeout(()=>document.getElementById('hint').style.opacity=0,8000);
 <script>
 setTimeout(function(){var l=document.getElementById('loader');if(l&&!l.classList.contains('done')){document.getElementById('err').style.display='block';}},14000);
 </script>
-<button class="langb" type="button" data-lang-btn aria-label="Switch to English">EN</button>
+<button class="langb" type="button" data-lang-btn aria-label="Switch to English" role="switch" aria-checked="false"><i></i><span>VI</span><span>EN</span></button>
 <script>if(/[?&]embed=1/.test(location.search))document.querySelector(".langb").style.display="none"</script>
 <script src="../assets/i18n.js"></script>
 </body>
