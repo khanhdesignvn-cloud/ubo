@@ -68,7 +68,16 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:30}
 .mb{color:var(--ink)}
 
 .mod{position:fixed;inset:0;z-index:20;background:rgba(6,26,69,.55);display:none;align-items:center;justify-content:center;padding:20px}.mod.on{display:flex}
-.mb{width:min(400px,100%);background:#fff;border-radius:24px;padding:26px 22px;position:relative;max-height:92vh;overflow:auto}.mb h2{margin:0 0 6px;font-weight:900;font-size:24px}.mb p{margin:0 0 16px;color:var(--muted);font-size:14px;line-height:1.5}.mb input,.mb textarea{width:100%;border:2px solid var(--line);border-radius:14px;padding:12px 14px;font:inherit;font-size:16px;margin-bottom:10px;outline:none;color:var(--ink)}.mb textarea{min-height:90px;resize:vertical}.mb input:focus,.mb textarea:focus{border-color:var(--pine)}.mb .x{position:absolute;right:12px;top:12px;width:32px;height:32px;border:0;border-radius:50%;background:var(--mist);cursor:pointer;font-size:18px}.mb .cs{font-size:12px;color:var(--muted);margin:0 0 12px}.mb .cs a{color:inherit}
+.mb{width:min(400px,100%);background:#fff;border-radius:24px;padding:26px 22px;position:relative;max-height:92vh;overflow:auto}.mb h2{margin:0 0 6px;font-weight:900;font-size:24px}.mb p{margin:0 0 16px;color:var(--muted);font-size:14px;line-height:1.5}.mb input,.mb textarea{width:100%;border:2px solid var(--line);border-radius:14px;padding:12px 14px;font:inherit;font-size:16px;margin-bottom:10px;outline:none;color:var(--ink)}.mb textarea{min-height:90px;resize:vertical}.mb input:focus,.mb textarea:focus{border-color:var(--pine)}.mb .x{position:absolute;right:12px;top:12px;width:32px;height:32px;border:0;border-radius:50%;background:var(--mist);cursor:pointer;font-size:18px}.mb .cs{font-size:12px;color:var(--muted);margin:0 0 12px}.mb .cs a{color:inherit}/* hộp liên hệ mở ngay cạnh tab, có mũi nối */
+.mod{display:block!important;background:transparent!important;padding:0!important;pointer-events:none;opacity:0;transition:opacity .25s}
+.mod.on{opacity:1}
+.mb{position:fixed!important;right:60px;top:50%;width:min(380px,calc(100vw - 96px))!important;max-height:88vh;transform:translate(26px,-50%) scale(.92);transform-origin:100% 50%;opacity:0;pointer-events:none;transition:transform .38s cubic-bezier(.2,1.25,.4,1),opacity .25s;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.mod.on .mb{transform:translate(0,-50%) scale(1);opacity:1;pointer-events:auto}
+.mb:after{content:"";position:absolute;right:-8px;top:50%;width:18px;height:18px;background:#fff;border-radius:4px;transform:translateY(-50%) rotate(45deg)}
+.dtab.open{background:#fff;color:var(--sun);box-shadow:0 8px 24px rgba(0,0,0,.3)}.dtab.open i{background:var(--sun)}
+.dtab.open:hover{background:#fff}
+@media(max-width:700px){.mb{right:12px!important;left:12px;width:auto!important;top:auto!important;bottom:118px;transform:translateY(24px) scale(.94);transform-origin:100% 100%;max-height:calc(100vh - 150px)}.mod.on .mb{transform:none}.mb:after{right:26px;top:auto;bottom:-8px;transform:rotate(45deg)}}
+
 </style></head><body id="root">
 <div class="sky"><div class="brand"><img src="assets/logo/ubo-icon-white.svg" alt="">UBO.VN</div>
 <div class="hud" id="hud"><div class="pill"><span>★ <b id="sc">0</b></span><span>Kỷ lục <b id="best">0</b></span></div><small>Chạm vào sao và cabin để chơi</small></div>
@@ -161,16 +170,16 @@ function confetti(){var c=document.getElementById('fx'),x=c.getContext('2d');c.w
  for(var i=0;i<150;i++)P.push({x:innerWidth/2,y:innerHeight*.55,vx:(Math.random()-.5)*16,vy:-Math.random()*16-4,r:Math.random()*6+3,c:cols[i%5],a:Math.random()*6,s:(Math.random()-.5)*.3});
  (function t(){x.clearRect(0,0,c.width,c.height);P.forEach(function(p){p.vy+=.4;p.x+=p.vx;p.y+=p.vy;p.a+=p.s;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r,-p.r/2,p.r*2,p.r);x.restore();});if(P.some(function(p){return p.y<innerHeight+20}))requestAnimationFrame(t);else x.clearRect(0,0,c.width,c.height);})();}
 var mod=document.getElementById('mod'),cf=document.getElementById('cf'),cm=document.getElementById('cm'),cs=document.getElementById('cs');
-document.getElementById('ctBtn').addEventListener('click',function(){mod.classList.add('on');cf.name.focus();});
-document.getElementById('mx').addEventListener('click',function(){mod.classList.remove('on')});
-mod.addEventListener('click',function(e){if(e.target===mod)mod.classList.remove('on')});
-addEventListener('keydown',function(e){if(e.key==='Escape')mod.classList.remove('on')});
+var ctb=document.getElementById('ctBtn');function setM(o){mod.classList.toggle('on',o);ctb.classList.toggle('open',o);ctb.setAttribute('aria-expanded',o);if(o)setTimeout(function(){cf.name.focus()},250);}ctb.addEventListener('click',function(e){e.stopPropagation();setM(!mod.classList.contains('on'));});document.addEventListener('click',function(e){if(mod.classList.contains('on')&&!e.target.closest('.mb'))setM(false);});
+document.getElementById('mx').addEventListener('click',function(){setM(false)});
+
+addEventListener('keydown',function(e){if(e.key==='Escape')setM(false)});
 cf.addEventListener('submit',function(e){e.preventDefault();var n=cf.name.value.trim(),p=cf.phone.value.trim(),m=cf.message.value.trim();if(cf._honey.value)return;
  if(!n||!p||!m){cm.style.color='#FF412B';cm.textContent='Bạn điền đủ các ô giúp mình nhé.';return;}cs.disabled=true;cm.style.color='#4A5E86';cm.textContent='Đang gửi…';
  var data={name:n,phone:p,topic:(cf.topic.value||'Liên hệ từ trang đăng nhập'),message:m,source:'Trang đăng nhập'},subj='[ubo.vn] Lời nhắn từ '+n+' · '+p;
  fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(Object.assign({access_key:'6f17bc6f-a7c0-4ab8-8309-88700947ab9c',subject:subj,from_name:'ubo.vn'},data))}).then(function(r){return r.json()}).then(function(d){if(!d||d.success!==true)throw 1;
   return d;}).catch(function(){return fetch('https://formsubmit.co/ajax/dd637a1b9e44491b5da94360143241d7',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(Object.assign({_subject:subj,_template:'table',_captcha:'false'},data))}).then(function(r){return r.json()}).then(function(d){if(!d||!(d.success==='true'||d.success===true))throw 1;});})
- .then(function(){cf.reset();cm.style.color='#0147C1';cm.textContent='Đã gửi. Cảm ơn bạn!';cs.disabled=false;setTimeout(function(){mod.classList.remove('on');cm.textContent='';},1800);confetti();})
+ .then(function(){cf.reset();cm.style.color='#0147C1';cm.textContent='Đã gửi. Cảm ơn bạn!';cs.disabled=false;setTimeout(function(){setM(false);cm.textContent='';},1800);confetti();})
  .catch(function(){cs.disabled=false;cm.style.color='#FF412B';cm.textContent='Chưa gửi được. Bạn thử lại sau ít phút nhé.';});});
 
 })();
