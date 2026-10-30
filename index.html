@@ -324,8 +324,6 @@ form{display:grid;gap:12px}
 input,select,textarea{font:inherit;width:100%;border:0;border-radius:18px;padding:15px 18px;background:#fff;color:var(--ink)}
 select{appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:46px;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='10' viewBox='0 0 16 10' fill='none' stroke='%230147C1' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 2l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 18px center}
 select:invalid,select.empty{color:#757575}
-.dk-f select{border:1.5px solid var(--line);border-radius:12px;padding:10px 40px 10px 12px;font-size:14.5px;background-position:right 14px center}
-.dk-f select:focus{outline:none;border-color:var(--pine);box-shadow:0 0 0 3px rgba(1,71,193,.15)}
 textarea{min-height:96px;resize:vertical}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chips label{cursor:pointer}
@@ -350,34 +348,11 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
 .disc{margin-top:36px;padding:18px 20px;border:1px solid rgba(255,255,255,.18);border-radius:16px;background:rgba(255,255,255,.05);font-size:13.5px;line-height:1.6;color:rgba(255,255,255,.82)}
 .disc b{color:#fff}.disc ul{margin:8px 0 0;padding-left:18px}.disc li{margin:3px 0}
 .fbot a{color:#fff;text-decoration:underline;text-underline-offset:3px}
-.dk-f .consent{color:var(--muted)}
 .consent{margin:2px 0 0;font-size:12.5px;line-height:1.5;color:rgba(255,255,255,.78)}.consent a{color:inherit;text-decoration:underline}
 .fbot{margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px}
 .fbot .d{color:var(--sun);font-size:14px}
 
 /* LIÊN HỆ BÊN HÔNG */
-.dock{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:45;display:flex;align-items:center}
-.dock-tab{position:relative;writing-mode:vertical-rl;transform:rotate(180deg);border:0;cursor:pointer;background:var(--sun);color:#fff;font-family:var(--display);font-weight:900;text-transform:uppercase;letter-spacing:.1em;font-size:16px;padding:26px 17px 26px 15px;border-radius:0 22px 22px 0;box-shadow:0 12px 34px rgba(255,65,43,.45);display:flex;align-items:center;gap:12px;transition:background .2s}
-.dock-tab:before,.dock-tab:after{content:'';position:absolute;inset:0;border-radius:inherit;border:2px solid var(--sun);opacity:0;pointer-events:none;animation:dockRipple 2.6s ease-out infinite}
-.dock-tab:after{animation-delay:1.3s}
-@keyframes dockRipple{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(1.35,1.18)}}
-.dock-tab.shake{animation:dockShake .5s ease-in-out}
-@keyframes dockShake{0%,100%{transform:rotate(180deg) translateY(0)}20%{transform:rotate(180deg) translateY(-5px) rotate(-4deg)}40%{transform:rotate(180deg) translateY(4px) rotate(3deg)}60%{transform:rotate(180deg) translateY(-3px) rotate(-2deg)}80%{transform:rotate(180deg) translateY(2px)}}
-@media(prefers-reduced-motion:reduce){.dock-tab:before,.dock-tab:after,.dock-tab.shake{animation:none}}
-.dock-tab:hover{background:#E6371F}
-.dock-tab i{display:block;width:11px;height:11px;border-radius:50%;background:#fff;animation:dockPulse 2s ease-in-out infinite}
-@keyframes dockPulse{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.6)}50%{box-shadow:0 0 0 7px rgba(255,255,255,0)}}
-.dock-panel{position:absolute;right:calc(100% + 12px);top:50%;transform:translate(16px,-50%) scale(.96);opacity:0;pointer-events:none;width:min(320px,calc(100vw - 80px));background:#fff;color:var(--ink);border-radius:24px;padding:22px;box-shadow:0 30px 70px rgba(6,26,69,.35);transition:opacity .25s,transform .25s}
-.dock.open .dock-panel{opacity:1;pointer-events:auto;transform:translate(0,-50%) scale(1)}
-.dk-h{padding-right:30px}
-.dk-h b{display:block;font-family:var(--display);font-weight:900;font-size:21px;line-height:1.1;text-transform:uppercase;color:var(--pine)}
-.dk-h span{display:block;font-size:13.5px;line-height:1.5;color:var(--muted);margin-top:6px}
-.dk-f{display:grid;gap:10px;margin-top:14px}
-.dk-f label span{display:block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.dk-f input,.dk-f textarea{width:100%;box-sizing:border-box;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;font:inherit;font-size:14.5px;color:var(--ink);background:#fff;resize:vertical}
-.dk-f input:focus,.dk-f textarea:focus{outline:none;border-color:var(--pine);box-shadow:0 0 0 3px rgba(1,71,193,.15)}
-.dk-f .btn{width:100%;justify-content:center;margin-top:2px}
-.dk-f .btn[disabled]{opacity:.6;cursor:wait}
 .thx{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(6,26,69,.55);backdrop-filter:blur(6px);opacity:0;pointer-events:none;transition:opacity .25s}
 .thx.on{opacity:1;pointer-events:auto}
 .thx-card{background:#fff;color:var(--night);width:min(400px,100%);border-radius:28px;padding:36px 30px 30px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.35);transform:translateY(18px) scale(.94);transition:transform .45s cubic-bezier(.2,1.5,.4,1)}
@@ -387,10 +362,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
 .thx h3{font-family:var(--display);font-size:34px;line-height:1;margin:0 0 10px;color:var(--pine);text-transform:uppercase}
 .thx p{margin:0 0 22px;color:var(--muted);font-size:16px;line-height:1.5}
 #fx{position:fixed;inset:0;width:100%;height:100%;z-index:95;pointer-events:none}
-.dk-msg{margin:0;font-size:13.5px;line-height:1.45;min-height:0;color:var(--muted)}
-.dk-msg.ok{color:#0A7A3E;font-weight:700}.dk-msg.err{color:var(--sun);font-weight:700}
-.dock-close{position:absolute;right:12px;top:12px;border:0;background:var(--mist);width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:16px;line-height:1;color:var(--ink)}
-@media(max-width:600px){.dock-tab{font-size:14px;padding:20px 13px 20px 12px}}
 
 .rv{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s}
 .rv.in{opacity:1;transform:none}
@@ -696,32 +667,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
     <div class="fbot"><span>© 2026 U Bò. Trang thông tin độc lập, không đại diện cho chủ đầu tư.</span><span><a href="privacy.html">Chính sách riêng tư</a> · <a href="#mien-tru">Miễn trừ trách nhiệm</a></span><span class="d">Ngồi giữa mây, ngắm trọn Trường Sơn.</span></div>
   </div>
 </footer>
-<div class="dock" id="dock">
-  <div class="dock-panel" id="dockPanel" role="dialog" aria-label="Gửi lời nhắn" aria-hidden="true">
-    <button class="dock-close" type="button" id="dockClose" aria-label="Đóng">×</button>
-    <div class="dk-h"><b>Nhắn cho ubo.vn</b><span>Hỏi thêm về U Bò, hợp tác nội dung hay truyền thông dự án. Mình sẽ liên hệ lại sớm.</span></div>
-    <form id="dockForm" class="dk-f" novalidate>
-      <label><span>Tên của bạn</span><input name="name" type="text" required autocomplete="name" placeholder="Nguyễn Văn A"></label>
-      <label><span>Số điện thoại</span><input name="phone" type="tel" required autocomplete="tel" inputmode="tel" placeholder="09xx xxx xxx"></label>
-      <label><span>Bạn quan tâm đến</span><select name="topic">
-          <option value="">Bạn quan tâm đến…</option>
-          <option>Tiến độ dự án</option>
-          <option>Du lịch, trải nghiệm U Bò</option>
-          <option>Kinh doanh quanh U Bò</option>
-          <option>Hợp tác quảng bá, truyền thông</option>
-          <option>Đầu tư, hợp tác phát triển</option>
-          <option>Khác</option>
-      </select></label>
-      <label><span>Nội dung</span><textarea name="message" rows="3" required placeholder="Bạn muốn hỏi gì về U Bò?"></textarea></label>
-      <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none">
-      <p class="consent">Bằng việc đăng ký, bạn đồng ý nhận tin từ ubo.vn. Xem <a href="privacy.html">Chính sách riêng tư</a>.</p>
-      <button class="btn sun" type="submit" id="dockSend">Gửi lời nhắn →</button>
-      <p class="dk-msg" id="dockMsg" role="status" aria-live="polite"></p>
-    </form>
-  </div>
-  <button class="dock-tab" type="button" id="dockTab" aria-expanded="false" aria-controls="dockPanel"><i aria-hidden="true"></i>Liên hệ</button>
-</div>
-
 <div class="thx" id="thx" role="dialog" aria-modal="true" aria-labelledby="thxT" aria-hidden="true">
   <div class="thx-card">
     <div class="thx-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
@@ -759,22 +704,12 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
     mg.appendChild(b);
   });
 
-  var dockForm=document.getElementById('dockForm'),dockMsg=document.getElementById('dockMsg'),dockSend=document.getElementById('dockSend');
-  var dock=document.getElementById('dock'),dockTab=document.getElementById('dockTab');
-  function dockSet(o){dock.classList.toggle('open',o);dockTab.setAttribute('aria-expanded',o);document.getElementById('dockPanel').setAttribute('aria-hidden',!o);}
-  dockTab.addEventListener('click',function(){dockSet(!dock.classList.contains('open'))});
-  document.getElementById('dockClose').addEventListener('click',function(){dockSet(false)});
-  document.addEventListener('click',function(e){if(!dock.contains(e.target))dockSet(false)});
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')dockSet(false)});
-  var lastShake=0,shakeT=null;
-  window.addEventListener('scroll',function(){if(dock.classList.contains('open'))return;clearTimeout(shakeT);shakeT=setTimeout(function(){var n=Date.now();if(n-lastShake<2500)return;lastShake=n;dockTab.classList.remove('shake');void dockTab.offsetWidth;dockTab.classList.add('shake');},180);},{passive:true});
-  dockTab.addEventListener('animationend',function(e){if(e.animationName==='dockShake')dockTab.classList.remove('shake');});
   var s3dStage=document.getElementById('s3dStage');
   function fitStage(){var vh=(window.visualViewport?window.visualViewport.height:window.innerHeight);s3dStage.style.height=Math.max(440,Math.round(vh-68))+'px';}
   fitStage();window.addEventListener('resize',fitStage);if(window.visualViewport)window.visualViewport.addEventListener('resize',fitStage);
   var s3dLoad=document.getElementById('s3dLoad'),s3dFrame=document.getElementById('s3dFrame'),s3dDone=false;
   function s3dReady(){if(s3dDone)return;s3dDone=true;s3dLoad.classList.add('off');setTimeout(function(){s3dLoad.style.display='none'},800);}
-  window.addEventListener('message',function(e){if(!e.data)return;if(e.data.ubo==='ready')s3dReady();if(e.data.ubo==='contact'){dockSet(true);document.getElementById('dockPanel').scrollIntoView({block:'nearest'});}});
+  window.addEventListener('message',function(e){if(!e.data)return;if(e.data.ubo==='ready')s3dReady();if(e.data.ubo==='contact'){var n=document.getElementById('nhan-tin');if(n)n.scrollIntoView({behavior:'smooth'});}});
   s3dFrame.addEventListener('load',function(){setTimeout(s3dReady,2500)});
   setTimeout(s3dReady,15000);
   (function(){
@@ -829,7 +764,7 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
     function fs(){return fetch('https://formsubmit.co/ajax/dd637a1b9e44491b5da94360143241d7',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},
       body:JSON.stringify(Object.assign({_subject:subj,_template:'table',_captcha:'false'},data))}).then(function(r){return r.json()}).then(function(d){if(!d||!(d.success==='true'||d.success===true))throw new Error('fs');return d;});}
     w3().catch(fs)
-    .then(function(){f.reset();note('','');if(typeof dockSet==='function')dockSet(false);thanks();}).catch(function(){
+    .then(function(){f.reset();note('','');thanks();}).catch(function(){
       note('','err');var box=btn.parentNode.querySelector('.ok,.dk-msg');box.style.display='block';box.className=box.className.replace(/ ?err/,'')+' err';
       box.textContent='Chưa gửi được. Bạn thử lại sau ít phút giúp mình nhé.';})
     .finally(function(){btn.disabled=false;});
@@ -837,8 +772,6 @@ footer a{text-decoration:none}footer a:hover{color:var(--sun)}
   var okEl=document.getElementById('ok');
   document.getElementById('form').addEventListener('submit',function(e){e.preventDefault();var f=e.target;
     lead(f,'Form Nhận tin (cuối trang)',f.querySelector('button[type=submit]'),function(t,c){okEl.textContent=t;okEl.style.display=t?'block':'none';okEl.style.color=c==='err'?'#fff':'';});});
-  document.getElementById('dockForm').addEventListener('submit',function(e){e.preventDefault();
-    lead(e.target,'Form nổi bên hông',dockSend,function(t,c){dockMsg.className='dk-msg'+(c?' '+c:'');dockMsg.textContent=t;});});
 
   var els=document.querySelectorAll('.rv');
   if('IntersectionObserver' in window){
