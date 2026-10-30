@@ -26,6 +26,11 @@ label{display:block;font-weight:700;font-size:12px;letter-spacing:.08em;text-tra
 .btn:hover{background:#E6371F}.btn:active{transform:scale(.98)}.btn[disabled]{opacity:.7;cursor:default}
 .msg{min-height:22px;margin:12px 0 0;font-size:14px;font-weight:700;color:var(--sun)}
 .ct{margin-top:16px;height:48px;width:100%;border-radius:999px;border:2px solid var(--pine);background:#fff;color:var(--pine);font:inherit;font-weight:700;font-size:15px;cursor:pointer}.ct:hover{background:var(--mist)}
+.dtab{position:fixed;right:0;top:50%;z-index:15;writing-mode:vertical-rl;border:0;cursor:pointer;background:var(--sun);color:#fff;font:inherit;font-weight:900;font-size:15px;letter-spacing:.08em;text-transform:uppercase;padding:22px 13px 22px 12px;border-radius:18px 0 0 18px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(255,65,43,.35);transform:translateY(-50%) rotate(180deg)}
+.dtab:hover{background:#E6371F}.dtab i{display:block;width:11px;height:11px;border-radius:50%;background:#fff;animation:dp 2s ease-in-out infinite}
+@keyframes dp{0%,100%{box-shadow:0 0 0 0 rgba(255,255,255,.6)}50%{box-shadow:0 0 0 7px rgba(255,255,255,0)}}
+.dtab:before{content:"";position:absolute;inset:0;border-radius:inherit;border:2px solid var(--sun);opacity:0;animation:dr 2.6s ease-out infinite;pointer-events:none}
+@keyframes dr{0%{opacity:.7;transform:scale(1)}100%{opacity:0;transform:scale(1.35,1.18)}}
 .mod{position:fixed;inset:0;z-index:20;background:rgba(6,26,69,.55);display:none;align-items:center;justify-content:center;padding:20px}.mod.on{display:flex}
 .mb{width:min(400px,100%);background:#fff;border-radius:24px;padding:26px 22px;position:relative;max-height:92vh;overflow:auto}.mb h2{margin:0 0 6px;font-weight:900;font-size:24px}.mb p{margin:0 0 16px;color:var(--muted);font-size:14px;line-height:1.5}.mb input,.mb textarea{width:100%;border:2px solid var(--line);border-radius:14px;padding:12px 14px;font:inherit;font-size:16px;margin-bottom:10px;outline:none;color:var(--ink)}.mb textarea{min-height:90px;resize:vertical}.mb input:focus,.mb textarea:focus{border-color:var(--pine)}.mb .x{position:absolute;right:12px;top:12px;width:32px;height:32px;border:0;border-radius:50%;background:var(--mist);cursor:pointer;font-size:18px}.mb .cs{font-size:12px;color:var(--muted);margin:0 0 12px}.mb .cs a{color:inherit}.back{display:inline-block;margin-top:18px;color:var(--muted);font-size:14px;text-decoration:none}.back:hover{color:var(--pine)}
 .fine{margin-top:26px;font-size:12px;color:var(--muted);line-height:1.5}
@@ -101,12 +106,13 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:9}
    <p class="msg" id="msg" role="status" aria-live="polite"></p>
    <button class="btn" id="go" type="submit">Đăng nhập →</button>
   </form>
-  <button class="ct" type="button" id="ctBtn">Liên hệ để xin mật khẩu</button>
+  <a class="back" href="privacy.html">Chính sách riêng tư</a>
   <p class="fine">Trang thông tin độc lập về núi U Bò – hồ Thác Chuối. Mật khẩu chỉ kiểm tra trên trình duyệt của bạn.</p>
  </div></main>
 </div>
+<button class="dtab" type="button" id="ctBtn" aria-haspopup="dialog"><i aria-hidden="true"></i>Liên hệ</button>
 <div class="mod" id="mod" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="mb"><button class="x" type="button" id="mx" aria-label="Đóng">×</button>
-<h2 id="mt">Liên hệ</h2><p>Để lại thông tin, ubo.vn sẽ phản hồi và gửi mật khẩu cho bạn nếu phù hợp.</p>
+<h2 id="mt">Liên hệ</h2><p>Để lại thông tin hoặc nội dung cần trao đổi, ubo.vn sẽ phản hồi sớm.</p>
 <form id="cf" novalidate><input name="name" placeholder="Tên của bạn" autocomplete="name"><input name="phone" placeholder="Số điện thoại hoặc email" autocomplete="off"><textarea name="message" placeholder="Bạn muốn trao đổi điều gì?"></textarea>
 <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none"><p class="cs">Bằng việc gửi, bạn đồng ý để ubo.vn liên hệ lại. Xem <a href="privacy.html">Chính sách riêng tư</a>.</p>
 <button class="btn" style="margin-top:0" id="cs" type="submit">Gửi →</button><p class="msg" id="cm" role="status" aria-live="polite"></p></form></div></div>
@@ -142,7 +148,7 @@ mod.addEventListener('click',function(e){if(e.target===mod)mod.classList.remove(
 addEventListener('keydown',function(e){if(e.key==='Escape')mod.classList.remove('on')});
 cf.addEventListener('submit',function(e){e.preventDefault();var n=cf.name.value.trim(),p=cf.phone.value.trim(),m=cf.message.value.trim();if(cf._honey.value)return;
  if(!n||!p||!m){cm.style.color='#FF412B';cm.textContent='Bạn điền đủ các ô giúp mình nhé.';return;}cs.disabled=true;cm.style.color='#4A5E86';cm.textContent='Đang gửi…';
- var data={name:n,phone:p,topic:'Xin mật khẩu truy cập',message:m,source:'Trang đăng nhập'},subj='[ubo.vn] Lời nhắn từ '+n+' · '+p;
+ var data={name:n,phone:p,topic:'Liên hệ từ trang đăng nhập',message:m,source:'Trang đăng nhập'},subj='[ubo.vn] Lời nhắn từ '+n+' · '+p;
  fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(Object.assign({access_key:'6f17bc6f-a7c0-4ab8-8309-88700947ab9c',subject:subj,from_name:'ubo.vn'},data))}).then(function(r){return r.json()}).then(function(d){if(!d||d.success!==true)throw 1;
   return d;}).catch(function(){return fetch('https://formsubmit.co/ajax/dd637a1b9e44491b5da94360143241d7',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(Object.assign({_subject:subj,_template:'table',_captcha:'false'},data))}).then(function(r){return r.json()}).then(function(d){if(!d||!(d.success==='true'||d.success===true))throw 1;});})
  .then(function(){cf.reset();cm.style.color='#0147C1';cm.textContent='Đã gửi. Cảm ơn bạn!';cs.disabled=false;setTimeout(function(){mod.classList.remove('on');cm.textContent='';},1800);confetti();})
