@@ -73,10 +73,10 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:30}
 .mod.on{opacity:1}
 .mb{position:fixed!important;right:60px;top:50%;width:min(380px,calc(100vw - 96px))!important;max-height:88vh;transform:translate(26px,-50%) scale(.92);transform-origin:100% 50%;opacity:0;pointer-events:none;transition:transform .38s cubic-bezier(.2,1.25,.4,1),opacity .25s;box-shadow:0 24px 60px rgba(0,0,0,.45)}
 .mod.on .mb{transform:translate(0,-50%) scale(1);opacity:1;pointer-events:auto}
-.mb:after{content:"";position:absolute;right:-8px;top:50%;width:18px;height:18px;background:#fff;border-radius:4px;transform:translateY(-50%) rotate(45deg)}
 .dtab.open{background:#fff;color:var(--sun);box-shadow:0 8px 24px rgba(0,0,0,.3)}.dtab.open i{background:var(--sun)}
 .dtab.open:hover{background:#fff}
-@media(max-width:700px){.mb{right:12px!important;left:12px;width:auto!important;top:auto!important;bottom:118px;transform:translateY(24px) scale(.94);transform-origin:100% 100%;max-height:calc(100vh - 150px)}.mod.on .mb{transform:none}.mb:after{right:26px;top:auto;bottom:-8px;transform:rotate(45deg)}}
+@media(max-width:700px){.mb{right:12px!important;left:12px;width:auto!important;top:auto!important;bottom:118px;transform:translateY(24px) scale(.94);transform-origin:100% 100%;max-height:calc(100vh - 150px)}.mod.on .mb{transform:none}}
+.mb{overflow-x:hidden!important;overflow-y:auto}.mb *{max-width:100%}.mb textarea{resize:none}
 
 </style></head><body id="root">
 <div class="sky"><div class="brand"><img src="assets/logo/ubo-icon-white.svg" alt="">UBO.VN</div>
