@@ -41,10 +41,37 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:30}
 @media(max-width:700px){.dtab{top:auto;bottom:56px;transform:none}.brand{padding:0 18px}.hero svg{width:100%;height:auto}.ground{padding-top:8px}}
 @media(prefers-reduced-motion:reduce){.cl,.flag,.shim,.bad .hero svg{animation:none}}
 
+.hud{position:absolute;z-index:3;top:16px;right:22px;display:flex;flex-direction:column;align-items:flex-end;gap:4px;font-size:14px}
+.hud .pill{display:flex;gap:14px;background:rgba(6,26,69,.35);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:7px 16px;font-weight:700}
+.hud b{font-weight:900;color:#FFD54A}.hud small{font-size:12px;opacity:.85}
+.star{cursor:pointer;transform-box:fill-box}.star polygon{fill:#FFD54A;stroke:#fff;stroke-width:2;stroke-linejoin:round;transition:transform .15s;transform-box:fill-box;transform-origin:center}
+.star:hover polygon{transform:scale(1.25) rotate(12deg);filter:drop-shadow(0 0 8px #FFD54A)}
+.star{animation:tw 1.2s ease-in-out infinite}@keyframes tw{50%{opacity:.7}}
+.pop{pointer-events:none;font:900 22px var(--f);fill:#FFD54A;stroke:#0A1F4D;stroke-width:4px;paint-order:stroke;animation:up .9s ease-out forwards}
+@keyframes up{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-46px)}}
+.cab{cursor:pointer;transition:filter .2s}.cab:hover{filter:brightness(1.1) drop-shadow(0 8px 12px rgba(0,0,0,.35))}
+.btn .ar,.mb .btn .ar{display:inline-block;transition:transform .2s}.btn:hover .ar{transform:translateX(5px)}
+.btn{transition:transform .2s,background .2s,box-shadow .2s}.btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(255,65,43,.45)}.btn:active{transform:translateY(0) scale(.98)}
+.eye{transition:background .2s,transform .2s,color .2s}.eye:hover{transform:scale(1.12);color:#fff}
+.fld input:hover{border-color:rgba(255,255,255,.4)}
+.dtab{transition:background .2s,transform .25s,box-shadow .25s,padding .25s}.dtab:hover{transform:translateY(-50%) translateX(-6px);box-shadow:0 10px 30px rgba(255,65,43,.55);padding-left:19px}
+.fine a{transition:color .2s}.fine a:hover{color:#fff}
+.mb input,.mb textarea,.mb select{transition:border-color .2s,box-shadow .2s}.mb input:hover,.mb textarea:hover,.mb select:hover{border-color:#9DB6EA}
+.mb select{width:100%;border:2px solid var(--line);border-radius:14px;padding:12px 14px;font:inherit;font-size:16px;margin-bottom:10px;outline:none;color:var(--ink);background:#fff;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' fill='none' stroke='%230147C1' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center}
+.mb select:focus{border-color:var(--pine)}
+.mb .x{transition:transform .25s,background .2s}.mb .x:hover{transform:rotate(90deg);background:#D5DEF2}
+.mb .btn{margin-top:0}
+.stats{margin-top:20px;display:flex;justify-content:center;gap:10px;flex-wrap:wrap;font-size:13px;color:#A9BCE6}.stats b{color:#fff;font-weight:900}
+.stats span{display:inline-flex;align-items:center;gap:7px}.stats svg{width:16px;height:16px}
+.live{width:8px;height:8px;border-radius:50%;background:#3DDC84;box-shadow:0 0 0 0 rgba(61,220,132,.7);animation:lv 1.8s infinite}@keyframes lv{70%{box-shadow:0 0 0 8px rgba(61,220,132,0)}100%{box-shadow:0 0 0 0 rgba(61,220,132,0)}}
+@media(max-width:700px){.hud{top:14px;right:14px}.hud small{display:none}}
+.mb{color:var(--ink)}
+
 .mod{position:fixed;inset:0;z-index:20;background:rgba(6,26,69,.55);display:none;align-items:center;justify-content:center;padding:20px}.mod.on{display:flex}
 .mb{width:min(400px,100%);background:#fff;border-radius:24px;padding:26px 22px;position:relative;max-height:92vh;overflow:auto}.mb h2{margin:0 0 6px;font-weight:900;font-size:24px}.mb p{margin:0 0 16px;color:var(--muted);font-size:14px;line-height:1.5}.mb input,.mb textarea{width:100%;border:2px solid var(--line);border-radius:14px;padding:12px 14px;font:inherit;font-size:16px;margin-bottom:10px;outline:none;color:var(--ink)}.mb textarea{min-height:90px;resize:vertical}.mb input:focus,.mb textarea:focus{border-color:var(--pine)}.mb .x{position:absolute;right:12px;top:12px;width:32px;height:32px;border:0;border-radius:50%;background:var(--mist);cursor:pointer;font-size:18px}.mb .cs{font-size:12px;color:var(--muted);margin:0 0 12px}.mb .cs a{color:inherit}
 </style></head><body id="root">
 <div class="sky"><div class="brand"><img src="assets/logo/ubo-icon-white.svg" alt="">UBO.VN</div>
+<div class="hud" id="hud"><div class="pill"><span>★ <b id="sc">0</b></span><span>Kỷ lục <b id="best">0</b></span></div><small>Chạm vào sao và cabin để chơi</small></div>
 <div class="hero"><svg id="scene" viewBox="0 0 1200 470" aria-hidden="true">
 <g opacity=".22" fill="#fff"><g class="cl"><ellipse cx="0" cy="70" rx="70" ry="16"/><ellipse cx="40" cy="58" rx="40" ry="14"/></g><g class="cl cl2"><ellipse cx="0" cy="150" rx="90" ry="18"/><ellipse cx="-40" cy="138" rx="46" ry="15"/></g><g class="cl cl3"><ellipse cx="0" cy="40" rx="60" ry="12"/></g></g>
 <path d="M-1000 340L0 340 110 290 230 335 360 262 480 330 610 270 720 318 860 276 1010 330 1200 292 2200 292V470H-1000z" fill="#2B63D3" opacity=".7"/>
@@ -71,17 +98,19 @@ canvas#fx{position:fixed;inset:0;pointer-events:none;z-index:30}
   <div class="fld"><input id="pw" type="password" autocomplete="current-password" enterkeyhint="go" placeholder="Mật khẩu" aria-label="Mật khẩu">
   <button class="eye" type="button" id="eye" aria-label="Hiện mật khẩu" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></button></div>
   <p class="msg" id="msg" role="status" aria-live="polite"></p>
-  <button class="btn" id="go" type="submit">Đăng nhập →</button>
+  <button class="btn" id="go" type="submit">Đăng nhập <span class="ar">→</span></button>
  </form>
+ <p class="stats"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg><b id="vw">–</b> lượt xem</span><span><i class="live"></i><b id="ol">–</b> đang xem</span></p>
  <p class="fine">Trang thông tin độc lập về núi U Bò – hồ Thác Chuối. <a href="privacy.html">Chính sách riêng tư</a></p>
 </div></main>
 <button class="dtab" type="button" id="ctBtn" aria-haspopup="dialog"><i aria-hidden="true"></i>Liên hệ</button>
 <div class="mod" id="mod" role="dialog" aria-modal="true" aria-labelledby="mt"><div class="mb"><button class="x" type="button" id="mx" aria-label="Đóng">×</button>
 <h2 id="mt">Liên hệ</h2><p>Để lại thông tin hoặc nội dung cần trao đổi, ubo.vn sẽ phản hồi sớm.</p>
-<form id="cf" novalidate><input name="name" placeholder="Tên của bạn" autocomplete="name"><input name="phone" placeholder="Số điện thoại hoặc email" autocomplete="off"><textarea name="message" placeholder="Bạn muốn trao đổi điều gì?"></textarea>
+<form id="cf" novalidate><input name="name" placeholder="Tên của bạn" autocomplete="name"><input name="phone" placeholder="Số điện thoại hoặc email" autocomplete="off"><select name="topic" aria-label="Nhu cầu trao đổi"><option value="">Bạn muốn trao đổi về…</option><option>Xin mật khẩu truy cập</option><option>Tiến độ dự án</option><option>Du lịch, trải nghiệm U Bò</option><option>Kinh doanh quanh U Bò</option><option>Hợp tác quảng bá, truyền thông</option><option>Đầu tư, hợp tác phát triển</option><option>Khác</option></select><textarea name="message" placeholder="Bạn muốn trao đổi điều gì?"></textarea>
 <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none"><p class="cs">Bằng việc gửi, bạn đồng ý để ubo.vn liên hệ lại. Xem <a href="privacy.html">Chính sách riêng tư</a>.</p>
-<button class="btn" style="margin-top:0" id="cs" type="submit">Gửi →</button><p class="msg" id="cm" role="status" aria-live="polite"></p></form></div></div>
+<button class="btn" style="margin-top:0" id="cs" type="submit">Gửi <span class="ar">→</span></button><p class="msg" id="cm" role="status" aria-live="polite"></p></form></div></div>
 <canvas id="fx"></canvas>
+<script src="assets/stats.js"></script>
 <script>
 (function(){
 var HASH='003131c5ac46e23f69df20baf498c13b161bdfffa7f807c380276002fd9cc48f';
@@ -95,13 +124,28 @@ var cabs=[1,2,3,4].map(function(i,k){var g=document.getElementById('cab'+i);retu
 var tx=innerWidth/2,ty=innerHeight/3,speed=1,t0=performance.now(),jump=0;
 addEventListener('pointermove',function(e){tx=e.clientX;ty=e.clientY;},{passive:true});
 function frame(now){var t=(now-t0)/1000;
- cabs.forEach(function(c,k){var cyc=t*.036*speed+c.ph;var u=.5-.5*Math.cos(cyc*Math.PI*2);var pt=L[c.line].getPointAtLength(LEN[c.line]*u);
+ cabs.forEach(function(c,k){c.off+=c.vel*.012;c.vel*=.95;var cyc=t*.036*speed+c.ph+c.off;var u=.5-.5*Math.cos(cyc*Math.PI*2);if(u>.985&&!c.top){c.top=1;if(typeof add==='function')add(5,846,70);}else if(u<.9)c.top=0;var pt=L[c.line].getPointAtLength(LEN[c.line]*u);
   var sc=c.line?.8:1;var bob=jump?-Math.abs(Math.sin(t*7+k*.8))*26:0;
   c.g.setAttribute('transform','translate('+pt.x.toFixed(1)+' '+(pt.y+bob).toFixed(1)+') scale('+sc+')');
   c.sw.setAttribute('transform','rotate('+(Math.sin(t*1.3+k*1.7)*3.2).toFixed(2)+')');
   c.eyes.forEach(function(e){var r=e.s.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2,dx=tx-cx,dy=ty-cy,d=Math.hypot(dx,dy)||1,m=Math.min(d/90,1)*5.2;e.p.setAttribute('transform','translate('+(dx/d*m).toFixed(2)+' '+(dy/d*m).toFixed(2)+')');});});
  requestAnimationFrame(frame);}
 requestAnimationFrame(frame);
+
+/* mini game: chạm sao +1, chạm cabin +2 (đẩy cabin lên nhanh), cabin tới đỉnh +5 */
+var sc=document.getElementById('sc'),bestEl=document.getElementById('best'),score=0,best=0;
+try{best=+localStorage.getItem('ubo_best')||0}catch(_){}bestEl.textContent=best;
+function add(n,x,y){score+=n;sc.textContent=score;if(score>best){best=score;bestEl.textContent=best;try{localStorage.setItem('ubo_best',best)}catch(_){}}
+ var tt=document.createElementNS(NS,'text');tt.setAttribute('x',x);tt.setAttribute('y',y);tt.setAttribute('text-anchor','middle');tt.setAttribute('class','pop');tt.textContent='+'+n;svg.appendChild(tt);setTimeout(function(){tt.remove()},900);}
+cabs.forEach(function(c){c.off=0;c.vel=0;c.top=0;c.g.addEventListener('click',function(e){e.stopPropagation();c.vel=1;var m=c.g.getAttribute('transform').match(/translate\(([-\d.]+) ([-\d.]+)/);add(2,+m[1],+m[2]-20);});});
+var stars=[];
+function spawn(){if(document.hidden||stars.length>=4)return;var g=document.createElementNS(NS,'g');g.setAttribute('class','star');var x=120+Math.random()*960,y=50+Math.random()*190;
+ g.innerHTML='<polygon points="0,-16 4.6,-5.4 16,-4.6 7.3,2.8 10,14 0,8 -10,14 -7.3,2.8 -16,-4.6 -4.6,-5.4"/>';g.setAttribute('transform','translate('+x+' '+y+')');
+ var o={g:g,x:x,y:y,born:performance.now()};g.addEventListener('click',function(e){e.stopPropagation();add(1,o.x,o.y-10);rm(o);});svg.insertBefore(g,document.getElementById('cab2'));stars.push(o);}
+function rm(o){var i=stars.indexOf(o);if(i>-1)stars.splice(i,1);o.g.remove();}
+setInterval(spawn,1800);spawn();
+setInterval(function(){var n=performance.now();stars.slice().forEach(function(o){var a=(n-o.born)/1000;o.g.setAttribute('transform','translate('+(o.x+Math.sin(a*1.3)*10).toFixed(1)+' '+(o.y+a*8).toFixed(1)+')');if(a>7)rm(o);});},50);
+
 pw.addEventListener('focus',function(){root.classList.add('pw');root.classList.remove('bad');});
 pw.addEventListener('blur',function(){if(eye.getAttribute('aria-pressed')!=='true')root.classList.remove('pw');});
 eye.addEventListener('click',function(){var on=eye.getAttribute('aria-pressed')!=='true';eye.setAttribute('aria-pressed',on);pw.type=on?'text':'password';root.classList.toggle('peek',on);if(on)root.classList.add('pw');else if(document.activeElement!==pw)root.classList.remove('pw');pw.focus();});
@@ -123,7 +167,7 @@ mod.addEventListener('click',function(e){if(e.target===mod)mod.classList.remove(
 addEventListener('keydown',function(e){if(e.key==='Escape')mod.classList.remove('on')});
 cf.addEventListener('submit',function(e){e.preventDefault();var n=cf.name.value.trim(),p=cf.phone.value.trim(),m=cf.message.value.trim();if(cf._honey.value)return;
  if(!n||!p||!m){cm.style.color='#FF412B';cm.textContent='Bạn điền đủ các ô giúp mình nhé.';return;}cs.disabled=true;cm.style.color='#4A5E86';cm.textContent='Đang gửi…';
- var data={name:n,phone:p,topic:'Liên hệ từ trang đăng nhập',message:m,source:'Trang đăng nhập'},subj='[ubo.vn] Lời nhắn từ '+n+' · '+p;
+ var data={name:n,phone:p,topic:(cf.topic.value||'Liên hệ từ trang đăng nhập'),message:m,source:'Trang đăng nhập'},subj='[ubo.vn] Lời nhắn từ '+n+' · '+p;
  fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(Object.assign({access_key:'6f17bc6f-a7c0-4ab8-8309-88700947ab9c',subject:subj,from_name:'ubo.vn'},data))}).then(function(r){return r.json()}).then(function(d){if(!d||d.success!==true)throw 1;
   return d;}).catch(function(){return fetch('https://formsubmit.co/ajax/dd637a1b9e44491b5da94360143241d7',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(Object.assign({_subject:subj,_template:'table',_captcha:'false'},data))}).then(function(r){return r.json()}).then(function(d){if(!d||!(d.success==='true'||d.success===true))throw 1;});})
  .then(function(){cf.reset();cm.style.color='#0147C1';cm.textContent='Đã gửi. Cảm ơn bạn!';cs.disabled=false;setTimeout(function(){mod.classList.remove('on');cm.textContent='';},1800);confetti();})
